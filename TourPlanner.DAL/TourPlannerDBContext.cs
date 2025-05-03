@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TourPlanner.DAL
 {
-    internal class Class1
+    internal class TourPlannerDBContext
     {
     }
 }
