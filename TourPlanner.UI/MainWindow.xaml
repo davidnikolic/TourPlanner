@@ -14,17 +14,20 @@
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Content="Nav-Placeholder"/>
         <TabControl Grid.Column="1">
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <Ellipse Width="10" Height="10" Fill="DarkGray"/>
-                        <TextBlock>Tab 1</TextBlock>
-                    </StackPanel>
-                </TabItem.Header>
-                Tab 1
+            <TabItem Header="General">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">
+                    - General Information will be displayed here -
+                </TextBlock>
             </TabItem>
-            <TabItem Header="Tab 2">
-                Tab 2
+            <TabItem Header="Route">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">
+                    - The Map will be displayed here -
+                </TextBlock>
+            </TabItem>
+            <TabItem Header="Misc." >
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">
+                    - The Weather will be displayed here -
+                </TextBlock>
             </TabItem>
         </TabControl>
 
