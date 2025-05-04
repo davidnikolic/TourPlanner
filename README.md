@@ -1,5 +1,5 @@
 
-# Projektorganisation – TourPlanner
+# TourPlanner
 
 ## Projektziel
 
