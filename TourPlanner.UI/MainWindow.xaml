@@ -5,8 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TourPlanner.UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="800" Width="1280">
+    <Grid Margin="20,20,20,20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="4*" />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0" Content="Nav-Placeholder"/>
+        <TabControl Grid.Column="1">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="10" Height="10" Fill="DarkGray"/>
+                        <TextBlock>Tab 1</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                Tab 1
+            </TabItem>
+            <TabItem Header="Tab 2">
+                Tab 2
+            </TabItem>
+        </TabControl>
 
+        <Label Grid.Column="2" Content="TourLogs-Placeholder"/>
     </Grid>
 </Window>

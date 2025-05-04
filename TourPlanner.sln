@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlanner.Logging", "Tour
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tourplanner.Tests", "Tourplanner.Tests\Tourplanner.Tests.csproj", "{1982F6D4-497D-4141-A9BF-51FAD6CCA63C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourPlanner.UI", "TourPlanner.UI\TourPlanner.UI.csproj", "{0CDD864C-68A4-4C08-8535-D6C140403419}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlanner.UI", "TourPlanner.UI\TourPlanner.UI.csproj", "{0CDD864C-68A4-4C08-8535-D6C140403419}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{DF1CAA28-0D4B-411F-B32D-CC79D8AB0717}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Downloads\Wireframe_Tourplaner.drawio.png = ..\..\..\Downloads\Wireframe_Tourplaner.drawio.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
