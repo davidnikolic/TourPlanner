@@ -52,7 +52,7 @@ Entwicklung einer plattformübergreifenden Desktop-App mit .NET **MAUI** zur Ver
 
 ### David
 
-- UI-Gesamtverantwortung (MAUI, Views, Layout)
+- UI-Gesamtverantwortung (WPF, Views, Layout)
 
 - Tour-Detail-Ansicht und TourLogs
 
