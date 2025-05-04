@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:TourPlanner.UI.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <TabControl Grid.Column="1" Margin="10,10,10,10">
+    <TabControl Margin="10,10,10,10">
         <TabItem Header="General">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">
             - General Information will be displayed here -
