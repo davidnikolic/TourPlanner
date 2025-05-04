@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="TourPlanner.UI.Views.Components.TourActionButtons"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:components="clr-namespace:TourPlanner.UI.Views.Components"
+             Height="Auto" Width="Auto">
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <!-- Add Button -->
+        <Button Width="32" Height="32"
+                Background="#3B82F6" Foreground="White"
+                FontFamily="Segoe MDL2 Assets" FontSize="16"
+                Content="&#xE70B;" Margin="5,0,0,0"
+                ToolTip="Add Tour"  Command="{Binding AddTourCommand}"/>
+
+        <!-- Edit Button -->
+        <Button Width="32" Height="32"
+                Background="#10B981" Foreground="White"
+                FontFamily="Segoe MDL2 Assets" FontSize="16"
+                Content="&#xE70F;" Margin="5,0,0,0"
+                ToolTip="Edit Tour" />
+
+        <!-- Delete Button -->
+        <Button Width="32" Height="32"
+                Background="#EF4444" Foreground="White"
+                FontFamily="Segoe MDL2 Assets" FontSize="16"
+                Content="&#xE711;" Margin="5,0,0,0"
+                ToolTip="Delete Tour" />
+    </StackPanel>
+
+   
+</UserControl>

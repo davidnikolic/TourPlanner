@@ -8,4 +8,14 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TourPlanner.BL\TourPlanner.BL.csproj" />
+    <ProjectReference Include="..\TourPlanner.Logging\TourPlanner.Logging.csproj" />
+    <ProjectReference Include="..\Tourplanner.Tests\Tourplanner.Tests.csproj" />
+  </ItemGroup>
+
 </Project>
