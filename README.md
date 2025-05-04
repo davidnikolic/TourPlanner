@@ -3,7 +3,7 @@
 
 ## Projektziel
 
-Entwicklung einer plattformübergreifenden Desktop-App mit .NET **MAUI** zur Verwaltung von Touren und TourLogs – inklusive Kartenanzeige, Wetterintegration, Full-Text-Search und PDF-Reports.
+Entwicklung einer plattformübergreifenden Desktop-App mit .NET **WPF** zur Verwaltung von Touren und TourLogs – inklusive Kartenanzeige, Wetterintegration, Full-Text-Search und PDF-Reports.
 
   
 ---
@@ -13,7 +13,7 @@ Entwicklung einer plattformübergreifenden Desktop-App mit .NET **MAUI** zur Ver
 
 - **Architekturmuster:** MVVM (Model-View-ViewModel)
 
-- **UI-Framework:** .NET MAUI (wegen macOS-Kompatibilität)
+- **UI-Framework:** .NET WPF
 
 - **Schichten:** UI · BL (Business Logic) · DAL (ORM & DB) · Logging
 
@@ -31,7 +31,7 @@ Entwicklung einer plattformübergreifenden Desktop-App mit .NET **MAUI** zur Ver
 
 ## Projektstruktur
 
-- `TourPlanner.UI`: MAUI/XAML Views & ViewModels
+- `TourPlanner.UI`: WPF/XAML Views & ViewModels
 
 - `TourPlanner.BL`: Geschäftslogik, Services
 
