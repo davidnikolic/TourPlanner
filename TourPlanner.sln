@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlanner.DAL", "TourPlan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlanner.Logging", "TourPlanner.Logging\TourPlanner.Logging.csproj", "{F2710940-4CDF-4AE2-96F4-B660214B988C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tourplanner.Tests", "Tourplanner.Tests\Tourplanner.Tests.csproj", "{1982F6D4-497D-4141-A9BF-51FAD6CCA63C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlanner.Tests", "Tourplanner.Tests\TourPlanner.Tests.csproj", "{1982F6D4-497D-4141-A9BF-51FAD6CCA63C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourPlanner.UI", "TourPlanner.UI\TourPlanner.UI.csproj", "{0CDD864C-68A4-4C08-8535-D6C140403419}"
 EndProject

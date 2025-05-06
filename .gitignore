@@ -68,6 +68,10 @@ _ReSharper*/
 *.snupkg
 .nuget/
 
+# Ignore environment files
+TourPlanner.DAL/.env
+TourPlanner.Tests/.env
+
 # MAUI or Xamarin specific
 *.apk
 *.ap_

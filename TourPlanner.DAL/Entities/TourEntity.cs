@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Threading.Tasks;
+using static TourPlanner.DAL.Entities.Enums;
+
+namespace TourPlanner.DAL.Entities
+{
+    public class TourEntity
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string? Description { get; set; }
+
+        public string StartLocation { get; set; }
+
+        public string EndLocation { get; set; }
+
+        public TransportType TransportType { get; set; }
+
+        public float? DistanceKm { get; set; }
+
+        public float? EstimatedTimeHours { get; set; }
+
+        public string? RouteImagePath { get; set; }
+
+        public ICollection<TourLogEntity> TourLogs { get; set; }
+    }
+}
