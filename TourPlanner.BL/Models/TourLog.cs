@@ -24,6 +24,7 @@ namespace TourPlanner.BL.Models
         public TimeSpan Duration { get; set; }
 
         public SatisfactionRating SatisfactionRating { get; set; }
+
     }
 }
 
