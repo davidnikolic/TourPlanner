@@ -1,22 +1,64 @@
-﻿using TourPlanner.BL.Models;
+﻿using TourPlanner.DAL.Entities;
+using TourPlanner.DAL.MockRepos;
 
 namespace Tourplanner.Tests
 {
     public class BusinessLogicTests
     {
 
-        Tour t = new();
+        MockTourRepo mockTourRepo = new();
+        TourEntity t = new();
+
 
         [SetUp]
         public void Setup()
         {
-            
+            t.Id = 1;
+            t.Name = "Testwanderung";
         }
 
         [Test]
-        public void Test1()
+        public void TestAddTour()
         {
-            Console.WriteLine(t);
+            mockTourRepo.AddTour(t);
+            Assert.That(mockTourRepo.Tours.First().Id, Is.EqualTo(t.Id));
+        }
+
+        [Test]
+        public void TestReadTour()
+        {
+            TourEntity tour = mockTourRepo.GetTour(1);
+            
+            Assert.That(tour.Name, Is.EqualTo("Testwanderung"));
+        }
+
+        [Test]
+        public void TestUpdateTour()
+        {
+            TourEntity OriginalTour = new TourEntity();
+
+            OriginalTour.Id = 2;
+            OriginalTour.Name = "Testdorf";
+
+
+
+            mockTourRepo.AddTour(OriginalTour);
+
+            TourEntity ChangedTour = OriginalTour;
+
+            ChangedTour.EstimatedTimeHours = 2;
+
+            mockTourRepo.UpdateTour(ChangedTour);
+
+            Assert.That(mockTourRepo.Tours.Where(i => i.Id == 2).First().Name, Is.EqualTo("Testdorf"));
+            Assert.That(mockTourRepo.Tours.Where(i => i.Id == 2).First().EstimatedTimeHours, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void TestRemoveTour()
+        {
+            mockTourRepo.DeleteTour(t.Id);
+            Assert.That(mockTourRepo.Tours, Is.Empty); 
         }
     }
 }

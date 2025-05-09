@@ -13,22 +13,22 @@ namespace TourPlanner.DAL.Entities
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
 
-        public string? Description { get; set; }
+        public string? Description { get; set; } = "";
 
-        public string StartLocation { get; set; }
+        public string StartLocation { get; set; } = "";
 
-        public string EndLocation { get; set; }
+        public string EndLocation { get; set; } = "";
 
-        public TransportType TransportType { get; set; }
+        public TransportType TransportType { get; set; } = TransportType.foot;
 
-        public float? DistanceKm { get; set; }
+        public float? DistanceKm { get; set; } = 0;
 
-        public float? EstimatedTimeHours { get; set; }
+        public float? EstimatedTimeHours { get; set; } = 0;
 
-        public string? RouteImagePath { get; set; }
+        public string? RouteImagePath { get; set; } = "";
 
-        public ICollection<TourLogEntity> TourLogs { get; set; }
+        public ICollection<TourLogEntity> TourLogs { get; set; } = new List<TourLogEntity>();
     }
 }

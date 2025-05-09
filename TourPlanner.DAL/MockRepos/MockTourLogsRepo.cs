@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TourPlanner.DAL.MockRepos
 {
-    internal class MockTourLogsRepo
+    public class MockTourLogsRepo
     {
     }
 }
