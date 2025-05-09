@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TourPlanner.DAL.Entities;
+using TourPlanner.BL.Models;
 
-namespace TourPlanner.DAL.MockRepos
+namespace TourPlanner.BL.MockRepos
 {
     public class MockTourRepo
     {
-        public List<TourEntity> Tours { get; set; } = new List<TourEntity>();
+        public List<Tour> Tours { get; set; } = new List<Tour>();
 
-        public void AddTour(TourEntity tour)
+        public void AddTour(Tour tour)
         {
             Tours.Add(tour);
         }
 
-        public TourEntity GetTour(int id)
+        public Tour GetTour(int id)
         {
             return Tours.FirstOrDefault(i => i.Id == id);
         }
 
-        public void UpdateTour(TourEntity tour)
+        public void UpdateTour(Tour tour)
         {
             if (Tours.Where(i => i.Id ==  tour.Id).FirstOrDefault() != null)
             {
