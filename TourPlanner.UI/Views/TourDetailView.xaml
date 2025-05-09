@@ -6,11 +6,19 @@
              xmlns:local="clr-namespace:TourPlanner.UI.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <TabControl Margin="10,10,10,10">
+    <TabControl Margin="10,10,10,10" SelectedIndex="1">
         <TabItem Header="General">
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">
-            - General Information will be displayed here -
-            </TextBlock>
+            <StackPanel>
+                <TextBlock FontSize="20" Text="{Binding SelectedTour.Id, StringFormat='Identifier: {0}'}"/>
+                <TextBlock FontSize="20" Text="{Binding SelectedTour.Name, StringFormat='Name: {0}'}"/>
+                <TextBlock FontSize="20" Text="{Binding SelectedTour.Description, StringFormat='Description: {0}'}"/>
+                <TextBlock FontSize="20" Text="{Binding SelectedTour.StartLocation, StringFormat='Start-Location: {0}'}"/>
+                <TextBlock FontSize="20" Text="{Binding SelectedTour.EndLocation, StringFormat='End-Location: {0}'}"/>
+                <TextBlock FontSize="20" Text="{Binding SelectedTour.TransportType, StringFormat='Trasport-Type: {0}'}"/>
+                <TextBlock FontSize="20" Text="{Binding SelectedTour.DistanceKm, StringFormat='Distance: {0}km'}"/>
+                <TextBlock FontSize="20" Text="{Binding SelectedTour.EstimatedTimeHours, StringFormat='Estimated-Hours: {0}'}"/>
+            </StackPanel>
+
         </TabItem>
         <TabItem Header="Route">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">
