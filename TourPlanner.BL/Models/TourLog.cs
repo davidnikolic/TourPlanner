@@ -19,7 +19,7 @@ namespace TourPlanner.BL.Models
         public DateTime LogDate { get; set; }
         public string? Comment { get; set; }
 
-        public string Difficulty { get; set; }
+        public string Difficulty { get; set; } = "easy";
 
         public float DistanceKm { get; set; }
 
