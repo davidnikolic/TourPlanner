@@ -11,4 +11,9 @@
     <Folder Include="Repositories\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TourPlanner.Logging\TourPlanner.Logging.csproj" />
+    <ProjectReference Include="..\Tourplanner.Tests\Tourplanner.Tests.csproj" />
+  </ItemGroup>
+
 </Project>
