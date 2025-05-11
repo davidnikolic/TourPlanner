@@ -8,36 +8,61 @@ using TourPlanner.BL.Models;
 using TourPlanner.BL.Interfaces;
 using TourPlanner.DAL.Entities;
 using TourPlanner.DAL.Repositories.Interfaces;
+using TourPlanner.DAL.Repositories;
 
 namespace TourPlanner.BL.Services
 {
     public class TourService : ITourService
     {
-        public MockTourRepo MockTourRepo { get; set; } = new MockTourRepo();
+        public ITourRepository _tourRepository;
 
-        public TourService(MockTourRepo mockTourRepo)
+        public TourService(ITourRepository TourRepo)
         {
-            this.MockTourRepo = mockTourRepo;
+            _tourRepository = TourRepo;
         }
 
-        public List<Tour> GetTours()
+        public async List<Tour> GetTours()
         {
-            return MockTourRepo.GetTours();
+            List<TourEntity> t = (List<TourEntity>) await _tourRepository.GetAllToursAsync();
+
+            List<Tour> res = t.ForEach(t => ToModel(t));
         }
 
-        public void AddTour(Tour tour)
-        {
-            MockTourRepo.AddTour(tour);
-        }
-        private readonly ITourRepository _tourRepository;
-
-        public TourService(ITourRepository tourRepository)
-        {
-            _tourRepository = tourRepository;
-        }
         public async Task AddTour(TourEntity tour)
         {
            await _tourRepository.AddTourAsync(tour);
+        }
+
+        public static Tour ToModel(TourEntity entity)
+        {
+            if (entity == null)
+                return null;
+
+            return new Tour
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                StartLocation = entity.StartLocation,
+                EndLocation = entity.EndLocation,
+                Description = entity.Description,
+                DistanceKm = entity.DistanceKm
+            };
+        }
+
+        public static TourEntity ToEntity(Tour model)
+        {
+            if (model == null)
+                return null;
+
+            return new TourEntity
+            {
+                Id = model.Id,
+                Name = model.Name,
+                StartLocation = model.StartLocation,
+                EndLocation = model.EndLocation,
+                Description = model.Description,
+                DistanceKm = model.DistanceKm
+            };
         }
     }
 }
