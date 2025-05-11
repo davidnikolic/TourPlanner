@@ -1,6 +1,6 @@
 ﻿<Window x:Class="TourPlanner.UI.Views.Components.AddTourDialogView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="clr-namespace:TourPlanner.UI.ViewModels"
         Title="Add New Tour"
         Height="500" Width="600"
         WindowStartupLocation="CenterScreen"
@@ -45,14 +45,16 @@
             <TextBlock Grid.Row="5" Grid.Column="0" Text="Distance (km):" Margin="5" VerticalAlignment="Center"/>
             <TextBlock Grid.Row="6" Grid.Column="0" Text="Estimated time (h):" Margin="5" VerticalAlignment="Center"/>
 
-            <!-- Textboxes -->
-            <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Height="28"/>
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Height="28"/>
-            <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Height="28"/>
-            <TextBox Grid.Row="3" Grid.Column="1" Margin="5" Height="28"/>
-            <TextBox Grid.Row="4" Grid.Column="1" Margin="5" Height="28"/>
-            <TextBox Grid.Row="5" Grid.Column="1" Margin="5" Height="28"/>
-            <TextBox Grid.Row="6" Grid.Column="1" Margin="5" Height="28"/>
+            <!-- TextBoxes with Binding -->
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Height="28" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Height="28" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Height="28" Text="{Binding StartLocation, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Margin="5" Height="28" Text="{Binding EndLocation, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox Grid.Row="4" Grid.Column="1" Margin="5" Height="28" ItemsSource="{Binding TransportTypes}"
+          SelectedItem="{Binding SelectedTransportType}">
+            </ComboBox>
+            <TextBox Grid.Row="5" Grid.Column="1" Margin="5" Height="28" Text="{Binding Distance, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="6" Grid.Column="1" Margin="5" Height="28" Text="{Binding EstimatedTime, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
 
         <!-- Button -->
@@ -66,7 +68,8 @@
                     Width="100"
                     Height="32"
                     Margin="0,0,0,0"
-                    Cursor="Hand"/>
+                    Cursor="Hand"
+                    Command="{Binding AddTourCommand}"/>
         </StackPanel>
     </Grid>
 </Window>
