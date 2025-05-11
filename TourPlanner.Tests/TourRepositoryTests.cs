@@ -38,6 +38,7 @@ namespace TourPlanner.Tests
 
         // Real integration test with the db
         // Test: Adds a tour and checks if it is stored in the database
+        
         [Test]
         public async Task AddTourAsync_ShouldAddTourToDatabase()
         {
@@ -65,6 +66,93 @@ namespace TourPlanner.Tests
             Assert.AreEqual(tour.Name, storedTour.Name); 
             Assert.AreEqual(tour.StartLocation, storedTour.StartLocation);
             Assert.AreEqual(tour.TransportType, storedTour.TransportType);
+        }
+
+        [Test]
+        public async Task GetAllToursAsync_ShouldReturnListOfTours()
+        {
+            // Arrange: Add a test tour
+            var tour = new TourEntity
+            {
+                Name = "List Tour",
+                Description = "description",
+                StartLocation = "Loc1",
+                EndLocation = "Loc2",
+                TransportType = Enums.TransportType.bike,
+                DistanceKm = 8.0f,
+                EstimatedTimeHours = 1.5f,
+                RouteImagePath = "/path/list"
+            };
+
+            await _dbContext.Tours.AddAsync(tour);
+            await _dbContext.SaveChangesAsync();
+
+            // Act: Get all tours
+            var tours = await _dbContext.Tours.ToListAsync();
+
+            // Assert: Check if at least one tour is returned
+            Assert.IsNotEmpty(tours);
+            Assert.IsTrue(tours.Any(t => t.Id == tour.Id));
+        }
+
+        [Test]
+        public async Task UpdateTourAsync_ShouldUpdateTourDetails()
+        {
+            // Arrange: Add a new tour
+            var tour = new TourEntity
+            {
+                Name = "Old Name",
+                Description = "Old desc",
+                StartLocation = "Old Start",
+                EndLocation = "Old End",
+                TransportType = Enums.TransportType.car,
+                DistanceKm = 5,
+                EstimatedTimeHours = 1,
+                RouteImagePath = "/old/path"
+            };
+
+            await _dbContext.Tours.AddAsync(tour);
+            await _dbContext.SaveChangesAsync();
+
+            // Act: Update the name and save
+            tour.Name = "Updated Name";
+            tour.Description = "Updated desc";
+            _dbContext.Tours.Update(tour);
+            await _dbContext.SaveChangesAsync();
+
+            // Assert: Retrieve and verify
+            var updatedTour = await _dbContext.Tours.FindAsync(tour.Id);
+            Assert.NotNull(updatedTour);
+            Assert.AreEqual("Updated Name", updatedTour.Name);
+            Assert.AreEqual("Updated desc", updatedTour.Description);
+        }
+
+        [Test]
+        public async Task DeleteTourAsync_ShouldRemoveTourFromDatabase()
+        {
+            // Arrange: Add a tour
+            var tour = new TourEntity
+            {
+                Name = "Delete Me",
+                Description = "desc",
+                StartLocation = "X",
+                EndLocation = "Y",
+                TransportType = Enums.TransportType.foot,
+                DistanceKm = 3,
+                EstimatedTimeHours = 0.5f,
+                RouteImagePath = "/delete/path"
+            };
+
+            await _dbContext.Tours.AddAsync(tour);
+            await _dbContext.SaveChangesAsync();
+
+            // Act: Remove the tour
+            _dbContext.Tours.Remove(tour);
+            await _dbContext.SaveChangesAsync();
+
+            // Assert: Try to find it again
+            var deletedTour = await _dbContext.Tours.FindAsync(tour.Id);
+            Assert.IsNull(deletedTour);
         }
 
         [TearDown]

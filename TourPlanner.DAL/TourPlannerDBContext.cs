@@ -24,18 +24,19 @@ namespace TourPlanner.DAL
         // Configure db connection
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            Env.Load();
+            var envPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".env");
+            Env.Load(envPath);
 
-            var connectionString = $"Host={Env.GetString("DB_HOST")};" +
-                                   $"Port={Env.GetString("DB_PORT")};" +
-                                   $"Database={Env.GetString("DB_NAME")};" +
-                                   $"Username={Env.GetString("DB_USER")};" +
-                                   $"Password={Env.GetString("DB_PASSWORD")}";
-            // PostgreSQL connection
-            optionsBuilder.UseNpgsql(connectionString);
+            string host = Env.GetString("DB_HOST");
+            string port = Env.GetString("DB_PORT");
+            string dbName = Env.GetString("DB_NAME");
+            string user = Env.GetString("DB_USER");
+            string pass = Env.GetString("DB_PASSWORD");
+
+            string connectionString = $"Host={host};Port={port};Database={dbName};Username={user};Password={pass}";
 
             // Explicitly map the enum to a PostgreSQL enum type, ensures that them enum is handled correctly
-            optionsBuilder.UseNpgsql(options =>
+            optionsBuilder.UseNpgsql(connectionString, options =>
             {
                 options.MapEnum<TransportType>("transport_type");
             });

@@ -9,6 +9,10 @@ namespace TourPlanner.DAL.Repositories.Interfaces
 {
     public interface ITourRepository
     {
-        Task<TourEntity> AddTourAsync(TourEntity tour);
+        Task AddTourAsync(TourEntity tour);
+        Task<IEnumerable<TourEntity>> GetAllToursAsync();
+
+        Task UpdateTourAsync(TourEntity tour);
+        Task DeleteTourAsync(int id);
     }
 }

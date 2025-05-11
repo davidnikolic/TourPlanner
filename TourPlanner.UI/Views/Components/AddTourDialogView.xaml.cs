@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TourPlanner.UI.ViewModels;
 
 namespace TourPlanner.UI.Views.Components
 {
@@ -22,6 +24,12 @@ namespace TourPlanner.UI.Views.Components
         public AddTourDialogView()
         {
             InitializeComponent();
+            // DI Action, 
+            var viewModel = App.Current.Services.GetRequiredService<AddTourViewModel>();
+            // closing this(current window) after event triggerd
+            viewModel.RequestClose += (s, e) => this.Close();
+            // Data binding possible
+            DataContext = viewModel;
         }
     }
 }
