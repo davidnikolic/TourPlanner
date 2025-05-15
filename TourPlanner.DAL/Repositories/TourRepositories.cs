@@ -21,12 +21,19 @@ namespace TourPlanner.DAL.Repositories
             _dbContext.Tours.Add(tour);
             await _dbContext.SaveChangesAsync();
         }
+
+        public void AddTour(TourEntity tour)
+        {
+            _dbContext.Tours.Add(tour);
+            _dbContext.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<TourEntity>> GetAllToursAsync()
         {
             return await _dbContext.Tours.ToListAsync();
         }
 
-        public IEnumerable<TourEntity> GetAllTours()
+        public IEnumerable<TourEntity> GetTours()
         {
             return _dbContext.Tours.ToList();
         }

@@ -17,26 +17,12 @@ namespace TourPlanner.UI.ViewModels
     {
         private ITourService _tourService;
 
-        public ObservableCollection<Tour> Tours { get; set; }
+        public TourListViewModel TourListViewModel { get; }
 
-        public MainWindowViewModel(ITourService tourService)
+        public MainWindowViewModel(ITourService tourService, TourListViewModel tourListViewModel)
         {
             _tourService = tourService;
-            
-            var tours = _tourService.GetTours();
-            Tours = new ObservableCollection<Tour>(tours);
-        }
-
-        private Tour selectedTour;
-
-        public Tour SelectedTour
-        {
-            get { return selectedTour; }
-            set
-            {
-                selectedTour = value;
-                OnPropertyChanged();
-            }
+            TourListViewModel = tourListViewModel;
         }
     }
 }

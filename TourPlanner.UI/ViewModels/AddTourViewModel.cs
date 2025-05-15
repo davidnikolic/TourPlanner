@@ -31,7 +31,7 @@ namespace TourPlanner.UI.ViewModels
             _tourListViewModel = tourListViewModel;
 
             // Initialize the command and assign the async method to be executed
-            AddTourCommand = new RelayCommand(async () => await AddTourAsync());
+            //AddTourCommand = new RelayCommand(async () => await AddTourAsync());
 
             TransportTypes = Enum.GetValues(typeof(TransportType)).Cast<TransportType>().ToList();
         }
@@ -112,7 +112,7 @@ namespace TourPlanner.UI.ViewModels
             //    EstimatedTimeHours = EstimatedTime,
             //});
 
-            _tourListViewModel.AddTourName(Name);
+            //_tourListViewModel.AddTourName(Name);
             // Notify close window, actually closed in addtourdialaog.xaml.cs 
             RequestClose?.Invoke(this, EventArgs.Empty);
         }

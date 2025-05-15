@@ -22,7 +22,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- TourList -->
-            <views:TourListView Grid.Column="0"/>
+            <views:TourListView DataContext="{Binding TourListViewModel}" Grid.Column="0"/>
 
             <!-- Tour -->
             <views:TourDetailView Grid.Column="1"/>

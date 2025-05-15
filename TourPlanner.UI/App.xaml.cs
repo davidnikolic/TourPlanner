@@ -55,13 +55,14 @@ namespace TourPlanner.UI
             services.AddDbContext<TourPlannerDBContext>();
 
             // Services
-            services.AddSingleton<ITourService, TourService>();
+            services.AddScoped<ITourService, TourService>();
 
             // Repositories (DAL)
-            services.AddSingleton<ITourRepository, TourRepositories>();
+            services.AddScoped<ITourRepository, TourRepositories>();
 
             // ViewModels
             services.AddSingleton<MainWindowViewModel>();
+            services.AddSingleton<TourListViewModel>();
         }
     }
 

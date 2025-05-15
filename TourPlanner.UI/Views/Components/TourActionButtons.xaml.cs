@@ -24,8 +24,6 @@ namespace TourPlanner.UI.Views.Components
         public TourActionButtons()
         {
             InitializeComponent();
-            // Enabling Data binding to the ViewModel
-            DataContext = new TourActionButtonsViewModel();
         }
     }
 }

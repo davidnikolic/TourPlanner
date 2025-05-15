@@ -24,7 +24,7 @@ namespace TourPlanner.BL.Services
 
         public List<Tour> GetTours()
         {
-            var entities = (_tourRepository.GetAllTours()).ToList();
+            var entities = (_tourRepository.GetTours()).ToList();
 
             List<Tour> tours = entities
                 .Select(entity => ToModel(entity))
@@ -33,10 +33,10 @@ namespace TourPlanner.BL.Services
             return tours;
         }
 
-        public Task AddTour(Tour tour)
+        public void AddTour(Tour tour)
         {
            TourEntity entity = ToEntity(tour);
-           return _tourRepository.AddTourAsync(entity);
+           _tourRepository.AddTour(entity);
         }
 
         public static Tour ToModel(TourEntity entity)
@@ -51,7 +51,8 @@ namespace TourPlanner.BL.Services
                 StartLocation = entity.StartLocation,
                 EndLocation = entity.EndLocation,
                 Description = entity.Description,
-                DistanceKm = entity.DistanceKm
+                DistanceKm = entity.DistanceKm,
+                EstimatedTimeHours = entity.EstimatedTimeHours
             };
         }
 
@@ -67,7 +68,8 @@ namespace TourPlanner.BL.Services
                 StartLocation = model.StartLocation,
                 EndLocation = model.EndLocation,
                 Description = model.Description,
-                DistanceKm = model.DistanceKm
+                DistanceKm = model.DistanceKm,
+                EstimatedTimeHours = model.EstimatedTimeHours
             };
         }
     }

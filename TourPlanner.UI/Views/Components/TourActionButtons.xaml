@@ -9,7 +9,7 @@
                 Background="#3B82F6" Foreground="White"
                 FontFamily="Segoe MDL2 Assets" FontSize="16"
                 Content="&#xE70B;" Margin="5,0,0,0"
-                ToolTip="Add Tour"  Command="{Binding AddTourCommand}"/>
+                ToolTip="Add Tour"  Command="{Binding AddCommand}"/>
 
         <!-- Edit Button -->
         <Button Width="32" Height="32"
