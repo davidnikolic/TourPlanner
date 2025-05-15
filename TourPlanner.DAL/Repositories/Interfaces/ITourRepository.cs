@@ -11,6 +11,7 @@ namespace TourPlanner.DAL.Repositories.Interfaces
     {
         Task AddTourAsync(TourEntity tour);
         Task<IEnumerable<TourEntity>> GetAllToursAsync();
+        IEnumerable<TourEntity> GetAllTours();
 
         Task UpdateTourAsync(TourEntity tour);
         Task DeleteTourAsync(int id);

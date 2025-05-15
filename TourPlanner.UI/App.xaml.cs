@@ -33,7 +33,6 @@ namespace TourPlanner.UI
             ConfigureServices(services);
 
             Services = services.BuildServiceProvider();
-
         }
 
         protected override void OnStartup(StartupEventArgs e)

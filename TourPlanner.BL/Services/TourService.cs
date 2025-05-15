@@ -22,9 +22,9 @@ namespace TourPlanner.BL.Services
             _tourRepository = TourRepo;
         }
 
-        public async Task<List<Tour>> GetTours()
+        public List<Tour> GetTours()
         {
-            var entities = (await _tourRepository.GetAllToursAsync()).ToList();
+            var entities = (_tourRepository.GetAllTours()).ToList();
 
             List<Tour> tours = entities
                 .Select(entity => ToModel(entity))

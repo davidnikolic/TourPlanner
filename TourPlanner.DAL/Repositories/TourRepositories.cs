@@ -26,6 +26,11 @@ namespace TourPlanner.DAL.Repositories
             return await _dbContext.Tours.ToListAsync();
         }
 
+        public IEnumerable<TourEntity> GetAllTours()
+        {
+            return _dbContext.Tours.ToList();
+        }
+
         public async Task UpdateTourAsync(TourEntity tour)
         {
             var existingTour = await _dbContext.Tours.FindAsync(tour.Id);

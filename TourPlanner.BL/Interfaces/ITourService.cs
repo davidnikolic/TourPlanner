@@ -12,6 +12,6 @@ namespace TourPlanner.BL.Interfaces
     {
         public Task AddTour(Tour tour);
 
-        public Task<List<Tour>> GetTours();
+        public List<Tour> GetTours();
     }
 }
