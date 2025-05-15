@@ -15,10 +15,18 @@
                 BorderBrush="#D1D5DB"
                 Padding="15"
                 Margin="10">
-            <StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                
                 <!-- Title and buttons -->
-                <DockPanel Margin="0 0 0 10">
-                    <TextBlock Text="Tours"
+                <DockPanel Grid.Row="0"
+                           Margin="0 0 0 10">
+                    <TextBlock  
+                               Text="Tours"
                                FontSize="18"
                                FontWeight="Bold"
                                VerticalAlignment="Center"
@@ -29,7 +37,12 @@
                 </DockPanel>
 
                 <!-- List -->
-                <ListView ItemsSource="{Binding Tours}" SelectedItem="{Binding SelectedTour}">
+                <ListView Grid.Row ="1" 
+                          ItemsSource="{Binding Tours}" 
+                          SelectedItem="{Binding SelectedTour}" 
+                          Height="Auto" 
+                          ScrollViewer.VerticalScrollBarVisibility="Auto"
+                          >
                     <ListView.ItemTemplate>
                         <DataTemplate >
                             <StackPanel Orientation="Horizontal" Margin="4">
@@ -39,7 +52,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-            </StackPanel>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>

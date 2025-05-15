@@ -25,7 +25,7 @@ namespace TourPlanner.DAL.Repositories
         public void AddTour(TourEntity tour)
         {
             _dbContext.Tours.Add(tour);
-            _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
         }
 
         public async Task<IEnumerable<TourEntity>> GetAllToursAsync()
