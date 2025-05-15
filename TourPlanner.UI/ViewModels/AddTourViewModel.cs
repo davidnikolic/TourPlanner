@@ -101,16 +101,16 @@ namespace TourPlanner.UI.ViewModels
                     return;
                 }
 
-            await _tourService.AddTour(new TourEntity
-            {
-                Name = Name,
-                Description = Description,
-                StartLocation = StartLocation,
-                EndLocation = EndLocation,
-                TransportType = SelectedTransportType,
-                DistanceKm = Distance,
-                EstimatedTimeHours = EstimatedTime,
-            });
+            //await _tourService.AddTour(new TourEntity
+            //{
+            //    Name = Name,
+            //    Description = Description,
+            //    StartLocation = StartLocation,
+            //    EndLocation = EndLocation,
+            //    TransportType = SelectedTransportType,
+            //    DistanceKm = Distance,
+            //    EstimatedTimeHours = EstimatedTime,
+            //});
 
             _tourListViewModel.AddTourName(Name);
             // Notify close window, actually closed in addtourdialaog.xaml.cs 

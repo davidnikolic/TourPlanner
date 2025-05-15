@@ -8,6 +8,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DotNetEnv;
+using Microsoft.EntityFrameworkCore;
+using TourPlanner.BL.Interfaces;
+using TourPlanner.BL.Services;
+using TourPlanner.DAL;
+using TourPlanner.DAL.Repositories;
+using TourPlanner.DAL.Repositories.Interfaces;
 using TourPlanner.UI.ViewModels;
 
 namespace TourPlanner.UI
@@ -20,8 +27,6 @@ namespace TourPlanner.UI
         public MainWindow()
         {
             InitializeComponent();
-            MainWindowViewModel vm = new MainWindowViewModel();
-            DataContext = vm;
         }
     }
 }

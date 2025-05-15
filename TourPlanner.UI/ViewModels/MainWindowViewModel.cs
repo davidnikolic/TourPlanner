@@ -19,20 +19,10 @@ namespace TourPlanner.UI.ViewModels
         {
             Tours = new ObservableCollection<Tour>();
 
-            Tours.Add(new Tour
+            Tours.Add(new Tour()
             {
-                Id = 1,
                 Name = "Harrachpark",
-            });
-            Tours.Add(new Tour
-            {
-                Id = 2,
-                Name = "Mannersdorfer Wüste",
-            });
-            Tours.Add(new Tour
-            {
-                Id = 3,
-                Name = "Leithagebirge",
+                DistanceKm = 10,
             });
         }
 

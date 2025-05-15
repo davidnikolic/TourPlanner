@@ -8,6 +8,7 @@ using TourPlanner.DAL.Repositories.Interfaces;
 using TourPlanner.DAL;
 using TourPlanner.UI.ViewModels;
 using TourPlanner.DAL.Repositories;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace TourPlanner.UI
 {
@@ -33,7 +34,20 @@ namespace TourPlanner.UI
 
             Services = services.BuildServiceProvider();
 
-            InitializeComponent();
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            var mainWindowViewModel = Services.GetRequiredService<MainWindowViewModel>();
+
+            var mainWindow = new MainWindow
+            {
+                DataContext = mainWindowViewModel
+            };
+
+            mainWindow.Show();
         }
 
         private void ConfigureServices(IServiceCollection services)
@@ -41,16 +55,14 @@ namespace TourPlanner.UI
             // DBContext
             services.AddDbContext<TourPlannerDBContext>();
 
-            // Repositories
-            services.AddScoped<ITourRepository, TourRepositories>();
-
             // Services
-            services.AddScoped<ITourService, TourService>();
+            services.AddSingleton<ITourService, TourService>();
 
-            services.AddSingleton<TourListViewModel>();
-            // AddTourViewModels, all are automatically instantiated
-            services.AddTransient<AddTourViewModel>();
+            // Repositories (DAL)
+            services.AddSingleton<ITourRepository, TourRepositories>();
 
+            // ViewModels
+            services.AddSingleton<MainWindowViewModel>();
         }
     }
 

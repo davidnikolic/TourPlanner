@@ -10,8 +10,8 @@ namespace TourPlanner.BL.Interfaces
 {
     public interface ITourService
     {
-        Task AddTour(TourEntity tour);
+        public Task AddTour(Tour tour);
 
-        Task <IEnumerable<TourEntity>> GetTours();
+        public Task<List<Tour>> GetTours();
     }
 }

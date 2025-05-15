@@ -9,6 +9,7 @@ using TourPlanner.BL.Interfaces;
 using TourPlanner.DAL.Entities;
 using TourPlanner.DAL.Repositories.Interfaces;
 using TourPlanner.DAL.Repositories;
+using System.Runtime.CompilerServices;
 
 namespace TourPlanner.BL.Services
 {
@@ -21,16 +22,21 @@ namespace TourPlanner.BL.Services
             _tourRepository = TourRepo;
         }
 
-        public async List<Tour> GetTours()
+        public async Task<List<Tour>> GetTours()
         {
-            List<TourEntity> t = (List<TourEntity>) await _tourRepository.GetAllToursAsync();
+            var entities = (await _tourRepository.GetAllToursAsync()).ToList();
 
-            List<Tour> res = t.ForEach(t => ToModel(t));
+            List<Tour> tours = entities
+                .Select(entity => ToModel(entity))
+                .ToList();
+            
+            return tours;
         }
 
-        public async Task AddTour(TourEntity tour)
+        public Task AddTour(Tour tour)
         {
-           await _tourRepository.AddTourAsync(tour);
+           TourEntity entity = ToEntity(tour);
+           return _tourRepository.AddTourAsync(entity);
         }
 
         public static Tour ToModel(TourEntity entity)

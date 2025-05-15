@@ -25,7 +25,6 @@ namespace TourPlanner.UI.Views
         public TourListView()
         {
             InitializeComponent();
-            DataContext = App.Current.Services.GetRequiredService<TourListViewModel>();
         }
     }
 }
