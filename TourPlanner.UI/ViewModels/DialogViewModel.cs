@@ -112,8 +112,6 @@ namespace TourPlanner.UI.ViewModels
             }
         }
 
-
-
         private void AddTour()
         {
             // Validation check

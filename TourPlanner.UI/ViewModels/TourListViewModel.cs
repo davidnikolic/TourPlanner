@@ -68,28 +68,32 @@ namespace TourPlanner.UI.ViewModels
 
         private void ModifyTour()
         {
-            var dialog = new DialogWindowView();
-            var vm = new DialogViewModel("Modify Tour", SelectedTour);
-
-            dialog.DataContext = vm;
-
-            vm.CloseRequested += () => dialog.DialogResult = true;
-
-            if (dialog.ShowDialog() == true)
+            if (SelectedTour != null)
             {
-                if (vm.Result is Tour changedTour)
-                {
-                    _tourService.UpdateTour(changedTour);
-                }
-            }
+                var dialog = new DialogWindowView();
+                var vm = new DialogViewModel("Modify Tour", SelectedTour);
 
-            RefreshTours();
+                dialog.DataContext = vm;
+
+                vm.CloseRequested += () => dialog.DialogResult = true;
+
+                if (dialog.ShowDialog() == true)
+                {
+                    if (vm.Result is Tour changedTour)
+                    {
+                        _tourService.UpdateTour(changedTour);
+                    }
+                }
+
+                RefreshTours();
+            }
         }
 
         private void DeleteTour()
         {
-            _tourService.DeleteTour(SelectedTour);
-            RefreshTours();
+            if(SelectedTour != null)
+                _tourService.DeleteTour(SelectedTour);
+                RefreshTours();
         }
 
         private void RefreshTours()
