@@ -22,6 +22,14 @@ namespace TourPlanner.BL.Services
             _tourRepository = TourRepo;
         }
 
+        
+
+        public void AddTour(Tour tour)
+        {
+           TourEntity entity = ToEntity(tour);
+           _tourRepository.AddTour(entity);
+        }
+
         public List<Tour> GetTours()
         {
             var entities = (_tourRepository.GetTours()).ToList();
@@ -29,14 +37,14 @@ namespace TourPlanner.BL.Services
             List<Tour> tours = entities
                 .Select(entity => ToModel(entity))
                 .ToList();
-            
+
             return tours;
         }
 
-        public void AddTour(Tour tour)
+        public void UpdateTour(Tour tour)
         {
-           TourEntity entity = ToEntity(tour);
-           _tourRepository.AddTour(entity);
+            TourEntity entity = ToEntity(tour);
+            _tourRepository.UpdateTour(entity);
         }
 
         public void DeleteTour(Tour tour)
@@ -78,5 +86,7 @@ namespace TourPlanner.BL.Services
                 EstimatedTimeHours = model.EstimatedTimeHours
             };
         }
+
+        
     }
 }

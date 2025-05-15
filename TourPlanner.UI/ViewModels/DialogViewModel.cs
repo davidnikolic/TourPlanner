@@ -16,11 +16,19 @@ using TourPlanner.UI;
 
 namespace TourPlanner.UI.ViewModels
 {
-    public class AddTourViewModel : ViewModelBase // interface for changing elements
+    public class DialogViewModel : ViewModelBase // interface for changing elements
     {
 
         public event Action? CloseRequested;
 
+        public Tour tour { get; set; } = new();
+
+        private int? id;
+        public int? Id 
+        { 
+            get => id;
+            set { id = value; OnPropertyChanged(); } 
+        }
 
         // Form input fields as properties, all notify UI when changed 
         private string name;
@@ -75,16 +83,33 @@ namespace TourPlanner.UI.ViewModels
 
         public List<TransportType> TransportTypes { get; set; } // List of transport types dropdown
 
+        public string PopUpText { get; private set; } = "";
+
         //ICommand for the AddTour-Method.
         public ICommand AddTourCommand { get; }
 
-        public AddTourViewModel()
+        public DialogViewModel(string text, Tour? existingTour = null)
         {
+            PopUpText = text;
 
-            // Initialize the command and assign the async method to be executed
-            AddTourCommand = new RelayCommand(execute => AddTour());
+            AddTourCommand = new RelayCommand(_ => AddTour());
 
             TransportTypes = Enum.GetValues(typeof(TransportType)).Cast<TransportType>().ToList();
+
+            if (existingTour != null)
+            {
+                tour = existingTour;
+
+                // Vorbelegen der Felder
+                Id = tour.Id;
+                Name = tour.Name;
+                Description = tour.Description;
+                StartLocation = tour.StartLocation;
+                EndLocation = tour.EndLocation;
+                SelectedTransportType = tour.TransportType;
+                Distance = tour.DistanceKm;
+                EstimatedTime = tour.EstimatedTimeHours;
+            }
         }
 
 
@@ -114,6 +139,9 @@ namespace TourPlanner.UI.ViewModels
                 DistanceKm = Distance,
                 EstimatedTimeHours = EstimatedTime,
             };
+
+            if (Id.HasValue)
+                Result.Id = Id.Value;
 
             CloseRequested?.Invoke();
         }

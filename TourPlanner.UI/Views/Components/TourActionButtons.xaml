@@ -16,7 +16,7 @@
                 Background="#10B981" Foreground="White"
                 FontFamily="Segoe MDL2 Assets" FontSize="16"
                 Content="&#xE70F;" Margin="5,0,0,0"
-                ToolTip="Edit Tour" />
+                ToolTip="Edit Tour" Command="{Binding ModifyCommand}"/>
 
         <!-- Delete Button -->
         <Button Width="32" Height="32"

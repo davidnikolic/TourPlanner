@@ -43,12 +43,13 @@ namespace TourPlanner.UI.ViewModels
         }
 
         public RelayCommand AddCommand => new RelayCommand(execute => AddTour());
+        public RelayCommand ModifyCommand => new RelayCommand(execute => ModifyTour());
         public RelayCommand DeleteCommand => new RelayCommand(execute => DeleteTour());
 
         private void AddTour()
         {
-            var dialog = new AddTourDialogView();
-            var vm = new AddTourViewModel();
+            var dialog = new DialogWindowView();
+            var vm = new DialogViewModel("Add new Tour");
 
             dialog.DataContext = vm;
 
@@ -59,7 +60,26 @@ namespace TourPlanner.UI.ViewModels
                 if (vm.Result is Tour newTour)
                 {
                     _tourService.AddTour(newTour);
-                    Tours.Add(newTour); // oder RefreshTours()
+                }
+            }
+
+            RefreshTours();
+        }
+
+        private void ModifyTour()
+        {
+            var dialog = new DialogWindowView();
+            var vm = new DialogViewModel("Modify Tour", SelectedTour);
+
+            dialog.DataContext = vm;
+
+            vm.CloseRequested += () => dialog.DialogResult = true;
+
+            if (dialog.ShowDialog() == true)
+            {
+                if (vm.Result is Tour changedTour)
+                {
+                    _tourService.UpdateTour(changedTour);
                 }
             }
 

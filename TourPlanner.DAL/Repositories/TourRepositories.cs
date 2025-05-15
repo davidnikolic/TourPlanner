@@ -49,6 +49,17 @@ namespace TourPlanner.DAL.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        public void UpdateTour(TourEntity tour)
+        {
+            var existingTour = _dbContext.Tours.Find(tour.Id);
+            if (existingTour == null)
+                return;
+
+            // Update properties
+            _dbContext.Entry(existingTour).CurrentValues.SetValues(tour);
+            _dbContext.SaveChanges();
+        }
+
         public async Task DeleteTourAsync(int id)
         {
             var tour = await _dbContext.Tours.FindAsync(id);

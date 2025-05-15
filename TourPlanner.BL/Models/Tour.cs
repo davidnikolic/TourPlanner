@@ -23,9 +23,9 @@ namespace TourPlanner.BL.Models
 
         public TransportType TransportType { get; set; } = TransportType.foot;
 
-        public float? DistanceKm { get; set; } = 0;
+        public float DistanceKm { get; set; } = 0;
 
-        public float? EstimatedTimeHours { get; set; } = 0;
+        public float EstimatedTimeHours { get; set; } = 0;
 
         public string? RouteImagePath { get; set; } = "";
 

@@ -14,5 +14,7 @@ namespace TourPlanner.BL.Interfaces
 
         void DeleteTour(Tour tour);
         List<Tour> GetTours();
+
+        void UpdateTour(Tour tour);
     }
 }
