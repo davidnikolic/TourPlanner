@@ -59,5 +59,15 @@ namespace TourPlanner.DAL.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        public void DeleteTour(int id)
+        {
+            var tour = _dbContext.Tours.Find(id);
+            if (tour == null)
+                return;
+
+            _dbContext.Tours.Remove(tour);
+            _dbContext.SaveChanges();
+        }
+
     }
 }

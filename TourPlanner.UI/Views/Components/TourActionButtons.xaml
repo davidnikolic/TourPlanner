@@ -23,7 +23,7 @@
                 Background="#EF4444" Foreground="White"
                 FontFamily="Segoe MDL2 Assets" FontSize="16"
                 Content="&#xE711;" Margin="5,0,0,0"
-                ToolTip="Delete Tour" />
+                ToolTip="Delete Tour" Command="{Binding DeleteCommand}"/>
     </StackPanel>
 
    

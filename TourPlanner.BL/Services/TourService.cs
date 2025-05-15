@@ -39,6 +39,12 @@ namespace TourPlanner.BL.Services
            _tourRepository.AddTour(entity);
         }
 
+        public void DeleteTour(Tour tour)
+        {
+            TourEntity entity = ToEntity(tour);
+            _tourRepository.DeleteTour(entity.Id);
+        }
+
         public static Tour ToModel(TourEntity entity)
         {
             if (entity == null)

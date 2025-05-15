@@ -42,10 +42,17 @@ namespace TourPlanner.UI.ViewModels
         }
 
         public RelayCommand AddCommand => new RelayCommand(execute => AddTour());
+        public RelayCommand DeleteCommand => new RelayCommand(execute => DeleteTour());
 
         private void AddTour()
         {
             _tourService.AddTour(new Tour() { Name = "Test" });
+            RefreshTours();
+        }
+
+        private void DeleteTour()
+        {
+            _tourService.DeleteTour(SelectedTour);
             RefreshTours();
         }
 

@@ -12,10 +12,10 @@ namespace TourPlanner.DAL.Repositories.Interfaces
         Task AddTourAsync(TourEntity tour);
         Task<IEnumerable<TourEntity>> GetAllToursAsync();
 
+        Task UpdateTourAsync(TourEntity tour);
+        Task DeleteTourAsync(int id); 
         void AddTour(TourEntity tour);
         IEnumerable<TourEntity> GetTours();
-
-        Task UpdateTourAsync(TourEntity tour);
-        Task DeleteTourAsync(int id);
+        void DeleteTour(int id);   
     }
 }

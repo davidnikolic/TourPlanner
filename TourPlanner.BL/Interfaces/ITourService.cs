@@ -12,6 +12,7 @@ namespace TourPlanner.BL.Interfaces
     {
         void AddTour(Tour tour);
 
+        void DeleteTour(Tour tour);
         List<Tour> GetTours();
     }
 }
