@@ -17,12 +17,29 @@ namespace TourPlanner.UI.ViewModels
     {
         private ITourService _tourService;
 
+
+        private Tour selectedTour;
+        public Tour SelectedTour
+        {
+            get => selectedTour;
+            set
+            {
+                selectedTour = value;
+                OnPropertyChanged();
+            }
+        }
+
         public TourListViewModel TourListViewModel { get; }
 
         public MainWindowViewModel(ITourService tourService, TourListViewModel tourListViewModel)
         {
             _tourService = tourService;
             TourListViewModel = tourListViewModel;
+
+            TourListViewModel.SelectedTourChanged += tour =>
+            {
+                SelectedTour = tour;
+            };
         }
     }
 }

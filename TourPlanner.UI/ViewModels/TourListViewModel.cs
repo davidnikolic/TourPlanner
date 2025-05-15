@@ -18,6 +18,20 @@ namespace TourPlanner.UI.ViewModels
 
         public ObservableCollection<Tour> Tours { get; set; } = new();
 
+        public event Action<Tour>? SelectedTourChanged;
+
+        private Tour selectedTour;
+        public Tour SelectedTour 
+        { 
+            get => selectedTour;
+            set
+            {
+                selectedTour = value;
+                OnPropertyChanged();
+                SelectedTourChanged?.Invoke(value);
+            }
+        }
+
         public TourListViewModel(ITourService tourService)
         {
             _tourService = tourService;
@@ -33,18 +47,6 @@ namespace TourPlanner.UI.ViewModels
         {
             _tourService.AddTour(new Tour() { Name = "Test" });
             RefreshTours();
-        }
-
-        private Tour selectedTour;
-
-        public Tour SelectedTour
-        {
-            get { return selectedTour; }
-            set
-            {
-                selectedTour = value;
-                OnPropertyChanged();
-            }
         }
 
         private void RefreshTours()
