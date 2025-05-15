@@ -8,33 +8,19 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using TourPlanner.BL.Interfaces;
+using TourPlanner.BL.Models;
 using TourPlanner.BL.Services;
 using TourPlanner.DAL.Entities;
 using static TourPlanner.DAL.Entities.Enums;
+using TourPlanner.UI;
 
 namespace TourPlanner.UI.ViewModels
 {
-    public class AddTourViewModel : INotifyPropertyChanged // interface for changing elements
+    public class AddTourViewModel : ViewModelBase // interface for changing elements
     {
-        public event EventHandler RequestClose;
 
-        public ICommand AddTourCommand { get; } // Button click
+        public event Action? CloseRequested;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public List<TransportType> TransportTypes { get; set; } // List of transport types dropdown
-        private readonly ITourService _tourService;
-        private readonly TourListViewModel _tourListViewModel;
-
-        public AddTourViewModel(ITourService tourService, TourListViewModel tourListViewModel)
-        {
-            _tourService = tourService;
-            _tourListViewModel = tourListViewModel;
-
-            // Initialize the command and assign the async method to be executed
-            //AddTourCommand = new RelayCommand(async () => await AddTourAsync());
-
-            TransportTypes = Enum.GetValues(typeof(TransportType)).Cast<TransportType>().ToList();
-        }
 
         // Form input fields as properties, all notify UI when changed 
         private string name;
@@ -85,8 +71,25 @@ namespace TourPlanner.UI.ViewModels
             get => estimatedTime;
             set { estimatedTime = value; OnPropertyChanged(); }
         }
+        public Tour? Result { get; private set; }
 
-        private async Task AddTourAsync()
+        public List<TransportType> TransportTypes { get; set; } // List of transport types dropdown
+
+        //ICommand for the AddTour-Method.
+        public ICommand AddTourCommand { get; }
+
+        public AddTourViewModel()
+        {
+
+            // Initialize the command and assign the async method to be executed
+            AddTourCommand = new RelayCommand(execute => AddTour());
+
+            TransportTypes = Enum.GetValues(typeof(TransportType)).Cast<TransportType>().ToList();
+        }
+
+
+
+        private void AddTour()
         {
             // Validation check
             if (string.IsNullOrWhiteSpace(Name) ||
@@ -96,31 +99,23 @@ namespace TourPlanner.UI.ViewModels
                 !Enum.IsDefined(typeof(TransportType), SelectedTransportType) ||
                 Distance <= 0 ||
                 EstimatedTime <= 0)
-                {
-                    MessageBox.Show("Please fill out all fields correctly.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
+            {
+                MessageBox.Show("Please fill out all fields correctly.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-            //await _tourService.AddTour(new TourEntity
-            //{
-            //    Name = Name,
-            //    Description = Description,
-            //    StartLocation = StartLocation,
-            //    EndLocation = EndLocation,
-            //    TransportType = SelectedTransportType,
-            //    DistanceKm = Distance,
-            //    EstimatedTimeHours = EstimatedTime,
-            //});
+            Result = new Tour
+            {
+                Name = Name,
+                Description = Description,
+                StartLocation = StartLocation,
+                EndLocation = EndLocation,
+                TransportType = SelectedTransportType,
+                DistanceKm = Distance,
+                EstimatedTimeHours = EstimatedTime,
+            };
 
-            //_tourListViewModel.AddTourName(Name);
-            // Notify close window, actually closed in addtourdialaog.xaml.cs 
-            RequestClose?.Invoke(this, EventArgs.Empty);
-        }
-
-        // Notify the UI that a property has changed (used for data binding updates)
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            CloseRequested?.Invoke();
         }
     }
 }

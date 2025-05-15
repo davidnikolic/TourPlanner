@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TourPlanner.BL.Interfaces;
 using TourPlanner.BL.Models;
+using TourPlanner.UI.Views.Components;
 
 namespace TourPlanner.UI.ViewModels
 {
@@ -46,7 +47,22 @@ namespace TourPlanner.UI.ViewModels
 
         private void AddTour()
         {
-            _tourService.AddTour(new Tour() { Name = "Test" });
+            var dialog = new AddTourDialogView();
+            var vm = new AddTourViewModel();
+
+            dialog.DataContext = vm;
+
+            vm.CloseRequested += () => dialog.DialogResult = true;
+
+            if (dialog.ShowDialog() == true)
+            {
+                if (vm.Result is Tour newTour)
+                {
+                    _tourService.AddTour(newTour);
+                    Tours.Add(newTour); // oder RefreshTours()
+                }
+            }
+
             RefreshTours();
         }
 

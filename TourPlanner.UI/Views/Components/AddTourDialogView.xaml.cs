@@ -24,12 +24,6 @@ namespace TourPlanner.UI.Views.Components
         public AddTourDialogView()
         {
             InitializeComponent();
-            // DI Action, 
-            var viewModel = App.Current.Services.GetRequiredService<AddTourViewModel>();
-            // closing this(current window) after event triggerd
-            viewModel.RequestClose += (s, e) => this.Close();
-            // Data binding possible
-            DataContext = viewModel;
         }
     }
 }
