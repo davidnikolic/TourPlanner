@@ -7,9 +7,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
 using static TourPlanner.DAL.Entities.Enums;
 
-namespace TourPlanner.BL.Models
+namespace TourPlanner.BL.DTOs
 {
-    public class Tour
+    public class TourDTO
     {
         public int Id { get; set; }
 
@@ -29,6 +29,6 @@ namespace TourPlanner.BL.Models
 
         public string? RouteImagePath { get; set; } = "";
 
-        public ICollection<TourLog> TourLogs { get; set; } = new List<TourLog>();
+        public ICollection<TourLogDTO> TourLogs { get; set; } = new List<TourLogDTO>();
     }
 }

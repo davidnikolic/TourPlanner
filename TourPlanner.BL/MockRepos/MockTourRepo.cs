@@ -3,29 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TourPlanner.BL.Models;
+using TourPlanner.BL.DTOs;
 
 namespace TourPlanner.BL.MockRepos
 {
     public class MockTourRepo
     {
-        public List<Tour> Tours { get; set; } = new List<Tour>();
+        public List<TourDTO> Tours { get; set; } = new List<TourDTO>();
 
-        public void AddTour(Tour tour)
+        public void AddTour(TourDTO tour)
         {
             Tours.Add(tour);
         }
 
-        public List<Tour> GetTours() { 
+        public List<TourDTO> GetTours() { 
             return Tours; 
         }
 
-        public Tour GetTour(int id)
+        public TourDTO GetTour(int id)
         {
             return Tours.FirstOrDefault(i => i.Id == id);
         }
 
-        public void UpdateTour(Tour tour)
+        public void UpdateTour(TourDTO tour)
         {
             if (Tours.Where(i => i.Id ==  tour.Id).FirstOrDefault() != null)
             {

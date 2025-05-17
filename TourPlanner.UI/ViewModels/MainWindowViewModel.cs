@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using TourPlanner.BL.Interfaces;
-using TourPlanner.BL.Models;
+using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Services;
 using TourPlanner.DAL.Entities;
 
@@ -18,8 +18,8 @@ namespace TourPlanner.UI.ViewModels
         private ITourService _tourService;
 
 
-        private Tour selectedTour;
-        public Tour SelectedTour
+        private TourDTO selectedTour;
+        public TourDTO SelectedTour
         {
             get => selectedTour;
             set

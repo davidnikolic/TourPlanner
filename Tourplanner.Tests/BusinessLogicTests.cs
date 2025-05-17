@@ -1,4 +1,4 @@
-﻿using TourPlanner.BL.Models;
+﻿using TourPlanner.BL.DTOs;
 using TourPlanner.BL.MockRepos;
 
 namespace Tourplanner.Tests
@@ -7,7 +7,7 @@ namespace Tourplanner.Tests
     {
 
         MockTourRepo mockTourRepo = new();
-        Tour t = new();
+        TourDTO t = new();
 
 
         [SetUp]
@@ -27,7 +27,7 @@ namespace Tourplanner.Tests
         [Test]
         public void TestReadTour()
         {
-            Tour tour = mockTourRepo.GetTour(1);
+            TourDTO tour = mockTourRepo.GetTour(1);
             
             Assert.That(tour.Name, Is.EqualTo("Testwanderung"));
         }
@@ -35,7 +35,7 @@ namespace Tourplanner.Tests
         [Test]
         public void TestUpdateTour()
         {
-            Tour OriginalTour = new Tour();
+            TourDTO OriginalTour = new TourDTO();
 
             OriginalTour.Id = 2;
             OriginalTour.Name = "Testdorf";
@@ -44,7 +44,7 @@ namespace Tourplanner.Tests
 
             mockTourRepo.AddTour(OriginalTour);
 
-            Tour ChangedTour = OriginalTour;
+            TourDTO ChangedTour = OriginalTour;
 
             ChangedTour.EstimatedTimeHours = 2;
 

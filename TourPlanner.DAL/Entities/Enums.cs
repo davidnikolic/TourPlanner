@@ -19,19 +19,19 @@ namespace TourPlanner.DAL.Entities
 
         public enum DifficultyLevel
         {
-            Easy,
-            Medium,
-            Hard,
-            Expert
+            easy,
+            medium,
+            hard,
+            expert
         }
 
         public enum SatisfactionRating
         {
-            VeryDissatisfied,
-            Dissatisfied,
-            Neutral,
-            Satisfied,
-            VerySatisfied
+            veryDissatisfied,
+            dissatisfied,
+            neutral,
+            satisfied,
+            verySatisfied
         }
     }
 }
