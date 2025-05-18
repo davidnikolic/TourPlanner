@@ -51,8 +51,8 @@ namespace TourPlanner.UI.ViewModels
 
         private void AddTour()
         {
-            var dialog = new DialogWindowView();
-            var vm = new DialogViewModel("Add new Tour");
+            var dialog = new TourDialogWindowView();
+            var vm = new TourDialogViewModel("Add new Tour");
 
             dialog.DataContext = vm;
 
@@ -73,8 +73,8 @@ namespace TourPlanner.UI.ViewModels
         {
             if (SelectedTour != null)
             {
-                var dialog = new DialogWindowView();
-                var vm = new DialogViewModel("Modify Tour", SelectedTour);
+                var dialog = new TourDialogWindowView();
+                var vm = new TourDialogViewModel("Modify Tour", SelectedTour);
 
                 dialog.DataContext = vm;
 

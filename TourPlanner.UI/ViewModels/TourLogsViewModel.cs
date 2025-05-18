@@ -49,17 +49,22 @@ namespace TourPlanner.UI.ViewModels
                 return;
             }
 
-            var dummyLog = new TourLogDTO
-            {
-                TourId = SelectedTour.Id,
-                LogDate = DateTime.UtcNow, // ⬅ WICHTIG: UTC verwenden
-                Comment = "🔧 Dummy Logeintrag zum Testen",
-                Difficulty = DAL.Entities.Enums.DifficultyLevel.easy,
-                DurationHours = 0.5f,
-                Rating = DAL.Entities.Enums.SatisfactionRating.satisfied
-            };
+            var dialog = new TourLogDialogWindowView();
+            var vm = new TourLogDialogViewModel("Add new TourLog");
 
-            _tourLogService.AddTourLog(dummyLog);
+            dialog.DataContext = vm;
+
+            vm.CloseRequested += () => dialog.DialogResult = true;
+
+            if (dialog.ShowDialog() == true)
+            {
+                if (vm.Result is TourLogDTO newTourLog)
+                {
+                    newTourLog.TourId = SelectedTour.Id;
+                    _tourLogService.AddTourLog(newTourLog);
+                }
+            }
+
             RefreshTourLogs();
         }
 

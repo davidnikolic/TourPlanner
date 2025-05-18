@@ -19,9 +19,9 @@ namespace TourPlanner.UI.Views.Components
     /// <summary>
     /// Interaction logic for AddTourDialogView.xaml
     /// </summary>
-    public partial class DialogWindowView : Window
+    public partial class TourLogDialogWindowView : Window
     {
-        public DialogWindowView()
+        public TourLogDialogWindowView()
         {
             InitializeComponent();
         }

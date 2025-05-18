@@ -54,8 +54,8 @@ namespace TourPlanner.BL.Services
                 Comment = entity.Comment,
                 DistanceKm = entity.DistanceKm,
                 DurationHours = entity.DurationHours,
-                Difficulty = entity.Difficulty,
-                Rating = entity.Rating
+                Difficulty = (EnumsDTO.DifficultyLevel)entity.Difficulty,
+                Rating = (EnumsDTO.SatisfactionRating)entity.Rating
             };
         }
 
@@ -71,8 +71,8 @@ namespace TourPlanner.BL.Services
                 Comment = model.Comment,
                 DistanceKm = model.DistanceKm,
                 DurationHours = model.DurationHours,
-                Difficulty = model.Difficulty,
-                Rating = model.Rating
+                Difficulty = (Enums.DifficultyLevel)model.Difficulty,
+                Rating = (Enums.SatisfactionRating)model.Rating
             };
         }
     }

@@ -1,4 +1,4 @@
-﻿<Window x:Class="TourPlanner.UI.Views.Components.DialogWindowView"
+﻿<Window x:Class="TourPlanner.UI.Views.Components.TourDialogWindowView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="clr-namespace:TourPlanner.UI.ViewModels"
         Title="Add New Tour"

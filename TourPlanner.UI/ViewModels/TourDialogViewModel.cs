@@ -16,7 +16,7 @@ using TourPlanner.UI;
 
 namespace TourPlanner.UI.ViewModels
 {
-    public class DialogViewModel : ViewModelBase // interface for changing elements
+    public class TourDialogViewModel : ViewModelBase // interface for changing elements
     {
 
         public event Action? CloseRequested;
@@ -88,7 +88,7 @@ namespace TourPlanner.UI.ViewModels
         //ICommand for the AddTour-Method.
         public ICommand AddTourCommand { get; }
 
-        public DialogViewModel(string text, TourDTO? existingTour = null)
+        public TourDialogViewModel(string text, TourDTO? existingTour = null)
         {
             PopUpText = text;
 
