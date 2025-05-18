@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TourPlanner.BL.MockRepos;
-using TourPlanner.BL.Models;
+using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Interfaces;
 using TourPlanner.DAL.Entities;
 using TourPlanner.DAL.Repositories.Interfaces;
@@ -24,53 +24,55 @@ namespace TourPlanner.BL.Services
 
         
 
-        public void AddTour(Tour tour)
+        public void AddTour(TourDTO tour)
         {
            TourEntity entity = ToEntity(tour);
            _tourRepository.AddTour(entity);
         }
 
-        public List<Tour> GetTours()
+        public List<TourDTO> GetTours()
         {
             var entities = (_tourRepository.GetTours()).ToList();
 
-            List<Tour> tours = entities
+            List<TourDTO> tours = entities
                 .Select(entity => ToModel(entity))
                 .ToList();
 
             return tours;
         }
 
-        public void UpdateTour(Tour tour)
+        public void UpdateTour(TourDTO tour)
         {
             TourEntity entity = ToEntity(tour);
             _tourRepository.UpdateTour(entity);
         }
 
-        public void DeleteTour(Tour tour)
+        public void DeleteTour(TourDTO tour)
         {
             TourEntity entity = ToEntity(tour);
             _tourRepository.DeleteTour(entity.Id);
         }
 
-        public static Tour ToModel(TourEntity entity)
+        public static TourDTO ToModel(TourEntity entity)
         {
             if (entity == null)
                 return null;
 
-            return new Tour
+            return new TourDTO
             {
                 Id = entity.Id,
                 Name = entity.Name,
                 StartLocation = entity.StartLocation,
                 EndLocation = entity.EndLocation,
                 Description = entity.Description,
+                TransportType = entity.TransportType,
                 DistanceKm = entity.DistanceKm,
-                EstimatedTimeHours = entity.EstimatedTimeHours
+                EstimatedTimeHours = entity.EstimatedTimeHours,
+                RouteImagePath = entity.RouteImagePath
             };
         }
 
-        public static TourEntity ToEntity(Tour model)
+        public static TourEntity ToEntity(TourDTO model)
         {
             if (model == null)
                 return null;
@@ -82,8 +84,10 @@ namespace TourPlanner.BL.Services
                 StartLocation = model.StartLocation,
                 EndLocation = model.EndLocation,
                 Description = model.Description,
+                TransportType = model.TransportType,
                 DistanceKm = model.DistanceKm,
-                EstimatedTimeHours = model.EstimatedTimeHours
+                EstimatedTimeHours = model.EstimatedTimeHours,
+                RouteImagePath = model.RouteImagePath
             };
         }
 

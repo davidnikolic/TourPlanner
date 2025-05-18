@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using TourPlanner.BL.Interfaces;
-using TourPlanner.BL.Models;
+using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Services;
 using TourPlanner.DAL.Entities;
 using static TourPlanner.DAL.Entities.Enums;
@@ -21,7 +21,7 @@ namespace TourPlanner.UI.ViewModels
 
         public event Action? CloseRequested;
 
-        public Tour tour { get; set; } = new();
+        public TourDTO tour { get; set; } = new();
 
         private int? id;
         public int? Id 
@@ -79,7 +79,7 @@ namespace TourPlanner.UI.ViewModels
             get => estimatedTime;
             set { estimatedTime = value; OnPropertyChanged(); }
         }
-        public Tour? Result { get; private set; }
+        public TourDTO? Result { get; private set; }
 
         public List<TransportType> TransportTypes { get; set; } // List of transport types dropdown
 
@@ -88,7 +88,7 @@ namespace TourPlanner.UI.ViewModels
         //ICommand for the AddTour-Method.
         public ICommand AddTourCommand { get; }
 
-        public DialogViewModel(string text, Tour? existingTour = null)
+        public DialogViewModel(string text, TourDTO? existingTour = null)
         {
             PopUpText = text;
 
@@ -127,7 +127,7 @@ namespace TourPlanner.UI.ViewModels
                 return;
             }
 
-            Result = new Tour
+            Result = new TourDTO
             {
                 Name = Name,
                 Description = Description,

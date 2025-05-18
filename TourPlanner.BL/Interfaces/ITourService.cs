@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TourPlanner.BL.Models;
+using TourPlanner.BL.DTOs;
 using TourPlanner.DAL.Entities;
 
 namespace TourPlanner.BL.Interfaces
 {
     public interface ITourService
     {
-        void AddTour(Tour tour);
+        void AddTour(TourDTO tour);
 
-        void DeleteTour(Tour tour);
-        List<Tour> GetTours();
+        void DeleteTour(TourDTO tour);
+        List<TourDTO> GetTours();
 
-        void UpdateTour(Tour tour);
+        void UpdateTour(TourDTO tour);
     }
 }

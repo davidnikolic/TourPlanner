@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TourPlanner.BL.Models
+namespace TourPlanner.BL.DTOs
 {
-    public class Enums
+    public class EnumsDTO
     {
         public enum TransportType
         {
@@ -19,19 +19,19 @@ namespace TourPlanner.BL.Models
 
         public enum DifficultyLevel
         {
-            Easy,
-            Medium,
-            Hard,
-            Expert
+            easy,
+            medium,
+            hard,
+            expert
         }
 
         public enum SatisfactionRating
         {
-            VeryDissatisfied,
-            Dissatisfied,
-            Neutral,
-            Satisfied,
-            VerySatisfied
+            veryDissatisfied,
+            dissatisfied,
+            neutral,
+            satisfied,
+            verySatisfied
         }
     }
 }

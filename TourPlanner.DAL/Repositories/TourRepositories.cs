@@ -16,11 +16,6 @@ namespace TourPlanner.DAL.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task AddTourAsync(TourEntity tour)
-        {
-            _dbContext.Tours.Add(tour);
-            await _dbContext.SaveChangesAsync();
-        }
 
         public void AddTour(TourEntity tour)
         {
@@ -28,25 +23,9 @@ namespace TourPlanner.DAL.Repositories
             _dbContext.SaveChanges();
         }
 
-        public async Task<IEnumerable<TourEntity>> GetAllToursAsync()
-        {
-            return await _dbContext.Tours.ToListAsync();
-        }
-
         public IEnumerable<TourEntity> GetTours()
         {
             return _dbContext.Tours.ToList();
-        }
-
-        public async Task UpdateTourAsync(TourEntity tour)
-        {
-            var existingTour = await _dbContext.Tours.FindAsync(tour.Id);
-            if (existingTour == null)
-                return;
-
-            // Update properties
-            _dbContext.Entry(existingTour).CurrentValues.SetValues(tour);
-            await _dbContext.SaveChangesAsync();
         }
 
         public void UpdateTour(TourEntity tour)
@@ -58,16 +37,6 @@ namespace TourPlanner.DAL.Repositories
             // Update properties
             _dbContext.Entry(existingTour).CurrentValues.SetValues(tour);
             _dbContext.SaveChanges();
-        }
-
-        public async Task DeleteTourAsync(int id)
-        {
-            var tour = await _dbContext.Tours.FindAsync(id);
-            if (tour == null)
-                return;
-
-            _dbContext.Tours.Remove(tour);
-            await _dbContext.SaveChangesAsync();
         }
 
         public void DeleteTour(int id)

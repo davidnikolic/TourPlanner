@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TourPlanner.BL.Interfaces;
-using TourPlanner.BL.Models;
+using TourPlanner.BL.DTOs;
 using TourPlanner.UI.Views.Components;
 
 namespace TourPlanner.UI.ViewModels
@@ -17,12 +17,12 @@ namespace TourPlanner.UI.ViewModels
 
         private ITourService _tourService;
 
-        public ObservableCollection<Tour> Tours { get; set; } = new();
+        public ObservableCollection<TourDTO> Tours { get; set; } = new();
 
-        public event Action<Tour>? SelectedTourChanged;
+        public event Action<TourDTO>? SelectedTourChanged;
 
-        private Tour selectedTour;
-        public Tour SelectedTour 
+        private TourDTO selectedTour;
+        public TourDTO SelectedTour 
         { 
             get => selectedTour;
             set
@@ -39,7 +39,7 @@ namespace TourPlanner.UI.ViewModels
 
             var tours = _tourService.GetTours();
 
-            Tours = new ObservableCollection<Tour>(tours);
+            Tours = new ObservableCollection<TourDTO>(tours);
         }
 
         public RelayCommand AddCommand => new RelayCommand(execute => AddTour());
@@ -57,7 +57,7 @@ namespace TourPlanner.UI.ViewModels
 
             if (dialog.ShowDialog() == true)
             {
-                if (vm.Result is Tour newTour)
+                if (vm.Result is TourDTO newTour)
                 {
                     _tourService.AddTour(newTour);
                 }
@@ -79,7 +79,7 @@ namespace TourPlanner.UI.ViewModels
 
                 if (dialog.ShowDialog() == true)
                 {
-                    if (vm.Result is Tour changedTour)
+                    if (vm.Result is TourDTO changedTour)
                     {
                         _tourService.UpdateTour(changedTour);
                     }

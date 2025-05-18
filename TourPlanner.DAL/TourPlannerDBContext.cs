@@ -39,6 +39,8 @@ namespace TourPlanner.DAL
             optionsBuilder.UseNpgsql(connectionString, options =>
             {
                 options.MapEnum<TransportType>("transport_type");
+                options.MapEnum<DifficultyLevel>("difficulty_level");
+                options.MapEnum<SatisfactionRating>("satisfaction_rating");
             });
 
             base.OnConfiguring(optionsBuilder);
@@ -49,7 +51,7 @@ namespace TourPlanner.DAL
         {
             base.OnModelCreating(modelBuilder);
 
-            // Map 
+            // Map Table Tour
             modelBuilder.Entity<TourEntity>(entity =>
             {
                 entity.ToTable("tours");
@@ -62,6 +64,25 @@ namespace TourPlanner.DAL
                 entity.Property(t => t.DistanceKm).HasColumnName("distance_km");
                 entity.Property(t => t.EstimatedTimeHours).HasColumnName("estimated_time_hours");
                 entity.Property(t => t.RouteImagePath).HasColumnName("route_image_path");
+            });
+
+            // Map Table Tour_Log
+            modelBuilder.Entity<TourLogEntity>(entity =>
+            {
+                entity.ToTable("tour_logs");
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.TourId).HasColumnName("tour_id");
+                entity.Property(e => e.LogDate).HasColumnName("log_date");
+                entity.Property(e => e.Comment).HasColumnName("comment");
+                entity.Property(e => e.Difficulty).HasColumnName("difficulty");
+                entity.Property(e => e.DistanceKm).HasColumnName("distance_km");
+                entity.Property(e => e.DurationHours).HasColumnName("duration_hours");
+                entity.Property(e => e.Rating).HasColumnName("rating");
+
+                entity.HasOne(e => e.Tour)               
+                      .WithMany(t => t.TourLogs)         // Tour can have many tourlogs
+                      .HasForeignKey(e => e.TourId)  
+                      .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }

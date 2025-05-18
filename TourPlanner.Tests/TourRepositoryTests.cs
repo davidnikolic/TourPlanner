@@ -33,16 +33,13 @@ namespace TourPlanner.Tests
                 .Options;
 
             _dbContext = new TourPlannerDBContext(options);
-
         }
 
         // Real integration test with the db
         // Test: Adds a tour and checks if it is stored in the database
-        
         [Test]
-        public async Task AddTourAsync_ShouldAddTourToDatabase()
+        public void AddTour_ShouldAddTourToDatabase()
         {
-
             // Arrange: Create a new TourEntity object
             var tour = new TourEntity
             {
@@ -57,19 +54,19 @@ namespace TourPlanner.Tests
             };
 
             // Act: Add the tour to the database and save the changes
-            await _dbContext.Tours.AddAsync(tour);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.Tours.Add(tour);
+            _dbContext.SaveChanges();
 
             // Assert: Retrieve the saved tour and verify the values
-            var storedTour = await _dbContext.Tours.FindAsync(tour.Id);
+            var storedTour = _dbContext.Tours.Find(tour.Id);
             Assert.NotNull(storedTour);
-            Assert.AreEqual(tour.Name, storedTour.Name); 
+            Assert.AreEqual(tour.Name, storedTour.Name);
             Assert.AreEqual(tour.StartLocation, storedTour.StartLocation);
             Assert.AreEqual(tour.TransportType, storedTour.TransportType);
         }
 
         [Test]
-        public async Task GetAllToursAsync_ShouldReturnListOfTours()
+        public void GetAllTours_ShouldReturnListOfTours()
         {
             // Arrange: Add a test tour
             var tour = new TourEntity
@@ -84,11 +81,11 @@ namespace TourPlanner.Tests
                 RouteImagePath = "/path/list"
             };
 
-            await _dbContext.Tours.AddAsync(tour);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.Tours.Add(tour);
+            _dbContext.SaveChanges();
 
             // Act: Get all tours
-            var tours = await _dbContext.Tours.ToListAsync();
+            var tours = _dbContext.Tours.ToList();
 
             // Assert: Check if at least one tour is returned
             Assert.IsNotEmpty(tours);
@@ -96,7 +93,7 @@ namespace TourPlanner.Tests
         }
 
         [Test]
-        public async Task UpdateTourAsync_ShouldUpdateTourDetails()
+        public void UpdateTour_ShouldUpdateTourDetails()
         {
             // Arrange: Add a new tour
             var tour = new TourEntity
@@ -111,24 +108,24 @@ namespace TourPlanner.Tests
                 RouteImagePath = "/old/path"
             };
 
-            await _dbContext.Tours.AddAsync(tour);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.Tours.Add(tour);
+            _dbContext.SaveChanges();
 
             // Act: Update the name and save
             tour.Name = "Updated Name";
             tour.Description = "Updated desc";
             _dbContext.Tours.Update(tour);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
 
             // Assert: Retrieve and verify
-            var updatedTour = await _dbContext.Tours.FindAsync(tour.Id);
+            var updatedTour = _dbContext.Tours.Find(tour.Id);
             Assert.NotNull(updatedTour);
             Assert.AreEqual("Updated Name", updatedTour.Name);
             Assert.AreEqual("Updated desc", updatedTour.Description);
         }
 
         [Test]
-        public async Task DeleteTourAsync_ShouldRemoveTourFromDatabase()
+        public void DeleteTour_ShouldRemoveTourFromDatabase()
         {
             // Arrange: Add a tour
             var tour = new TourEntity
@@ -143,22 +140,22 @@ namespace TourPlanner.Tests
                 RouteImagePath = "/delete/path"
             };
 
-            await _dbContext.Tours.AddAsync(tour);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.Tours.Add(tour);
+            _dbContext.SaveChanges();
 
             // Act: Remove the tour
             _dbContext.Tours.Remove(tour);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
 
             // Assert: Try to find it again
-            var deletedTour = await _dbContext.Tours.FindAsync(tour.Id);
+            var deletedTour = _dbContext.Tours.Find(tour.Id);
             Assert.IsNull(deletedTour);
         }
 
         [TearDown]
         public void Cleanup()
         {
-            _dbContext.Dispose(); 
+            _dbContext.Dispose();
         }
     }
 }
