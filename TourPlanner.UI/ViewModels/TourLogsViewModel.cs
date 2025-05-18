@@ -55,6 +55,7 @@ namespace TourPlanner.UI.ViewModels
 
         public RelayCommand ModifyCommand => new RelayCommand(execute => ModifyTourLog());
 
+        public RelayCommand DeleteCommand => new RelayCommand(execute => DeleteTourLog());
         private void AddTourLog()
         {
             if (SelectedTour == null || SelectedTour.Id <= 0)
@@ -100,6 +101,16 @@ namespace TourPlanner.UI.ViewModels
                         _tourLogService.UpdateTourLog(changedTourLog);
                     }
                 }
+
+                RefreshTourLogs();
+            }
+        }
+
+        public void DeleteTourLog()
+        {
+            if (selectedLog != null)
+            {
+                _tourLogService?.DeleteTourLog(SelectedLog);
 
                 RefreshTourLogs();
             }
