@@ -65,6 +65,7 @@ namespace TourPlanner.UI
             // ViewModels
             services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<TourListViewModel>();
+            services.AddSingleton<TourLogsViewModel>();
         }
     }
 

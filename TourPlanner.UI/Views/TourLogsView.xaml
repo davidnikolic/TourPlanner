@@ -4,10 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TourPlanner.UI.Views"
+             xmlns:components="clr-namespace:TourPlanner.UI.Views.Components"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Grid.Column="2"  Margin="10,10,10,10">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -23,5 +25,14 @@
             <Button Grid.Column="0">Search</Button>
             <TextBox Grid.Column="1"></TextBox>
         </Grid>
+        <DockPanel Grid.Row="1" Margin="0 10 0 10">
+            <TextBlock  Text="TourLogs" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" DockPanel.Dock="Left"/>
+            <components:TourActionButtons DockPanel.Dock="Right" HorizontalAlignment="Right" />
+        </DockPanel>
+        <!-- Table -->
+        <DataGrid Grid.Row="2"
+                  Margin="0,10,0,10" ItemsSource="{Binding TourLogs}">
+            
+        </DataGrid>
     </Grid>
 </UserControl>

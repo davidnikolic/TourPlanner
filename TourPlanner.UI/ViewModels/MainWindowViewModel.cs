@@ -31,10 +31,13 @@ namespace TourPlanner.UI.ViewModels
 
         public TourListViewModel TourListViewModel { get; }
 
-        public MainWindowViewModel(ITourService tourService, TourListViewModel tourListViewModel)
+        public TourLogsViewModel TourLogsViewModel { get; }
+
+        public MainWindowViewModel(ITourService tourService, TourListViewModel tourListViewModel, TourLogsViewModel tourLogsViewModel)
         {
             _tourService = tourService;
             TourListViewModel = tourListViewModel;
+            TourLogsViewModel = tourLogsViewModel;
 
             TourListViewModel.SelectedTourChanged += tour =>
             {

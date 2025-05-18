@@ -30,7 +30,7 @@
             <views:TourDetailView Grid.Column="1"/>
 
             <!-- TourLogs -->
-            <views:TourLogsView Grid.Column="2"/>
+            <views:TourLogsView DataContext="{Binding TourLogsViewModel}" Grid.Column="2"/>
         </Grid>
 
         <!-- Navbar oben -->
