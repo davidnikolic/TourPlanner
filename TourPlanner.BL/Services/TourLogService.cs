@@ -63,11 +63,13 @@ namespace TourPlanner.BL.Services
         {
             if (model == null) return null;
 
+            var safeLogDate = DateTime.SpecifyKind(model.LogDate, DateTimeKind.Unspecified);
+
             return new TourLogEntity
             {
                 Id = model.Id,
                 TourId = model.TourId,
-                LogDate = model.LogDate.ToUniversalTime(),
+                LogDate = safeLogDate,
                 Comment = model.Comment,
                 DistanceKm = model.DistanceKm,
                 DurationHours = model.DurationHours,

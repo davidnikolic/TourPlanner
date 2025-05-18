@@ -18,7 +18,7 @@ namespace TourPlanner.UI.ViewModels
 
         public TourLogDTO Result { get; private set; } = new();
 
-        public ICommand AddTourLogCommand { get; }
+        public ICommand ConfirmCommand { get; }
 
         // Eingabefelder:
         public DateTime LogDate
@@ -65,7 +65,7 @@ namespace TourPlanner.UI.ViewModels
         {
             PopUpText = text;
 
-            AddTourLogCommand = new RelayCommand(_ => AddTourLog());
+            ConfirmCommand = new RelayCommand(_ => ConfirmActivity());
 
             if (existingTourLog != null)
             {
@@ -73,7 +73,7 @@ namespace TourPlanner.UI.ViewModels
             }
         }
 
-        private void AddTourLog()
+        private void ConfirmActivity()
         {
             // Optional: Validierung hier
             CloseRequested?.Invoke();

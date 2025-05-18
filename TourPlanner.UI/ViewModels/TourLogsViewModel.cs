@@ -22,12 +22,24 @@ namespace TourPlanner.UI.ViewModels
 
         private TourDTO selectedTour;
 
+        private TourLogDTO selectedLog;
+
         public TourDTO SelectedTour
         {
             get => selectedTour;
             set
             {
                 selectedTour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public TourLogDTO SelectedLog
+        {
+            get => selectedLog;
+            set
+            {
+                selectedLog = value;
                 OnPropertyChanged();
             }
         }
@@ -40,6 +52,8 @@ namespace TourPlanner.UI.ViewModels
         }
 
         public RelayCommand AddCommand => new RelayCommand(execute => AddTourLog());
+
+        public RelayCommand ModifyCommand => new RelayCommand(execute => ModifyTourLog());
 
         private void AddTourLog()
         {
@@ -66,6 +80,29 @@ namespace TourPlanner.UI.ViewModels
             }
 
             RefreshTourLogs();
+        }
+
+        public void ModifyTourLog()
+        {
+            if (selectedLog != null)
+            {
+                var dialog = new TourLogDialogWindowView();
+                var vm = new TourLogDialogViewModel("Modify Log", SelectedLog);
+
+                dialog.DataContext = vm;
+
+                vm.CloseRequested += () => dialog.DialogResult = true;
+
+                if (dialog.ShowDialog() == true)
+                {
+                    if (vm.Result is TourLogDTO changedTourLog)
+                    {
+                        _tourLogService.UpdateTourLog(changedTourLog);
+                    }
+                }
+
+                RefreshTourLogs();
+            }
         }
 
         private void OnSelectedTourChanged(TourDTO tour)

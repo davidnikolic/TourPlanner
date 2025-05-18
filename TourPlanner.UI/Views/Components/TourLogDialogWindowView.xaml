@@ -65,7 +65,7 @@
                     BorderThickness="0"
                     Width="100"
                     Height="32"
-                    Command="{Binding AddTourLogCommand}"/>
+                    Command="{Binding ConfirmCommand}"/>
         </StackPanel>
     </Grid>
 </Window>

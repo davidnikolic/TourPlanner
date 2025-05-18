@@ -32,6 +32,7 @@
         <!-- Table -->
         <ListView Grid.Row="2" 
           ItemsSource="{Binding TourLogs}" 
+          SelectedItem="{Binding SelectedLog}"
           ScrollViewer.VerticalScrollBarVisibility="Auto"
           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
           Margin="10">
