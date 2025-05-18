@@ -13,36 +13,33 @@ using TourPlanner.DAL.Entities;
 
 namespace TourPlanner.UI.ViewModels
 {
-    internal class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelBase
     {
         private ITourService _tourService;
+        private ITourLogService _tourLogService;
 
-
-        private TourDTO selectedTour;
-        public TourDTO SelectedTour
-        {
-            get => selectedTour;
-            set
-            {
-                selectedTour = value;
-                OnPropertyChanged();
-            }
-        }
+        private ISelectedTourService _selectedTourService;
 
         public TourListViewModel TourListViewModel { get; }
-
+        public TourDetailViewModel TourDetailViewModel { get; } 
         public TourLogsViewModel TourLogsViewModel { get; }
 
-        public MainWindowViewModel(ITourService tourService, TourListViewModel tourListViewModel, TourLogsViewModel tourLogsViewModel)
+        public MainWindowViewModel(
+            ITourService tourService, 
+            ITourLogService tourLogService, 
+            ISelectedTourService selectedTourService, 
+            TourListViewModel tourListViewModel, 
+            TourLogsViewModel tourLogsViewModel,
+            TourDetailViewModel tourDetailViewModel
+            )
         {
             _tourService = tourService;
+            _tourLogService = tourLogService;
+            _selectedTourService = selectedTourService;
+
             TourListViewModel = tourListViewModel;
             TourLogsViewModel = tourLogsViewModel;
-
-            TourListViewModel.SelectedTourChanged += tour =>
-            {
-                SelectedTour = tour;
-            };
+            TourDetailViewModel = tourDetailViewModel;
         }
     }
 }

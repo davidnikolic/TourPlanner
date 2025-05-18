@@ -17,6 +17,8 @@ namespace TourPlanner.UI.ViewModels
 
         private ITourService _tourService;
 
+        private ISelectedTourService _selectedTourService;
+
         public ObservableCollection<TourDTO> Tours { get; set; } = new();
 
         public event Action<TourDTO>? SelectedTourChanged;
@@ -29,13 +31,14 @@ namespace TourPlanner.UI.ViewModels
             {
                 selectedTour = value;
                 OnPropertyChanged();
-                SelectedTourChanged?.Invoke(value);
+                _selectedTourService.SelectedTour = value;
             }
         }
 
-        public TourListViewModel(ITourService tourService)
+        public TourListViewModel(ITourService tourService, ISelectedTourService selectedTourService)
         {
             _tourService = tourService;
+            _selectedTourService = selectedTourService;
 
             var tours = _tourService.GetTours();
 

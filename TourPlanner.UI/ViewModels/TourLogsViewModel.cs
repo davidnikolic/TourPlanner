@@ -1,24 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TourPlanner.BL.DTOs;
+using TourPlanner.BL.Interfaces;
 
 namespace TourPlanner.UI.ViewModels
 {
-    internal class TourLogsViewModel : ViewModelBase
+    public class TourLogsViewModel : ViewModelBase
     {
-        public List<TourLogDTO> TourLogs { get; set; }
+        private ITourLogService _tourLogService;
+        public ObservableCollection<TourDTO> TourLogs { get; set; } = new();
 
         public TourLogsViewModel() { 
-            TourLogs = new List<TourLogDTO>();
-            TourLogs.Add(new TourLogDTO()
-            {
-                Id = 0,
-                TourId = 1,
-                DurationHours = 12,
-            });
+
         }
     }
 }

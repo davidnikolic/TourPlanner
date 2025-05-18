@@ -27,7 +27,7 @@
             <views:TourListView DataContext="{Binding TourListViewModel}" Grid.Column="0"/>
 
             <!-- Tour -->
-            <views:TourDetailView Grid.Column="1"/>
+            <views:TourDetailView DataContext="{Binding TourDetailViewModel}" Grid.Column="1"/>
 
             <!-- TourLogs -->
             <views:TourLogsView DataContext="{Binding TourLogsViewModel}" Grid.Column="2"/>

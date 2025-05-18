@@ -57,6 +57,7 @@ namespace TourPlanner.UI
             // Services
             services.AddScoped<ITourService, TourService>();
             services.AddScoped<ITourLogService, TourLogService>();
+            services.AddSingleton<ISelectedTourService, SelectedTourService>();
 
             // Repositories (DAL)
             services.AddScoped<ITourRepository, TourRepositories>();
@@ -66,6 +67,7 @@ namespace TourPlanner.UI
             services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<TourListViewModel>();
             services.AddSingleton<TourLogsViewModel>();
+            services.AddSingleton<TourDetailViewModel>();
         }
     }
 
