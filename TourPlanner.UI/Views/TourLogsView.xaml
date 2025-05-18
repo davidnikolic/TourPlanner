@@ -31,7 +31,9 @@
         </DockPanel>
         <!-- Table -->
         <DataGrid Grid.Row="2"
-                  Margin="0,10,0,10" ItemsSource="{Binding TourLogs}">
+                  Margin="0,10,0,10" 
+                  ItemsSource="{Binding TourLogs}"
+                  IsReadOnly="True">
             
         </DataGrid>
     </Grid>

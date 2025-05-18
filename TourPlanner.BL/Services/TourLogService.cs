@@ -67,7 +67,7 @@ namespace TourPlanner.BL.Services
             {
                 Id = model.Id,
                 TourId = model.TourId,
-                LogDate = model.LogDate,
+                LogDate = model.LogDate.ToUniversalTime(),
                 Comment = model.Comment,
                 DistanceKm = model.DistanceKm,
                 DurationHours = model.DurationHours,
