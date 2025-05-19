@@ -11,9 +11,9 @@
     <UserControl.Resources>
         <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
     </UserControl.Resources>
-    
-    
-    <TabControl Margin="10,10,10,10" SelectedIndex="1">
+
+
+    <TabControl Margin="10,10,10,10" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
         <TabItem Header="General" Height="20" VerticalAlignment="Top">
             <StackPanel Visibility="{Binding SelectedTour, Converter={StaticResource NullToVisibilityConverter}}">
                 <TextBlock FontSize="20" Text="{Binding SelectedTour.Id, StringFormat='Identifier: {0}'}"/>
@@ -27,9 +27,7 @@
             </StackPanel>
         </TabItem>
         <TabItem Header="Route">
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">
-            - The Map will be displayed here -
-            </TextBlock>
+            <Image Source="{Binding MapImage}" Stretch="Uniform" />
         </TabItem>
         <TabItem Header="Misc." >
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">

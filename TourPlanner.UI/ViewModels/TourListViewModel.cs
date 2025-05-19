@@ -22,8 +22,6 @@ namespace TourPlanner.UI.ViewModels
 
         public ObservableCollection<TourDTO> Tours { get; set; } = new();
 
-        public event Action<TourDTO>? SelectedTourChanged;
-
         private TourDTO selectedTour;
         public TourDTO SelectedTour
         {
