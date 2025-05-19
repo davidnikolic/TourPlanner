@@ -51,7 +51,7 @@
             <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Height="28" Text="{Binding StartLocation, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox Grid.Row="3" Grid.Column="1" Margin="5" Height="28" Text="{Binding EndLocation, UpdateSourceTrigger=PropertyChanged}"/>
             <ComboBox Grid.Row="4" Grid.Column="1" Margin="5" Height="28" ItemsSource="{Binding TransportTypes}"
-          SelectedItem="{Binding SelectedTransportType}">
+                SelectedItem="{Binding SelectedTransportType}">
             </ComboBox>
             <TextBox Grid.Row="5" Grid.Column="1" Margin="5" Height="28" Text="{Binding Distance, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox Grid.Row="6" Grid.Column="1" Margin="5" Height="28" Text="{Binding EstimatedTime, UpdateSourceTrigger=PropertyChanged}"/>

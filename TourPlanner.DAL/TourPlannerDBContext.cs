@@ -24,7 +24,7 @@ namespace TourPlanner.DAL
         // Configure db connection
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var envPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".env");
+            var envPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "res", ".env");
             Env.Load(envPath);
 
             string host = Env.GetString("DB_HOST");
