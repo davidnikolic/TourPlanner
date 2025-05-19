@@ -118,6 +118,13 @@ namespace TourPlanner.UI.ViewModels
 
         private void OnSelectedTourChanged(TourDTO tour)
         {
+            if (tour == null)
+            {
+                SelectedTour = null;
+                TourLogs.Clear();
+                return;
+            }
+
             SelectedTour = tour;
             RefreshTourLogs();
         }
@@ -126,6 +133,8 @@ namespace TourPlanner.UI.ViewModels
         {
             var tourLogs = _tourLogService.GetTourLogsForTour(SelectedTour.Id);
             TourLogs.Clear();
+
+
             foreach (var tl in tourLogs)
                 TourLogs.Add(tl);
         }

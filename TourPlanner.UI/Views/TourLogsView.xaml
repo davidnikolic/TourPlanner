@@ -36,7 +36,7 @@
           ScrollViewer.VerticalScrollBarVisibility="Auto"
           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
           Margin="10">
-            <ListView.ItemTemplate>
+            <ListView.ItemTemplate >
                 <DataTemplate>
                     <Grid Margin="4">
                         <Grid.ColumnDefinitions>

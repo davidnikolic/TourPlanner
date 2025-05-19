@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using TourPlanner.BL.Interfaces;
 using TourPlanner.BL.DTOs;
 using TourPlanner.UI.Views.Components;
+using TourPlanner.BL.Services;
 
 namespace TourPlanner.UI.ViewModels
 {
@@ -24,8 +25,8 @@ namespace TourPlanner.UI.ViewModels
         public event Action<TourDTO>? SelectedTourChanged;
 
         private TourDTO selectedTour;
-        public TourDTO SelectedTour 
-        { 
+        public TourDTO SelectedTour
+        {
             get => selectedTour;
             set
             {
@@ -94,9 +95,12 @@ namespace TourPlanner.UI.ViewModels
 
         private void DeleteTour()
         {
-            if(SelectedTour != null)
+            if (SelectedTour != null)
+            {
                 _tourService.DeleteTour(SelectedTour);
+                _selectedTourService.SelectedTour = null;
                 RefreshTours();
+            }
         }
 
         private void RefreshTours()
