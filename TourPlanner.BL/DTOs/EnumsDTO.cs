@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace TourPlanner.BL.DTOs
 {
+    /// <summary>
+    /// The class for the enums, that will be used for the DTOs.
+    /// </summary>
     public class EnumsDTO
     {
+        /// <summary>
+        /// The enum for the transport-type.
+        /// </summary>
         public enum TransportType
         {
             bike,
@@ -17,6 +23,10 @@ namespace TourPlanner.BL.DTOs
             foot
         }
 
+
+        /// <summary>
+        /// The enum for the diffficulty level.
+        /// </summary>
         public enum DifficultyLevel
         {
             easy,
@@ -25,6 +35,9 @@ namespace TourPlanner.BL.DTOs
             expert
         }
 
+        /// <summary>
+        /// The enum for the Satisfaction-Rating.
+        /// </summary>
         public enum SatisfactionRating
         {
             veryDissatisfied,
