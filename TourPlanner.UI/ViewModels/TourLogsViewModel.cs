@@ -9,6 +9,7 @@ using System.Windows.Input;
 using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Interfaces;
 using TourPlanner.BL.Services;
+using TourPlanner.UI.Interfaces;
 using TourPlanner.UI.Views.Components;
 
 namespace TourPlanner.UI.ViewModels
@@ -18,6 +19,8 @@ namespace TourPlanner.UI.ViewModels
         private ITourLogService _tourLogService;
 
         private ISelectedTourService _selectedTourService;
+
+        private IDialogService _dialogService;
         public ObservableCollection<TourLogDTO> TourLogs { get; set; } = new();
 
         private TourDTO selectedTour;
@@ -44,9 +47,14 @@ namespace TourPlanner.UI.ViewModels
             }
         }
 
-        public TourLogsViewModel(ITourLogService tourLogService, ISelectedTourService selectedTourService) { 
+        public TourLogsViewModel(
+            ITourLogService tourLogService, 
+            ISelectedTourService selectedTourService,
+            IDialogService dialogService) { 
+
             _tourLogService = tourLogService;
             _selectedTourService = selectedTourService;
+            _dialogService = dialogService;
 
             _selectedTourService.SelectedTourChanged += OnSelectedTourChanged;
         }
@@ -64,20 +72,12 @@ namespace TourPlanner.UI.ViewModels
                 return;
             }
 
-            var dialog = new TourLogDialogWindowView();
-            var vm = new TourLogDialogViewModel("Add new TourLog");
+            var tourLog = _dialogService.DisplayTourLogPopUp("Add new Tour Log");
 
-            dialog.DataContext = vm;
-
-            vm.CloseRequested += () => dialog.DialogResult = true;
-
-            if (dialog.ShowDialog() == true)
+            if (tourLog != null)
             {
-                if (vm.Result is TourLogDTO newTourLog)
-                {
-                    newTourLog.TourId = SelectedTour.Id;
-                    _tourLogService.AddTourLog(newTourLog);
-                }
+                tourLog.TourId = selectedTour.Id;
+                _tourLogService.AddTourLog(tourLog);
             }
 
             RefreshTourLogs();
@@ -85,25 +85,21 @@ namespace TourPlanner.UI.ViewModels
 
         public void ModifyTourLog()
         {
-            if (selectedLog != null)
+            if (SelectedTour == null || SelectedTour.Id <= 0)
             {
-                var dialog = new TourLogDialogWindowView();
-                var vm = new TourLogDialogViewModel("Modify Log", SelectedLog);
-
-                dialog.DataContext = vm;
-
-                vm.CloseRequested += () => dialog.DialogResult = true;
-
-                if (dialog.ShowDialog() == true)
-                {
-                    if (vm.Result is TourLogDTO changedTourLog)
-                    {
-                        _tourLogService.UpdateTourLog(changedTourLog);
-                    }
-                }
-
-                RefreshTourLogs();
+                MessageBox.Show("Bitte zuerst eine gültige Tour auswählen.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
+
+            var tourLog = _dialogService.DisplayTourLogPopUp("Edit Tour Log", selectedLog);
+
+            if (tourLog != null)
+            {
+                tourLog.TourId = selectedTour.Id;
+                _tourLogService.UpdateTourLog(tourLog);
+            }
+
+            RefreshTourLogs();
         }
 
         public void DeleteTourLog()

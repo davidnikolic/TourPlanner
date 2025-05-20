@@ -20,7 +20,6 @@ namespace TourPlanner.UI.ViewModels
 
         public ICommand ConfirmCommand { get; }
 
-        // Eingabefelder:
         public DateTime LogDate
         {
             get => Result.LogDate;
