@@ -3,12 +3,15 @@ using System.Configuration;
 using System.Data;
 using System.Windows;
 using TourPlanner.BL.Interfaces;
+using TourPlanner.UI.Interfaces;
 using TourPlanner.BL.Services;
 using TourPlanner.DAL.Repositories.Interfaces;
 using TourPlanner.DAL;
 using TourPlanner.UI.ViewModels;
 using TourPlanner.DAL.Repositories;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using GalaSoft.MvvmLight.Views;
+using TourPlanner.UI.Services;
 
 namespace TourPlanner.UI
 {
@@ -62,6 +65,7 @@ namespace TourPlanner.UI
             services.AddScoped<ITourService, TourService>();
             services.AddScoped<ITourLogService, TourLogService>();
             services.AddSingleton<ISelectedTourService, SelectedTourService>();
+            services.AddSingleton<Interfaces.IDialogService, DialogService>();
 
             // Repositories (DAL)
             services.AddScoped<ITourRepository, TourRepositories>();

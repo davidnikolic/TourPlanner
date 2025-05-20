@@ -7,9 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TourPlanner.BL.Interfaces;
+using TourPlanner.UI.Interfaces;
 using TourPlanner.BL.DTOs;
 using TourPlanner.UI.Views.Components;
 using TourPlanner.BL.Services;
+
 
 namespace TourPlanner.UI.ViewModels
 {
@@ -19,6 +21,8 @@ namespace TourPlanner.UI.ViewModels
         private ITourService _tourService;
 
         private ISelectedTourService? _selectedTourService;
+
+        private IDialogService _dialogService;
 
         public ObservableCollection<TourDTO> Tours { get; set; } = new();
 
@@ -34,10 +38,15 @@ namespace TourPlanner.UI.ViewModels
             }
         }
 
-        public TourListViewModel(ITourService tourService, ISelectedTourService selectedTourService)
+        public TourListViewModel(
+            ITourService tourService,
+            ISelectedTourService selectedTourService,
+            IDialogService dialogService
+            )
         {
             _tourService = tourService;
             _selectedTourService = selectedTourService;
+            _dialogService = dialogService;
 
             var tours = _tourService.GetTours();
 
@@ -50,45 +59,20 @@ namespace TourPlanner.UI.ViewModels
 
         private void AddTour()
         {
-            var dialog = new TourDialogWindowView();
-            var vm = new TourDialogViewModel("Add new Tour");
+            var tour = _dialogService.DisplayTourPopUp("Add new tour");
 
-            dialog.DataContext = vm;
-
-            vm.CloseRequested += () => dialog.DialogResult = true;
-
-            if (dialog.ShowDialog() == true)
-            {
-                if (vm.Result is TourDTO newTour)
-                {
-                    _tourService.AddTour(newTour);
-                }
-            }
+            if (tour != null) _tourService.AddTour(tour);
 
             RefreshTours();
         }
 
         private void ModifyTour()
         {
-            if (SelectedTour != null)
-            {
-                var dialog = new TourDialogWindowView();
-                var vm = new TourDialogViewModel("Modify Tour", SelectedTour);
+            var tour = _dialogService.DisplayTourPopUp("Modify Tour", SelectedTour);
+            if (tour != null) _tourService.UpdateTour(tour);
 
-                dialog.DataContext = vm;
+            RefreshTours();
 
-                vm.CloseRequested += () => dialog.DialogResult = true;
-
-                if (dialog.ShowDialog() == true)
-                {
-                    if (vm.Result is TourDTO changedTour)
-                    {
-                        _tourService.UpdateTour(changedTour);
-                    }
-                }
-
-                RefreshTours();
-            }
         }
 
         private void DeleteTour()
