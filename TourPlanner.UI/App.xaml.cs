@@ -14,11 +14,11 @@ namespace TourPlanner.UI
 {
     /// <summary>
     /// Interaction logic for App.xaml
-    /// DI configuration
+    /// Stores the DI configuration for the project.
     /// </summary>
     public partial class App : Application
     {
-        // Allows global acces to the custom app instance
+        // Allows global access to the custom app instance
         public new static App Current => (App)Application.Current!;
 
         // Stores the application's dependency injection service provider
@@ -49,6 +49,10 @@ namespace TourPlanner.UI
             mainWindow.Show();
         }
 
+        /// <summary>
+        /// The method that configures the services of the project
+        /// </summary>
+        /// <param name="services">The ServiceCollection as IServiceCollection</param>
         private void ConfigureServices(IServiceCollection services)
         {
             // DBContext

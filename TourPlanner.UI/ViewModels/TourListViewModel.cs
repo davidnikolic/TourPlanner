@@ -18,7 +18,7 @@ namespace TourPlanner.UI.ViewModels
 
         private ITourService _tourService;
 
-        private ISelectedTourService _selectedTourService;
+        private ISelectedTourService? _selectedTourService;
 
         public ObservableCollection<TourDTO> Tours { get; set; } = new();
 
