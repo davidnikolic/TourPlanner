@@ -4,7 +4,7 @@ using TourPlanner.BL.MockRepos;
 using TourPlanner.BL.Interfaces;
 using TourPlanner.DAL.Repositories.Interfaces;
 
-namespace Tourplanner.Tests
+namespace TourPlanner.Tests
 {
     public class BusinessLogicTests
     {
