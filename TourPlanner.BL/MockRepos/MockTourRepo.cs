@@ -4,28 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TourPlanner.BL.DTOs;
+using TourPlanner.DAL.Entities;
+using TourPlanner.DAL.Repositories.Interfaces;
 
 namespace TourPlanner.BL.MockRepos
 {
-    public class MockTourRepo
+    public class MockTourRepo : ITourRepository
     {
-        public List<TourDTO> Tours { get; set; } = new List<TourDTO>();
+        public List<TourEntity> Tours { get; set; } = new List<TourEntity>();
 
-        public void AddTour(TourDTO tour)
+        public void AddTour(TourEntity tour)
         {
             Tours.Add(tour);
         }
 
-        public List<TourDTO> GetTours() { 
-            return Tours; 
-        }
-
-        public TourDTO GetTour(int id)
+        public TourEntity? GetTour(int id)
         {
             return Tours.FirstOrDefault(i => i.Id == id);
         }
 
-        public void UpdateTour(TourDTO tour)
+        public IEnumerable<TourEntity> GetTours()
+        {
+            return Tours;
+        }
+
+        public void UpdateTour(TourEntity tour)
         {
             if (Tours.Where(i => i.Id ==  tour.Id).FirstOrDefault() != null)
             {
