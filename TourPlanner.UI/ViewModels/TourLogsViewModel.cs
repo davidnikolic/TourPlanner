@@ -48,9 +48,10 @@ namespace TourPlanner.UI.ViewModels
         }
 
         public TourLogsViewModel(
-            ITourLogService tourLogService, 
+            ITourLogService tourLogService,
             ISelectedTourService selectedTourService,
-            IDialogService dialogService) { 
+            IDialogService dialogService)
+        {
 
             _tourLogService = tourLogService;
             _selectedTourService = selectedTourService;
@@ -85,9 +86,9 @@ namespace TourPlanner.UI.ViewModels
 
         public void ModifyTourLog()
         {
-            if (SelectedTour == null || SelectedTour.Id <= 0)
+            if (selectedLog == null)
             {
-                MessageBox.Show("Bitte zuerst eine gültige Tour auswählen.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Bitte zuerst einen Tour-Log auswählen.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -104,12 +105,16 @@ namespace TourPlanner.UI.ViewModels
 
         public void DeleteTourLog()
         {
-            if (selectedLog != null)
+            if (selectedLog == null)
             {
-                _tourLogService?.DeleteTourLog(SelectedLog);
-
-                RefreshTourLogs();
+                MessageBox.Show("Bitte zuerst einen Tour-Log auswählen.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
+
+            _tourLogService?.DeleteTourLog(SelectedLog);
+
+            RefreshTourLogs();
+
         }
 
         private void OnSelectedTourChanged(TourDTO tour)
