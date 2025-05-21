@@ -18,11 +18,6 @@ namespace TourPlanner.BL.MockRepos
             Tours.Add(tour);
         }
 
-        public TourEntity? GetTour(int id)
-        {
-            return Tours.FirstOrDefault(i => i.Id == id);
-        }
-
         public IEnumerable<TourEntity> GetTours()
         {
             return Tours;

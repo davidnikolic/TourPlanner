@@ -1,65 +1,130 @@
 ﻿using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Services;
 using TourPlanner.BL.MockRepos;
+using TourPlanner.BL.Interfaces;
+using TourPlanner.DAL.Repositories.Interfaces;
 
 namespace Tourplanner.Tests
 {
     public class BusinessLogicTests
     {
+        
+        ITourRepository tourRepository;
+        ITourService tourService;
 
-        MockTourRepo mockTourRepo = new();
-        TourDTO t = new();
-
+        ITourLogRepository tourLogRepository;
+        ITourLogService tourLogService;
 
         [SetUp]
         public void Setup()
         {
-            t.Id = 1;
-            t.Name = "Testwanderung";
+            tourRepository = new MockTourRepo();
+            tourService = new TourService(tourRepository);
         }
 
         [Test]
         public void TestAddTour()
         {
-            mockTourRepo.AddTour(t);
-            Assert.That(mockTourRepo.Tours.First().Id, Is.EqualTo(t.Id));
+            // Arrange
+            TourDTO t = new()
+            {
+                Id = 1,
+                Name = "Test",
+                Description = "This is dummy data",
+                StartLocation = "A",
+                EndLocation = "B",
+            };
+
+            // Act
+            tourService.AddTour(t);
+
+            // Assert
+            Assert.That(tourRepository.GetTours().Count,
+                        Is.EqualTo(1));
+
+            Assert.That(tourRepository.GetTours().First().Id, 
+                Is.EqualTo(1));
         }
 
         [Test]
-        public void TestReadTour()
+        public void TestGetTours()
         {
-            TourDTO tour = mockTourRepo.GetTour(1);
-            
-            Assert.That(tour.Name, Is.EqualTo("Testwanderung"));
+
+            // Arrange
+            TourDTO t = new()
+            {
+                Id = 1,
+                Name = "Test",
+                Description = "This is dummy data",
+                StartLocation = "A",
+                EndLocation = "B",
+            };
+
+            TourDTO t2 = new()
+            {
+                Id = 2,
+                Name = "Test",
+                Description = "This is dummy data",
+                StartLocation = "A",
+                EndLocation = "B",
+            };
+            tourService.AddTour(t);
+            tourService.AddTour(t2);
+
+            // Act
+            List<TourDTO> tours = tourService.GetTours().ToList();
+
+
+            // Assert
+            Assert.That(tours.Count, Is.EqualTo(2));
+            Assert.That(tours.Any(t => t.Id == 1), Is.True);
+            Assert.That(tours.Any(t => t.Id == 2), Is.True);
         }
 
         [Test]
         public void TestUpdateTour()
         {
-            TourDTO OriginalTour = new TourDTO();
+            // Arrange
+            TourDTO t = new()
+            {
+                Id = 2,
+                Name = "Test",
+                Description = "This is dummy data",
+                StartLocation = "A",
+                EndLocation = "B",
+            };
 
-            OriginalTour.Id = 2;
-            OriginalTour.Name = "Testdorf";
+            tourService.AddTour(t);
 
+            // Act
+            t.EndLocation = "C";
+            tourService.UpdateTour(t);
 
+            // Assert
+            Assert.That(tourRepository.GetTours().Any(t => t.EndLocation == "C"), Is.True);
 
-            mockTourRepo.AddTour(OriginalTour);
-
-            TourDTO ChangedTour = OriginalTour;
-
-            ChangedTour.EstimatedTimeHours = 2;
-
-            mockTourRepo.UpdateTour(ChangedTour);
-
-            Assert.That(mockTourRepo.Tours.Where(i => i.Id == 2).First().Name, Is.EqualTo("Testdorf"));
-            Assert.That(mockTourRepo.Tours.Where(i => i.Id == 2).First().EstimatedTimeHours, Is.EqualTo(2));
         }
 
         [Test]
         public void TestRemoveTour()
         {
-            mockTourRepo.DeleteTour(t.Id);
-            Assert.That(mockTourRepo.Tours, Is.Empty); 
+            // Arrange
+            TourDTO t = new()
+            {
+                Id = 2,
+                Name = "Test",
+                Description = "This is dummy data",
+                StartLocation = "A",
+                EndLocation = "B",
+            };
+
+            tourService.AddTour(t);
+
+            // Act
+            tourService.DeleteTour(t);
+
+            // Assert
+            Assert.That(tourRepository.GetTours().Count, Is.EqualTo(0));
         }
     }
 }

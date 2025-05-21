@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TourPlanner.Tests
 {
-    internal class ViewModelTests
+    public class ViewModelTests
     {
     }
 }
