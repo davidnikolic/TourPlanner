@@ -37,6 +37,14 @@ namespace TourPlanner.Tests
             _dbContext = new TourPlannerDBContext(options);
 
             _repository = new TourLogRepository(_dbContext);
+
+            TourEntity t = new TourEntity()
+            {
+                Id = 18
+            };
+
+            _dbContext.Add(t);
+            _dbContext.SaveChanges();
         }
 
         [Test]
@@ -46,8 +54,8 @@ namespace TourPlanner.Tests
             var log = new TourLogEntity
             {
                 // existing Tour 
-                TourId = 18,                        
-                LogDate = DateTime.UtcNow,          
+                TourId = 18,
+                LogDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
                 Comment = "Test Log für Unit Test",
                 Difficulty = Enums.DifficultyLevel.medium,
                 DistanceKm = 12.3f,
@@ -89,7 +97,7 @@ namespace TourPlanner.Tests
             var log = new TourLogEntity
             {
                 TourId = 18,
-                LogDate = DateTime.UtcNow,
+                LogDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
                 Comment = "Original Comment",
                 Difficulty = Enums.DifficultyLevel.medium,
                 DistanceKm = 5.0f,
@@ -121,7 +129,7 @@ namespace TourPlanner.Tests
             var log = new TourLogEntity
             {
                 TourId = 18,
-                LogDate = DateTime.UtcNow,
+                LogDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
                 Comment = "Log to Delete",
                 Difficulty = Enums.DifficultyLevel.easy,
                 DistanceKm = 3.2f,
@@ -145,6 +153,13 @@ namespace TourPlanner.Tests
         [TearDown]
         public void Cleanup()
         {
+            var tour = _dbContext.Tours.FirstOrDefault(t => t.Id == 18);
+            if (tour != null)
+            {
+                _dbContext.Tours.Remove(tour);
+                _dbContext.SaveChanges();
+            }
+
             _dbContext.Dispose();
         }
     }

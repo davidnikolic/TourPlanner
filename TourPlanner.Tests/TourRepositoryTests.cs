@@ -155,6 +155,19 @@ namespace TourPlanner.Tests
         [TearDown]
         public void Cleanup()
         {
+            // Alle Test-Touren, die bestimmte Namen haben, entfernen
+            var testTourNames = new[] { "List Tour", "Updated Name", "Old Name", "Delete Me", "Test Tour" };
+
+            var toursToDelete = _dbContext.Tours
+                .Where(t => testTourNames.Contains(t.Name))
+                .ToList();
+
+            if (toursToDelete.Any())
+            {
+                _dbContext.Tours.RemoveRange(toursToDelete);
+                _dbContext.SaveChanges();
+            }
+
             _dbContext.Dispose();
         }
     }
