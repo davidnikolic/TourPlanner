@@ -11,6 +11,7 @@ using TourPlanner.UI.Interfaces;
 using TourPlanner.BL.DTOs;
 using TourPlanner.UI.Views.Components;
 using TourPlanner.BL.Services;
+using System.Windows;
 
 
 namespace TourPlanner.UI.ViewModels
@@ -68,6 +69,12 @@ namespace TourPlanner.UI.ViewModels
 
         private void ModifyTour()
         {
+            if (SelectedTour == null || SelectedTour.Id <= 0)
+            {
+                MessageBox.Show("Bitte zuerst eine gültige Tour auswählen.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             var tour = _dialogService.DisplayTourPopUp("Modify Tour", SelectedTour);
             if (tour != null) _tourService.UpdateTour(tour);
 
@@ -77,12 +84,16 @@ namespace TourPlanner.UI.ViewModels
 
         private void DeleteTour()
         {
-            if (SelectedTour != null)
+            if (SelectedTour == null || SelectedTour.Id <= 0)
             {
-                _tourService.DeleteTour(SelectedTour);
-                _selectedTourService.SelectedTour = null;
-                RefreshTours();
+                MessageBox.Show("Bitte zuerst eine gültige Tour auswählen.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
+
+            _tourService.DeleteTour(SelectedTour);
+            _selectedTourService.SelectedTour = null;
+            RefreshTours();
+
         }
 
         private void RefreshTours()

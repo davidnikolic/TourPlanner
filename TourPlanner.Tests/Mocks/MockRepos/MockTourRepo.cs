@@ -25,7 +25,7 @@ namespace TourPlanner.BL.MockRepos
 
         public void UpdateTour(TourEntity tour)
         {
-            if (Tours.Where(i => i.Id ==  tour.Id).FirstOrDefault() != null)
+            if (Tours.FindIndex(t => t.Id == tour.Id) >= 0)
             {
                 DeleteTour(tour.Id);
                 AddTour(tour);

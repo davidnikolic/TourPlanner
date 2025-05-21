@@ -34,7 +34,7 @@ namespace TourPlanner.BL.Services
                 {
                     selectedTour = value;
                     // The Action gets invoked when the Tour changes.
-                    SelectedTourChanged.Invoke(value);
+                    SelectedTourChanged?.Invoke(value);
                 }
             }
         }   
