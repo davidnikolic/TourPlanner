@@ -30,25 +30,52 @@
             <components:TourActionButtons DockPanel.Dock="Right" HorizontalAlignment="Right" />
         </DockPanel>
         <!-- Table -->
-        <ListView Grid.Row="2" 
-          ItemsSource="{Binding TourLogs}" 
-          SelectedItem="{Binding SelectedLog}"
-          ScrollViewer.VerticalScrollBarVisibility="Auto"
-          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-          Margin="10">
-            <ListView.ItemTemplate >
-                <DataTemplate>
-                    <Grid Margin="4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="200"/>
-                        </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Header -->
+                <Grid Margin="0,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Datum" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="1" Text="Kommentar" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="2" Text="Schwierigkeit" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="3" Text="Distanz (km)" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="4" Text="Dauer (h)" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="5" Text="Bewertung" FontWeight="Bold"/>
+                </Grid>
 
-                        <TextBlock Grid.Column="0" Text="{Binding LogDate, StringFormat={}{0:dd.MM.yyyy}}" />
-                        <TextBlock Grid.Column="1" Text="{Binding Comment}" TextWrapping="Wrap"/>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                <!-- ListView -->
+                <ListView 
+              ItemsSource="{Binding TourLogs}" 
+              SelectedItem="{Binding SelectedLog}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding LogDate, StringFormat={}{0:dd.MM.yyyy}}" />
+                                <TextBlock Grid.Column="1" Text="{Binding Comment}" TextWrapping="Wrap"/>
+                                <TextBlock Grid.Column="2" Text="{Binding Difficulty}" />
+                                <TextBlock Grid.Column="3" Text="{Binding DistanceKm}" />
+                                <TextBlock Grid.Column="4" Text="{Binding DurationHours}" />
+                                <TextBlock Grid.Column="5" Text="{Binding Rating}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>
