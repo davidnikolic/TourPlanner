@@ -42,6 +42,25 @@ namespace TourPlanner.UI
         {
             base.OnStartup(e);
 
+            // DB-Verbindung testen
+            using (var scope = Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<TourPlannerDBContext>();
+                if (!dbContext.Database.CanConnect())
+                {
+                    MessageBox.Show(
+                        "Die Verbindung zur Datenbank konnte nicht hergestellt werden.\n" +
+                        "Bitte überprüfen Sie Ihre Konfiguration und versuchen Sie es erneut.",
+                        "Verbindungsfehler",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
+
+                    Shutdown(); // Beendet die Anwendung sauber
+                    return;
+                }
+            }
+
             var mainWindowViewModel = Services.GetRequiredService<MainWindowViewModel>();
 
             var mainWindow = new MainWindow
