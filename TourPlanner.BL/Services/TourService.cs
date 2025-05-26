@@ -21,8 +21,6 @@ namespace TourPlanner.BL.Services
             _tourRepository = TourRepo;
         }
 
-        
-
         public void AddTour(TourDTO tour)
         {
            TourEntity entity = ToEntity(tour);
@@ -38,6 +36,19 @@ namespace TourPlanner.BL.Services
                 .ToList();
 
             return tours;
+        }
+
+        public void UpdateTourMapImagePath(int tourId, string imagePath)
+        {
+            var entity = _tourRepository.GetTourById(tourId);
+            if (entity == null) return;
+
+            entity.RouteImagePath = imagePath;
+            _tourRepository.UpdateTour(entity);
+        }
+        public int GetLastTourId()
+        {
+            return _tourRepository.GetLastTourId();
         }
 
         public void UpdateTour(TourDTO tour)

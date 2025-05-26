@@ -13,6 +13,7 @@ using TourPlanner.BL.Services;
 using TourPlanner.DAL.Entities;
 using static TourPlanner.DAL.Entities.Enums;
 using TourPlanner.UI;
+using TourPlanner.UI.Map;
 
 namespace TourPlanner.UI.ViewModels
 {
@@ -126,7 +127,8 @@ namespace TourPlanner.UI.ViewModels
                 MessageBox.Show("Please fill out all fields correctly.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-
+            MapEventService.RequestMapUpdate(StartLocation, EndLocation);
+            MapEventService.RequestMapImageSave();
             Result = new TourDTO
             {
                 Name = Name,

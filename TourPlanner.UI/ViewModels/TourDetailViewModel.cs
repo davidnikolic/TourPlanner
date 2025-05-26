@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Interfaces;
+using TourPlanner.UI.Map;
 
 namespace TourPlanner.UI.ViewModels
 {
@@ -24,7 +25,7 @@ namespace TourPlanner.UI.ViewModels
             {
                 selectedTour = value;
                 OnPropertyChanged();
-
+                MapEventService.RequestMapUpdate(selectedTour.StartLocation, selectedTour.EndLocation);
                 ResetTabState();  
                 EvaluateLazyLoading();
             }

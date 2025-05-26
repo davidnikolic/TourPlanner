@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,15 @@ namespace TourPlanner.BL.MockRepos
 
         }
 
+        public TourEntity GetTourById(int id)
+        {
+            return Tours.FirstOrDefault(t => t.Id == id);
+        }
+
+        public int GetLastTourId()
+        {
+            return Tours.Max(t => t.Id);
+        }
         public void DeleteTour(int id)
         {
             Tours.RemoveAll(i => i.Id == id);

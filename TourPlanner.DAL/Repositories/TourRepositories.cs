@@ -38,7 +38,15 @@ namespace TourPlanner.DAL.Repositories
             _dbContext.Entry(existingTour).CurrentValues.SetValues(tour);
             _dbContext.SaveChanges();
         }
+        public TourEntity GetTourById(int id)
+        {
+            return _dbContext.Tours.FirstOrDefault(t => t.Id == id);
+        }
 
+        public int GetLastTourId()
+        {
+            return _dbContext.Tours.Max(t => t.Id);
+        }
         public void DeleteTour(int id)
         {
             var tour = _dbContext.Tours.Find(id);

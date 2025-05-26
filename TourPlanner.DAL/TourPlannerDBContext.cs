@@ -24,7 +24,7 @@ namespace TourPlanner.DAL
         // Configure db connection
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var envPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "res", ".env");
+            var envPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".env");
             Env.Load(envPath);
 
             string host = Env.GetString("DB_HOST");
@@ -72,16 +72,16 @@ namespace TourPlanner.DAL
                 entity.ToTable("tour_logs");
                 entity.Property(e => e.Id).HasColumnName("id");
                 entity.Property(e => e.TourId).HasColumnName("tour_id");
-                entity.Property(e => e.LogDate).HasColumnName("log_date").HasColumnType("timestamp without time zone");
+                entity.Property(e => e.LogDate).HasColumnName("log_date");
                 entity.Property(e => e.Comment).HasColumnName("comment");
                 entity.Property(e => e.Difficulty).HasColumnName("difficulty");
                 entity.Property(e => e.DistanceKm).HasColumnName("distance_km");
                 entity.Property(e => e.DurationHours).HasColumnName("duration_hours");
                 entity.Property(e => e.Rating).HasColumnName("rating");
 
-                entity.HasOne(e => e.Tour)               
+                entity.HasOne(e => e.Tour)
                       .WithMany(t => t.TourLogs)         // Tour can have many tourlogs
-                      .HasForeignKey(e => e.TourId)  
+                      .HasForeignKey(e => e.TourId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
         }

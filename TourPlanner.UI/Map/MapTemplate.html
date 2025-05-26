@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Tour Route Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        html, body, #map {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script>
+        let map;
+        let startMarker, endMarker;
+        let line;
+
+        function initMap(startLat, startLng, endLat, endLng) {
+            // Initialize map if it doesn't exist
+            if (!map) {
+                map = L.map('map');
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 18
+                }).addTo(map);
+            }
+
+            // Create or update markers
+            if (startMarker) {
+                startMarker.setLatLng([startLat, startLng]);
+                endMarker.setLatLng([endLat, endLng]);
+            } else {
+                startMarker = L.marker([startLat, startLng]).addTo(map).bindPopup('Start');
+                endMarker = L.marker([endLat, endLng]).addTo(map).bindPopup('End');
+            }
+
+            // Create or update line/polyline
+            const points = [[startLat, startLng], [endLat, endLng]];
+            if (line) {
+                line.setLatLngs(points);
+            } else {
+                line = L.polyline(points, { color: 'blue' }).addTo(map);
+            }
+
+            // Create a bounds object and fit the map to it
+            const bounds = L.latLngBounds([
+                [startLat, startLng],
+                [endLat, endLng]
+            ]);
+
+            // Add some padding around the bounds
+            map.fitBounds(bounds, {
+                padding: [50, 50],  // Padding in pixels [top/bottom, left/right]
+                maxZoom: 13         // Limit how much it zooms in for short distances
+            });
+
+            // Open text/pop up for the marker
+            setTimeout(() => {
+                startMarker.openPopup();
+            }, 300);
+        }
+
+        // Function to check if map is fully loaded/for screenshot process
+        function isMapReady() {
+            return map && map._loaded;
+        }
+    </script>
+</body>
+</html>

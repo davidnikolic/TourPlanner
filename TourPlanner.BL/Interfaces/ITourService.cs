@@ -16,5 +16,7 @@ namespace TourPlanner.BL.Interfaces
         List<TourDTO> GetTours();
 
         void UpdateTour(TourDTO tour);
+        void UpdateTourMapImagePath(int tourId, string imagePath);
+        int GetLastTourId();
     }
 }

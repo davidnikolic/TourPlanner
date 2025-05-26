@@ -13,6 +13,8 @@ namespace TourPlanner.DAL.Repositories.Interfaces
         IEnumerable<TourEntity> GetTours();
 
         void UpdateTour(TourEntity tour);
-        void DeleteTour(int id);   
+        void DeleteTour(int id);
+        TourEntity GetTourById(int id);
+        int GetLastTourId();
     }
 }
