@@ -9,6 +9,8 @@ using TourPlanner.DAL.Entities;
 using TourPlanner.DAL.Repositories.Interfaces;
 using TourPlanner.DAL.Repositories;
 using System.Runtime.CompilerServices;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace TourPlanner.BL.Services
 {
@@ -101,6 +103,56 @@ namespace TourPlanner.BL.Services
             };
         }
 
-        
+        public List<TourDTO> SearchTours(string searchTerm)
+        {
+            // Get all tours
+            var allTourEntities = _tourRepository.GetTours().ToList();
+
+            // If search term is null or empty, return all tours as DTOs
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return allTourEntities.Select(ToModel).ToList();
+            }
+
+            var lowerSearchTerm = searchTerm.ToLower().Trim();
+
+            // Filter the list of tours based on the search term
+            var filteredEntities = allTourEntities.Where(t =>
+            {
+                // Check if the search term appears in any of the string fields:
+                // - Name
+                // - Description
+                // - StartLocation
+                // - EndLocation
+                if ((t.Name != null && t.Name.ToLower().Contains(lowerSearchTerm)) ||
+                    (t.Description != null && t.Description.ToLower().Contains(lowerSearchTerm)) ||
+                    (t.StartLocation != null && t.StartLocation.ToLower().Contains(lowerSearchTerm)) ||
+                    (t.EndLocation != null && t.EndLocation.ToLower().Contains(lowerSearchTerm)))
+                {
+                    return true;
+                }
+
+                // Check if the search term appears in the TransportType field
+                if (t.TransportType.ToString().ToLower().Contains(lowerSearchTerm))
+                {
+                    return true;
+                }
+
+                // Check if the search term appears in numeric fields 
+                // Numeric number to string and "."
+                if (t.DistanceKm.ToString(CultureInfo.InvariantCulture).ToLower().Contains(lowerSearchTerm) ||
+                    t.EstimatedTimeHours.ToString(CultureInfo.InvariantCulture).ToLower().Contains(lowerSearchTerm))
+                {
+                    return true;
+                }
+
+                // If none of the above conditions are met, the tour does not match the search term
+                return false;
+
+            }).ToList();
+
+            //Convert the filtered entities to TourDTO objects for UI consumption
+            return filteredEntities.Select(ToModel).ToList();
+        }
     }
 }

@@ -34,22 +34,39 @@ namespace TourPlanner.UI.Map.Services
 
             // Make sure WebView2 is initialized
             await webView.EnsureCoreWebView2Async();
-            // Load the local HTML template
-            webView.CoreWebView2.Navigate(new Uri(htmlPath).ToString());
-
-            // When loading completes, execute JS to initialize the map and set flag
-            webView.CoreWebView2.NavigationCompleted += (_, _) =>
+            // Only init once
+            if (!_isMapInitialized)
             {
-                string js = $"initMap(48.2082, 16.3738, 47.8095, 13.0550)";
-                webView.CoreWebView2.ExecuteScriptAsync(js);
-                _isMapInitialized = true;
-            };
+                // Register event handler for when the map page has finished loading
+                webView.CoreWebView2.NavigationCompleted += (sender, args) =>
+                {
+                    // Check if the CoreWebView2 instance is valid and if map is not already initialized
+                    if (sender is CoreWebView2 coreWebView2 && !_isMapInitialized)
+                    {
+                        // When loading completes, execute JS to initialize the map and set flag
+                        string js = $"initMap(48.2082, 16.3738, 47.8095, 13.0550)"; 
+                        coreWebView2.ExecuteScriptAsync(js);
+                        _isMapInitialized = true; 
+                    }
+                };
+            }
+            // Load the HTML file into the WebView2
+            webView.CoreWebView2.Navigate(new Uri(htmlPath).ToString());
         }
 
         public async Task UpdateMapAsync(object webViewObj, string startLocation, string endLocation)
         {
             if (webViewObj is not WebView2 webView) return;
 
+            await webView.EnsureCoreWebView2Async();
+
+            if (webView.CoreWebView2 == null) return;
+
+            if (string.IsNullOrEmpty(startLocation) || string.IsNullOrEmpty(endLocation))
+            {
+                startLocation = "Vienna, Austria"; 
+                endLocation = "Salzburg, Austria";
+            }
 
             var startCoords = _geoHelper.GetCoordinates(startLocation);
             var endCoords = _geoHelper.GetCoordinates(endLocation);
@@ -60,6 +77,7 @@ namespace TourPlanner.UI.Map.Services
             // Build the JavaScript string to call initMap with new coordinates
             string js = $"initMap({Format(startCoords.Lat)}, {Format(startCoords.Lng)}, {Format(endCoords.Lat)}, {Format(endCoords.Lng)})";
 
+            await Task.Delay(150); 
             await webView.CoreWebView2.ExecuteScriptAsync(js);
         }
 
@@ -71,6 +89,7 @@ namespace TourPlanner.UI.Map.Services
             {
                 // WebView2 initialized and map ready with 2sec delay
                 await webView.EnsureCoreWebView2Async();
+                if (webView.CoreWebView2 == null) return;
                 await Task.Delay(2000);
 
                 // Open save dialog for the user to choose file location and name

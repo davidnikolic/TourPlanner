@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TourPlanner.BL.DTOs;
+using TourPlanner.DAL.Entities;
 
 namespace TourPlanner.BL.Interfaces
 {
@@ -13,5 +14,6 @@ namespace TourPlanner.BL.Interfaces
         List<TourLogDTO> GetTourLogsForTour(int tourId);
         void UpdateTourLog(TourLogDTO log);
         void DeleteTourLog(TourLogDTO log);
+        List<TourLogDTO> SearchTourLogs(string searchTerm);
     }
 }

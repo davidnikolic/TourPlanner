@@ -72,7 +72,9 @@ namespace TourPlanner.DAL
                 entity.ToTable("tour_logs");
                 entity.Property(e => e.Id).HasColumnName("id");
                 entity.Property(e => e.TourId).HasColumnName("tour_id");
-                entity.Property(e => e.LogDate).HasColumnName("log_date");
+                entity.Property(e => e.LogDate)
+                      .HasColumnName("log_date")
+                      .HasColumnType("date");
                 entity.Property(e => e.Comment).HasColumnName("comment");
                 entity.Property(e => e.Difficulty).HasColumnName("difficulty");
                 entity.Property(e => e.DistanceKm).HasColumnName("distance_km");

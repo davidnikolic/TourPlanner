@@ -23,7 +23,7 @@ namespace TourPlanner.UI.ViewModels
         public DateTime LogDate
         {
             get => Result.LogDate;
-            set { Result.LogDate = value; OnPropertyChanged(); }
+            set { Result.LogDate = value.Date; OnPropertyChanged(); }
         }
 
         public string Comment
