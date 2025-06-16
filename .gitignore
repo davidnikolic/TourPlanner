@@ -71,6 +71,7 @@ _ReSharper*/
 # Ignore environment files
 TourPlanner.DAL/.env
 TourPlanner.Tests/.env
+*.env
 
 # MAUI or Xamarin specific
 *.apk
