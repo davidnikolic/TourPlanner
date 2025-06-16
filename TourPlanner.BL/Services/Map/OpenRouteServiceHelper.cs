@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using DotNetEnv;
 
 namespace TourPlanner.BL.Services.Map
 {
@@ -18,9 +19,11 @@ namespace TourPlanner.BL.Services.Map
 
         public OpenRouteServiceHelper()
         {
+            var envPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".env");
+            Env.Load(envPath);
             // Tries to load the API key from environment variables
-            ApiKey = Environment.GetEnvironmentVariable("TOURPLANNER_APIKEY", EnvironmentVariableTarget.Process)
-                       ?? throw new Exception("API-Key NOT FOUND. You need to set environment variables 'TOURPLANNER_APIKEY'");
+            ApiKey = Environment.GetEnvironmentVariable("TOURPLANNER_APIKEY")
+             ?? throw new Exception("API-Key not found.");
         }
 
         public (double Lat, double Lng) GetCoordinates(string locationName)

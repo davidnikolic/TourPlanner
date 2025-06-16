@@ -62,6 +62,22 @@ namespace TourPlanner.UI.ViewModels
             RefreshTours();
         }
 
+        public TourListViewModel(
+            ITourService tourService,
+            ISelectedTourService selectedTourService,
+            IDialogService dialogService
+            )
+        {
+            _tourService = tourService;
+            _selectedTourService = selectedTourService;
+            _dialogService = dialogService;
+            _tourLogsViewModel.PropertyChanged += OnTourLogsViewModelPropertyChanged;
+            var tours = _tourService.GetTours();
+
+            Tours = new ObservableCollection<TourDTO>(tours);
+            RefreshTours();
+        }
+
         private void OnTourLogsViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             // Check if the property that changed is "SearchQuery"
