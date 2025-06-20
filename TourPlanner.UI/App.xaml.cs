@@ -78,7 +78,6 @@ namespace TourPlanner.UI
             services.AddSingleton<TourListViewModel>();
             services.AddSingleton<TourLogsViewModel>();
             services.AddSingleton<TourDetailViewModel>();
-            services.AddTransient<TourDialogViewModel>();
 
             // UI Services
             services.AddSingleton<IMapViewService, MapViewService>();
