@@ -14,7 +14,7 @@ namespace TourPlanner.UI.Services
     {
         public TourLogDTO? DisplayTourLogPopUp(string title, TourLogDTO tourLog = null)
         {
-            var dialog = new GenericDialogWindow();
+            var dialog = new GenericDialogWindowView();
             var vm = new GenericDialogViewModel();
 
             dialog.DataContext = vm;

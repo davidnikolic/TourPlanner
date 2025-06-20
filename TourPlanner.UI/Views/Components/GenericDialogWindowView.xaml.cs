@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace TourPlanner.UI.Views.Components
 {
     /// <summary>
-    /// Interaction logic for GenericDialogWindow.xaml
+    /// Interaction logic for GenericDialogWindowView.xaml
     /// </summary>
-    public partial class GenericDialogWindow : Window
+    public partial class GenericDialogWindowView : Window
     {
-        public GenericDialogWindow()
+        public GenericDialogWindowView()
         {
             InitializeComponent();
         }

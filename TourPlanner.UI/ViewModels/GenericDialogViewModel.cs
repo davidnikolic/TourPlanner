@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TourPlanner.UI.ViewModels.Components;
 
 namespace TourPlanner.UI.ViewModels
 {
@@ -11,9 +12,10 @@ namespace TourPlanner.UI.ViewModels
     {
         public event Action? CloseRequested;
 
-        public ObservableCollection<string> Namen { get; } = new()
+        public ObservableCollection<FormField> Fields { get; } = new()
         {
-            "Alice", "Bob", "Charlie"
+            new() { Label = "Name", Type = "TextBox", Value = "David"},
+            new() { Label = "Typ", Type = "ComboBox", Value = "Wandern", Options = new[] { "Wandern", "Rad", "Auto" } }
         };
 
         private void ConfirmActivity()
