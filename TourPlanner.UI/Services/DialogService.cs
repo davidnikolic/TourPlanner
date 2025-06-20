@@ -14,8 +14,8 @@ namespace TourPlanner.UI.Services
     {
         public TourLogDTO? DisplayTourLogPopUp(string title, TourLogDTO tourLog = null)
         {
-            var dialog = new TourLogDialogWindowView();
-            var vm = new TourLogDialogViewModel(title, tourLog);
+            var dialog = new GenericDialogWindow();
+            var vm = new GenericDialogViewModel();
 
             dialog.DataContext = vm;
 
@@ -23,7 +23,7 @@ namespace TourPlanner.UI.Services
 
             if (dialog.ShowDialog() == true)
             {
-                return vm.Result;
+                //return vm.Result;
             }
 
             return null;
