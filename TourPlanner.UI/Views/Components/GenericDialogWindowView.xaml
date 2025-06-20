@@ -47,11 +47,12 @@
                                             <Setter Property="ContentTemplate">
                                                 <Setter.Value>
                                                     <DataTemplate>
-                                                        <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
+                                                        <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Error}" />
                                                     </DataTemplate>
                                                 </Setter.Value>
                                             </Setter>
                                         </DataTrigger>
+
 
                                         <!-- ComboBox -->
                                         <DataTrigger Binding="{Binding Type}" Value="ComboBox">

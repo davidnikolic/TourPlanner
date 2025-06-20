@@ -12,8 +12,23 @@ namespace TourPlanner.UI.ViewModels.Components
 
         public string Type { get; set; } = "TextBox";
 
-        public object? Value { get; set; }
+        private string? _error;
+        public string? Error
+        {
+            get => _error;
+            set { _error = value; }
+        }
+
+        private object? _value;
+        public object? Value
+        {
+            get => _value;
+            set { _value = value; }
+        }
+
 
         public IEnumerable<object>? Options { get; set; }
+
+        public bool IsValid => string.IsNullOrEmpty(Error);
     }
 }

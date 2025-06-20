@@ -129,6 +129,7 @@ namespace TourPlanner.UI.ViewModels
             if (tourLog != null)
             {
                 tourLog.TourId = selectedTour.Id;
+                tourLog.Id = selectedLog.Id;
                 _tourLogService.UpdateTourLog(tourLog);
             }
 
