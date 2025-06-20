@@ -5,48 +5,98 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TourPlanner.UI.Views.Components"
         mc:Ignorable="d"
-        Title="Add New Tour Log"
+        Title="Generic Pop-Up"
         Height="500" Width="600">
 
-    <ItemsControl ItemsSource="{Binding Fields}">
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <StackPanel Margin="6">
-                    <TextBlock Text="{Binding Label}" />
-                    <ContentControl Content="{Binding}">
-                        <ContentControl.Style>
-                            <Style TargetType="ContentControl">
-                                <Style.Triggers>
 
-                                    <!-- TextBox -->
-                                    <DataTrigger Binding="{Binding Type}" Value="TextBox">
-                                        <Setter Property="ContentTemplate">
-                                            <Setter.Value>
-                                                <DataTemplate>
-                                                    <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
-                                                </DataTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-                                    <!-- ComboBox -->
-                                    <DataTrigger Binding="{Binding Type}" Value="ComboBox">
-                                        <Setter Property="ContentTemplate">
-                                            <Setter.Value>
-                                                <DataTemplate>
-                                                    <ComboBox ItemsSource="{Binding Options}"
-                                                          SelectedItem="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
-                                                </DataTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
+        <TextBlock Text="{Binding PopUpText}"
+               FontSize="20"
+               FontWeight="Bold"
+               HorizontalAlignment="Center"
+               Margin="0,0,0,20"/>
 
-                                </Style.Triggers>
-                            </Style>
-                        </ContentControl.Style>
-                    </ContentControl>
-                </StackPanel>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding Fields}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,10,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Label, StringFormat={}{0}:}" Margin="5" VerticalAlignment="Center"/>
+
+                        <ContentControl Grid.Row="0" Grid.Column="1" Content="{Binding}">
+                            <ContentControl.Style>
+                                <Style TargetType="ContentControl">
+                                    <Style.Triggers>
+
+                                        <!-- TextBox -->
+                                        <DataTrigger Binding="{Binding Type}" Value="TextBox">
+                                            <Setter Property="ContentTemplate">
+                                                <Setter.Value>
+                                                    <DataTemplate>
+                                                        <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
+                                                    </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+
+                                        <!-- ComboBox -->
+                                        <DataTrigger Binding="{Binding Type}" Value="ComboBox">
+                                            <Setter Property="ContentTemplate">
+                                                <Setter.Value>
+                                                    <DataTemplate>
+                                                        <ComboBox ItemsSource="{Binding Options}"
+                                                      SelectedItem="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
+                                                    </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+
+                                        <!-- DatePicker -->
+                                        <DataTrigger Binding="{Binding Type}" Value="DatePicker">
+                                            <Setter Property="ContentTemplate">
+                                                <Setter.Value>
+                                                    <DataTemplate>
+                                                        <DatePicker SelectedDate="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
+                                                    </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="Apply"
+                Padding="12,6"
+                Background="#3B82F6"
+                Foreground="White"
+                FontWeight="SemiBold"
+                BorderThickness="0"
+                Width="100"
+                Height="32"
+                Command="{Binding ConfirmCommand}"/>
+        </StackPanel>
+    </Grid>
+
+
 </Window>
