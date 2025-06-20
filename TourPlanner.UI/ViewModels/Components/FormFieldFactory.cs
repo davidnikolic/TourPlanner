@@ -26,6 +26,20 @@ namespace TourPlanner.UI.ViewModels.Components
             return fields;
         }
 
+        public static ObservableCollection<FormField> CreateForTour(TourDTO? dto)
+        {
+            return new ObservableCollection<FormField>
+            {
+                new() { Label = "Name", Type = "TextBox", Value = dto?.Name ?? "" },
+                new() { Label = "Beschreibung", Type = "TextBox", Value = dto?.Description ?? "" },
+                new() { Label = "Startort", Type = "TextBox", Value = dto?.StartLocation ?? "" },
+                new() { Label = "Zielort", Type = "TextBox", Value = dto?.EndLocation ?? "" },
+                new() { Label = "Transportmittel", Type = "ComboBox", Value = dto?.TransportType ?? TransportType.foot, Options = Enum.GetValues(typeof(TransportType)).Cast<object>() },
+                new() { Label = "Distanz (in km)", Type = "TextBox", Value = dto?.DistanceKm ?? 0f },
+                new() { Label = "Dauer (in h)", Type = "TextBox", Value = dto?.EstimatedTimeHours ?? 0f }
+            };
+        }
+
         public static TourLogDTO ToTourLogDTO(ObservableCollection<FormField> fields)
         {
             var dict = fields.ToDictionary(f => f.Label, f => f.Value);
@@ -38,6 +52,22 @@ namespace TourPlanner.UI.ViewModels.Components
                 DistanceKm = float.TryParse(dict["Distanz (in km)"]?.ToString(), out var km) ? km : 0f,
                 DurationHours = float.TryParse(dict["Dauer (in h)"]?.ToString(), out var h) ? h : 0f,
                 Rating = (SatisfactionRating)(dict["Bewertung"] ?? SatisfactionRating.neutral)
+            };
+        }
+
+        public static TourDTO ToTourDTO(ObservableCollection<FormField> fields)
+        {
+            var dict = fields.ToDictionary(f => f.Label, f => f.Value);
+
+            return new TourDTO
+            {
+                Name = dict["Name"]?.ToString() ?? "",
+                Description = dict["Beschreibung"]?.ToString() ?? "",
+                StartLocation = dict["Startort"]?.ToString() ?? "",
+                EndLocation = dict["Zielort"]?.ToString() ?? "",
+                TransportType = (TransportType)(dict["Transportmittel"] ?? TransportType.foot),
+                DistanceKm = float.TryParse(dict["Distanz (in km)"]?.ToString(), out var km) ? km : 0f,
+                EstimatedTimeHours = float.TryParse(dict["Dauer (in h)"]?.ToString(), out var hours) ? hours : 0f
             };
         }
     }

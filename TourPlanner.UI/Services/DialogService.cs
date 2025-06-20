@@ -34,16 +34,18 @@ namespace TourPlanner.UI.Services
 
         public TourDTO? DisplayTourPopUp(string title, TourDTO tour = null)
         {
-            var dialog = new TourDialogWindowView();
-            var vm = new TourDialogViewModel(title, tour);
+            var fields = FormFieldFactory.CreateForTour(tour);
+            var vm = new GenericDialogViewModel(title, fields);
 
-            dialog.DataContext = vm;
-
+            var dialog = new GenericDialogWindowView { DataContext = vm };
             vm.CloseRequested += () => dialog.DialogResult = true;
 
             if (dialog.ShowDialog() == true)
             {
-                return vm.Result;
+                var res = FormFieldFactory.ToTourDTO(fields);
+
+                return res;
+
             }
 
             return null;

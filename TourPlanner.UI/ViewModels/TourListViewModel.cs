@@ -111,6 +111,8 @@ namespace TourPlanner.UI.ViewModels
             }
 
             var tour = _dialogService.DisplayTourPopUp("Modify Tour", SelectedTour);
+            tour.Id = SelectedTour.Id;
+
             if (tour != null) _tourService.UpdateTour(tour);
 
             RefreshTours();

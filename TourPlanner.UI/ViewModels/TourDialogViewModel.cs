@@ -11,7 +11,7 @@ using TourPlanner.BL.Interfaces;
 using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Services;
 using TourPlanner.DAL.Entities;
-using static TourPlanner.DAL.Entities.Enums;
+using static TourPlanner.BL.DTOs.EnumsDTO;
 using TourPlanner.UI;
 using TourPlanner.UI.Map;
 

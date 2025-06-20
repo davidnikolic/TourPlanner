@@ -77,7 +77,7 @@ namespace TourPlanner.BL.Services
                 StartLocation = entity.StartLocation,
                 EndLocation = entity.EndLocation,
                 Description = entity.Description,
-                TransportType = entity.TransportType,
+                TransportType = (EnumsDTO.TransportType)entity.TransportType,
                 DistanceKm = entity.DistanceKm,
                 EstimatedTimeHours = entity.EstimatedTimeHours,
                 RouteImagePath = entity.RouteImagePath
@@ -96,7 +96,7 @@ namespace TourPlanner.BL.Services
                 StartLocation = model.StartLocation,
                 EndLocation = model.EndLocation,
                 Description = model.Description,
-                TransportType = model.TransportType,
+                TransportType = (Enums.TransportType)model.TransportType,
                 DistanceKm = model.DistanceKm,
                 EstimatedTimeHours = model.EstimatedTimeHours,
                 RouteImagePath = model.RouteImagePath
