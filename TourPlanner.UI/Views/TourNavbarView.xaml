@@ -25,23 +25,21 @@
                     DockPanel.Dock="Right">
             <Menu>
                 <MenuItem Header="_File">
-                    <MenuItem Header="New Tour" InputGestureText="Strg+N" Command="{Binding FileCommand}" />
-                    <MenuItem Header="New Tour-Log" InputGestureText="Strg+Umschalt+N" Command="{Binding NewWindowCommand}" />
+                    <MenuItem Header="New Tour" Command="{Binding AddTourCommand}" />
+                    <MenuItem Header="New Tour-Log" Command="{Binding AddTourLogCommand}" />
                     <Separator />
-                    <MenuItem Header="Import..." InputGestureText="Strg+O" Command="{Binding OpenCommand}" />
-                    <MenuItem Header="Export..." InputGestureText="Strg+S" Command="{Binding SaveCommand}" />
+                    <MenuItem Header="Import...">
+                        <MenuItem Header="from .csv" Command="{Binding ImportFromCsvCommand}" />
+                        <MenuItem Header="from .json" Command="{Binding ImportFromJSONCommand}" />
+                    </MenuItem>
+                    <MenuItem Header="Export..." >
+                        <MenuItem Header="Selected Tour" Command="{Binding ExportSelectedTourCommand}" />
+                        <MenuItem Header="All Tours" Command="{Binding ExportAllToursCommand}" />
+                    </MenuItem>
                     <Separator />
                     <MenuItem Header="Quit" Command="{Binding ExitCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Edit">
-                    <MenuItem Header="Neue Registerkarte" InputGestureText="Strg+N" Command="{Binding NewTabCommand}" />
-                    <MenuItem Header="Neues Fenster" InputGestureText="Strg+Umschalt+N" Command="{Binding NewWindowCommand}" />
-                    <Separator />
-                    <MenuItem Header="Öffnen" InputGestureText="Strg+O" Command="{Binding OpenCommand}" />
-                    <MenuItem Header="Speichern" InputGestureText="Strg+S" Command="{Binding SaveCommand}" />
-                    <MenuItem Header="Speichern unter..." InputGestureText="Strg+Umschalt+S" Command="{Binding SaveAsCommand}" />
-                    <Separator />
-                    <MenuItem Header="Beenden" Command="{Binding ExitCommand}" />
                 </MenuItem>
                 <MenuItem Header="_View">
                     <MenuItem Header="Tour-List" InputGestureText="Strg+N" Command="{Binding NewTabCommand}" />
