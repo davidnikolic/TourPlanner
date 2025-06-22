@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Interfaces;
+using TourPlanner.UI.Map;
 
 namespace TourPlanner.UI.ViewModels
 {
@@ -22,11 +23,13 @@ namespace TourPlanner.UI.ViewModels
             get => selectedTour;
             set
             {
-                selectedTour = value;
-                OnPropertyChanged();
-
-                ResetTabState();  
-                EvaluateLazyLoading();
+                if (selectedTour != value)
+                {
+                    selectedTour = value;
+                    OnPropertyChanged();
+                    ResetTabState(); // Reset map state to null
+                    EvaluateLazyLoading(); // Triggers map update based on current tab selection
+                }
             }
         }
 
@@ -57,18 +60,29 @@ namespace TourPlanner.UI.ViewModels
 
         private void EvaluateLazyLoading()
         {
-            if (SelectedTour == null) return;
-
-
-            if (SelectedTabIndex == 1 && !_mapLoaded)
+            if (SelectedTabIndex == 1)
             {
-                LoadMapImage();
-                _mapLoaded = true;
+                // This is the Map/Route Tab
+                // Only load the static map image once
+                if (!_mapLoaded)
+                {
+                    _mapLoaded = true;
+                }
+                string start = "";
+                string end = "";
+
+                if (SelectedTour != null)
+                {
+                    start = SelectedTour.StartLocation;
+                    end = SelectedTour.EndLocation;
+                }
+                // Request a map update via event service using start and end locations
+                MapEventService.RequestMapUpdate(start, end);
             }
-
-            if (SelectedTabIndex != 1)
+            else // if another tab is selcted
             {
-                MapImage = null;
+                // Reset map
+                MapImage = null; 
                 _mapLoaded = false;
             }
         }
@@ -78,21 +92,6 @@ namespace TourPlanner.UI.ViewModels
             _selectedTourService = selectedTourService;
 
             _selectedTourService.SelectedTourChanged += OnSelectedTourChanged;
-        }
-
-
-        private void LoadMapImage()
-        {
-            string imagePath = SelectedTour?.RouteImagePath ?? @"C:\Users\David\Downloads\political-world-map-1.jpg";
-
-            if (File.Exists(imagePath))
-            {
-                MapImage = new BitmapImage(new Uri(imagePath));
-            }
-            else
-            {
-                MapImage = null;
-            }
         }
 
         private void ResetTabState()

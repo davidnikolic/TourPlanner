@@ -12,6 +12,8 @@ using TourPlanner.DAL.Repositories;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using GalaSoft.MvvmLight.Views;
 using TourPlanner.UI.Services;
+using TourPlanner.UI.Map.Interface;
+using TourPlanner.UI.Map.Services;
 
 namespace TourPlanner.UI
 {
@@ -85,6 +87,7 @@ namespace TourPlanner.UI
             services.AddScoped<ITourLogService, TourLogService>();
             services.AddSingleton<ISelectedTourService, SelectedTourService>();
             services.AddSingleton<Interfaces.IDialogService, DialogService>();
+            services.AddSingleton<IReportService, ReportService>();
 
             // Repositories (DAL)
             services.AddScoped<ITourRepository, TourRepositories>();
@@ -92,9 +95,13 @@ namespace TourPlanner.UI
 
             // ViewModels
             services.AddSingleton<MainWindowViewModel>();
+            services.AddSingleton<TourNavBarViewModel>();
             services.AddSingleton<TourListViewModel>();
             services.AddSingleton<TourLogsViewModel>();
             services.AddSingleton<TourDetailViewModel>();
+
+            // UI Services
+            services.AddSingleton<IMapViewService, MapViewService>();
         }
     }
 

@@ -5,7 +5,7 @@ using System.Text;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
-using static TourPlanner.DAL.Entities.Enums;
+using static TourPlanner.BL.DTOs.EnumsDTO;
 
 namespace TourPlanner.BL.DTOs
 {

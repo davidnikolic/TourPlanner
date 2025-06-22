@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NpgsqlTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TourPlanner.DAL.Entities;
 using TourPlanner.DAL.Repositories.Interfaces;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 namespace TourPlanner.DAL.Repositories
 {
@@ -78,6 +80,24 @@ namespace TourPlanner.DAL.Repositories
 
             _dbContext.TourLogs.Remove(log);
             _dbContext.SaveChanges();
+        }
+        public IEnumerable<TourLogEntity> GetAllTourLogs()
+        {
+            return _dbContext.TourLogs
+                .Include(log => log.Tour)         // Load the related tour for the ONE log
+                .ThenInclude(tour => tour.TourLogs) // Tour can have many tourlogs + for calculations
+                .ToList();
+        }
+        public IEnumerable<TourLogEntity> FindTourLogsByFullText(string searchTerm)
+        {
+            // If the search term is null or empty, return all tour logs
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return _dbContext.TourLogs.ToList();
+
+            // Search for tour logs where the comment contains the search term (case-insensitive)
+            return _dbContext.TourLogs
+                .Where(l => l.Comment != null && l.Comment.ToLower().Contains(searchTerm.ToLower()))
+                .ToList();
         }
     }
 }

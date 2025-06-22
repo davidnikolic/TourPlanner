@@ -10,6 +10,8 @@
         MinHeight="600"
         Title="TourPlanner" Height="800" Width="1280">
 
+    
+
     <Grid Margin="20,20,20,20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -34,6 +36,6 @@
         </Grid>
 
         <!-- Navbar oben -->
-        <views:TourNavbarView Grid.Row="0"/>
+        <views:TourNavbarView DataContext="{Binding TourNavBarViewModel}" Grid.Row="0"/>
     </Grid>
 </Window>

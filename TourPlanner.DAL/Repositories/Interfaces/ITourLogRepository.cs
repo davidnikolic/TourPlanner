@@ -20,5 +20,7 @@ namespace TourPlanner.DAL.Repositories.Interfaces
 
         Task DeleteTourLogAsync(int logId);
         void DeleteTourLog(int logId);
+        IEnumerable<TourLogEntity> GetAllTourLogs();
+        IEnumerable<TourLogEntity> FindTourLogsByFullText(string searchTerm);
     }
 }

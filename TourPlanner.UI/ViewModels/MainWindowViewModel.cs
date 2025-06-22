@@ -49,6 +49,11 @@ namespace TourPlanner.UI.ViewModels
         public TourLogsViewModel TourLogsViewModel { get; }
 
         /// <summary>
+        /// The ViewModel for the Nav-Bar
+        /// </summary>
+        public TourNavBarViewModel TourNavBarViewModel { get; }
+
+        /// <summary>
         /// The constructor for the Main ViewModel.
         /// </summary>
         /// <param name="tourService"></param>
@@ -63,7 +68,8 @@ namespace TourPlanner.UI.ViewModels
             ISelectedTourService selectedTourService, 
             TourListViewModel tourListViewModel, 
             TourLogsViewModel tourLogsViewModel,
-            TourDetailViewModel tourDetailViewModel
+            TourDetailViewModel tourDetailViewModel,
+            TourNavBarViewModel tourNavBarViewModel
             )
         {
             _tourService = tourService;
@@ -73,6 +79,7 @@ namespace TourPlanner.UI.ViewModels
             TourListViewModel = tourListViewModel;
             TourLogsViewModel = tourLogsViewModel;
             TourDetailViewModel = tourDetailViewModel;
+            TourNavBarViewModel = tourNavBarViewModel;
         }
     }
 }

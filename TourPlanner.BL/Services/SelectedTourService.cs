@@ -16,7 +16,7 @@ namespace TourPlanner.BL.Services
         /// <summary>
         /// The selected Tour as TourDTO.
         /// </summary>
-        private TourDTO selectedTour;
+        private TourDTO selectedTour = null;
 
         /// <summary>
         /// The Action, that informs the other services that the tour has been changed.

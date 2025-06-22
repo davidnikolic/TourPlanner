@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,16 +11,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using TourPlanner.UI.ViewModels;
 
 namespace TourPlanner.UI.Views.Components
 {
     /// <summary>
-    /// Interaction logic for AddTourDialogView.xaml
+    /// Interaction logic for GenericDialogWindowView.xaml
     /// </summary>
-    public partial class TourLogDialogWindowView : Window
+    public partial class GenericDialogWindowView : Window
     {
-        public TourLogDialogWindowView()
+        public GenericDialogWindowView()
         {
             InitializeComponent();
         }
