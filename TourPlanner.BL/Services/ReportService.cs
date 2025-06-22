@@ -64,6 +64,44 @@ namespace TourPlanner.BL.Services
             table.AddCell(tour.EstimatedTimeHours.ToString("0.0") + " h");
 
             doc.Add(table);
+
+            if (tour.TourLogs != null && tour.TourLogs.Any())
+            {
+                doc.Add(new Paragraph("Tour Logs")
+                    .SetFont(titleFont)
+                    .SetFontSize(14)
+                    .SetMarginTop(20)
+                    .SetMarginBottom(10));
+
+                // 8. Tabelle für Logs
+                Table logTable = new Table(6).UseAllAvailableWidth();
+                logTable.AddHeaderCell("Datum");
+                logTable.AddHeaderCell("Kommentar");
+                logTable.AddHeaderCell("Schwierigkeit");
+                logTable.AddHeaderCell("Distanz");
+                logTable.AddHeaderCell("Dauer");
+                logTable.AddHeaderCell("Bewertung");
+
+                foreach (var log in tour.TourLogs)
+                {
+                    logTable.AddCell(log.LogDate.ToShortDateString());
+                    logTable.AddCell(log.Comment ?? "");
+                    logTable.AddCell(log.Difficulty.ToString());
+                    logTable.AddCell(log.DistanceKm.ToString("0.0") + " km");
+                    logTable.AddCell(log.DurationHours.ToString("0.0") + " h");
+                    logTable.AddCell(log.Rating.ToString());
+                }
+
+                doc.Add(logTable);
+            }
+            else
+            {
+                doc.Add(new Paragraph("Keine Tour-Logs vorhanden.")
+                    .SetFont(bodyFont)
+                    .SetFontSize(10)
+                    .SetItalic()
+                    .SetMarginTop(10));
+            }
         }
 
         public void GenerateSummarizeReport(string file)

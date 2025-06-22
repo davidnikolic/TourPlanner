@@ -15,6 +15,8 @@ namespace TourPlanner.UI.ViewModels
     {
         private ITourService _tourService;
 
+        private ITourLogService _tourLogService;
+
         private ISelectedTourService _selectedTourService;
 
         private IReportService _reportService;
@@ -22,11 +24,13 @@ namespace TourPlanner.UI.ViewModels
         public TourNavBarViewModel
             (
             ITourService tourService,
+            ITourLogService tourLogService,
             ISelectedTourService selectedTourService,
             IReportService reportService
             ) 
         { 
             _tourService = tourService;
+            _tourLogService = tourLogService;
             _selectedTourService = selectedTourService;
             _reportService = reportService;
         }
@@ -50,9 +54,12 @@ namespace TourPlanner.UI.ViewModels
                 return;
             }
 
+            tour.TourLogs = _tourLogService.GetTourLogsForTour(tour.Id);
+
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "TourReport.pdf");
 
             _reportService.GenerateTourReport(tour, path);
+
             MessageBox.Show("PDF erfolgreich erstellt auf dem Desktop.");
         }
 

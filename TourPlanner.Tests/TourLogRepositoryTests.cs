@@ -19,7 +19,7 @@ namespace TourPlanner.Tests
         [SetUp]
         public void Setup()
         {
-            var envPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".env");
+            var envPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", ".env");
             Env.Load(envPath);
 
             string host = Env.GetString("DB_HOST");

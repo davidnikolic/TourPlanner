@@ -71,7 +71,6 @@ namespace TourPlanner.UI.ViewModels
             _tourService = tourService;
             _selectedTourService = selectedTourService;
             _dialogService = dialogService;
-            _tourLogsViewModel.PropertyChanged += OnTourLogsViewModelPropertyChanged;
             var tours = _tourService.GetTours();
 
             Tours = new ObservableCollection<TourDTO>(tours);
@@ -139,7 +138,9 @@ namespace TourPlanner.UI.ViewModels
         {
             List<TourDTO> toursToDisplay;
             // Get the current search term from the TourLogsViewModel
-            string currentSearchTerm = _tourLogsViewModel.SearchQuery; 
+            string currentSearchTerm = "";
+
+            if (_tourLogsViewModel != null) currentSearchTerm = _tourLogsViewModel.SearchQuery; 
 
             if (!string.IsNullOrWhiteSpace(currentSearchTerm))
             {
