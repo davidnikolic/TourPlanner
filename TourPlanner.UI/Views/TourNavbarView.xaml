@@ -29,7 +29,8 @@
                     Foreground="White"
                     BorderThickness="0"
                     Cursor="Hand"
-                    FontSize="14" />
+                    FontSize="14"
+                    Command="{Binding FileCommand}"/>
             <Button Content="Edit"
                     Margin="5,0"
                     Padding="10,5"

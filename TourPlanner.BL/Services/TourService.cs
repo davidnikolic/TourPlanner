@@ -7,7 +7,6 @@ using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Interfaces;
 using TourPlanner.DAL.Entities;
 using TourPlanner.DAL.Repositories.Interfaces;
-using TourPlanner.Logging;
 using TourPlanner.DAL.Repositories;
 using System.Runtime.CompilerServices;
 using System.Globalization;
@@ -17,21 +16,17 @@ namespace TourPlanner.BL.Services
 {
     public class TourService : ITourService
     {
-        private ILoggerWrapper _logger;
-
         public ITourRepository _tourRepository;
 
         public TourService(ITourRepository TourRepo)
         {
             _tourRepository = TourRepo;
-            _logger = LoggerFactory.GetLogger<TourService>();
         }
 
         public void AddTour(TourDTO tour)
         {
-            TourEntity entity = ToEntity(tour);
-            _tourRepository.AddTour(entity);
-            _logger.Info("Tour wurde erstellt");
+           TourEntity entity = ToEntity(tour);
+           _tourRepository.AddTour(entity);
         }
 
         public List<TourDTO> GetTours()

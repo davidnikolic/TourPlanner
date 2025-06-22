@@ -34,6 +34,6 @@
         </Grid>
 
         <!-- Navbar oben -->
-        <views:TourNavbarView Grid.Row="0"/>
+        <views:TourNavbarView DataContext="{Binding TourNavBarViewModel}" Grid.Row="0"/>
     </Grid>
 </Window>
