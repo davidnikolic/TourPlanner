@@ -166,7 +166,7 @@ namespace TourPlanner.UI.ViewModels
             else
             {
                 // Otherwise, select the first item in the list or set to null if none exist  / First Tour or "null" no tour displayed
-                SelectedTour = Tours.FirstOrDefault(); 
+                SelectedTour = null; 
             }
         }
 
