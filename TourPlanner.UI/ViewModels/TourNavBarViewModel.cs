@@ -66,6 +66,17 @@ namespace TourPlanner.UI.ViewModels
         private void ExportSummarizeReport()
         {
 
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "TourReport.pdf");
+            var tours = _tourService.GetTours();
+
+            foreach (var tour in tours)
+            {
+                tour.TourLogs = _tourLogService.GetTourLogsForTour(tour.Id);
+            }
+
+            _reportService.GenerateSummarizeReport(tours, path);
+
+            MessageBox.Show("PDF erfolgreich erstellt auf dem Desktop.");
         }
 
         public void ImportFromCsv()

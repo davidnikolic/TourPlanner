@@ -11,6 +11,6 @@ namespace TourPlanner.BL.Interfaces
     {
         void GenerateTourReport(TourDTO tour, string file);
 
-        void GenerateSummarizeReport(string file);
+        void GenerateSummarizeReport(List<TourDTO> tours, string filePath);
     }
 }
