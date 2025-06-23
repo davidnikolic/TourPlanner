@@ -34,14 +34,14 @@
                     </MenuItem>
                     <MenuItem Header="Export..." >
                         <MenuItem Header="Selected Tour ...">
-                            <MenuItem Header="... .pdf" Command="{Binding ExportSelectedTourCommand}" />
-                            <MenuItem Header="... .csv" Command="{Binding ExportSelectedTourCommand}" />
-                            <MenuItem Header="... .json" Command="{Binding ExportSelectedTourCommand}" />
+                            <MenuItem Header="... .pdf" Command="{Binding SelectedTourPdfCommand}" />
+                            <MenuItem Header="... .csv" Command="{Binding SelectedTourCsvCommand}" />
+                            <MenuItem Header="... .json" Command="{Binding SelectedTourJsonCommand}" />
                         </MenuItem>
                         <MenuItem Header="All Tours ...">
-                            <MenuItem Header="... .pdf" Command="{Binding ExportAllToursCommand}" />
-                            <MenuItem Header="... .csv" Command="{Binding ExportAllToursCommand}" />
-                            <MenuItem Header="... .json" Command="{Binding ExportAllToursCommand}" />
+                            <MenuItem Header="... .pdf" Command="{Binding AllToursPdfCommand}" />
+                            <MenuItem Header="... .csv" Command="{Binding AllToursCsvCommand}" />
+                            <MenuItem Header="... .json" Command="{Binding AllToursJsonCommand}" />
                         </MenuItem>
                         <MenuItem Header="Summarize Report as .pdf" Command="{Binding SummarizeReportCommand}" />
                     </MenuItem>

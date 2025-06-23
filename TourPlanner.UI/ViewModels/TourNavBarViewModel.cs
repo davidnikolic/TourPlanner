@@ -40,17 +40,43 @@ namespace TourPlanner.UI.ViewModels
         }
 
 
-        public RelayCommand ExportSelectedTourCommand => new RelayCommand(execute => ExportSelectedTour());
-
-        public RelayCommand ExportAllToursCommand => new RelayCommand(execute => ExportAllTours());
-        public RelayCommand SummarizeReportCommand => new RelayCommand(execute => ExportSummarizeReport());
+        public RelayCommand AddTourCommand => new RelayCommand(execute => AddTour());
+        public RelayCommand AddTourLogCommand => new RelayCommand(execute => AddTourLog());
 
         public RelayCommand ImportFromCsvCommand => new RelayCommand(execute => ImportFromCsv());
-        public RelayCommand ImportFromJSONCommand => new RelayCommand(execute => ImportFromJSON());
+        public RelayCommand ImportFromJSONCommand => new RelayCommand(execute => ImportFromJson());
+        
+        public RelayCommand SelectedTourPdfCommand => new RelayCommand(execute => ExportSelectedTourAsPdf());
+        public RelayCommand SelectedTourCsvCommand => new RelayCommand(execute => ExportSelectedTourAsCsv());
+        public RelayCommand SelectedTourJsonCommand => new RelayCommand(execute => ExportSelectedTourAsJson());
+        public RelayCommand AllToursPdfCommand => new RelayCommand(execute => ExportAllToursAsPdf());
+        public RelayCommand AllToursCsvCommand => new RelayCommand(execute => ExportAllToursAsCsv());
+        public RelayCommand AllToursJsonCommand => new RelayCommand(execute => ExportAllToursAsJson());
+        public RelayCommand SummarizeReportCommand => new RelayCommand(execute => ExportSummarizeReportAsPdf());
 
         public RelayCommand ExitCommand => new RelayCommand(execute => Environment.Exit(0));
 
-        private void ExportSelectedTour()
+        private void AddTour()
+        {
+            MessageBox.Show("Diese Funktion wird noch implementiert.", "WIP", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void AddTourLog()
+        {
+            MessageBox.Show("Diese Funktion wird noch implementiert.", "WIP", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void ImportFromCsv()
+        {
+            MessageBox.Show("Diese Funktion wird noch implementiert.", "WIP", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void ImportFromJson()
+        {
+            MessageBox.Show("Diese Funktion wird noch implementiert.", "WIP", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void ExportSelectedTourAsPdf()
         {
             var tour = _selectedTourService.SelectedTour;
 
@@ -69,7 +95,17 @@ namespace TourPlanner.UI.ViewModels
             MessageBox.Show("PDF erfolgreich erstellt auf dem Desktop.");
         }
 
-        private void ExportAllTours()
+        private void ExportSelectedTourAsCsv()
+        {
+            MessageBox.Show("Diese Funktion wird noch implementiert.", "WIP", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void ExportSelectedTourAsJson()
+        {
+            MessageBox.Show("Diese Funktion wird noch implementiert.", "WIP", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void ExportAllToursAsPdf()
         {
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "TourReport.pdf");
             var tours = _tourService.GetTours();
@@ -84,7 +120,17 @@ namespace TourPlanner.UI.ViewModels
             MessageBox.Show("PDF erfolgreich erstellt auf dem Desktop.");
         }
 
-        public void ExportSummarizeReport()
+        private void ExportAllToursAsCsv()
+        {
+            MessageBox.Show("Diese Funktion wird noch implementiert.", "WIP", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void ExportAllToursAsJson()
+        {
+            MessageBox.Show("Diese Funktion wird noch implementiert.", "WIP", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        public void ExportSummarizeReportAsPdf()
         {
 
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "SummarizeReport.pdf");
@@ -96,16 +142,6 @@ namespace TourPlanner.UI.ViewModels
             _reportService.GenerateSummarizeReport(stats, path);
 
             MessageBox.Show("PDF erfolgreich erstellt auf dem Desktop.");
-        }
-
-        public void ImportFromCsv()
-        {
-
-        }
-
-        public void ImportFromJSON()
-        {
-
         }
     }
 }
