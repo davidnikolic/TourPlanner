@@ -9,7 +9,9 @@ namespace TourPlanner.BL.Interfaces
 {
     public interface IReportService
     {
-        void GenerateTourReport(TourDTO tour, string file);
+        void GenerateTourReport(TourDTO tour, string filePath);
+        
+        void GenerateAllToursReport(List<TourDTO> tours, string filePath);
 
         void GenerateSummarizeReport(List<TourStatisticsDTO> stats, string filePath);
     }

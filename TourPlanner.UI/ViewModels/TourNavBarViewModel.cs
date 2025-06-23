@@ -41,7 +41,8 @@ namespace TourPlanner.UI.ViewModels
 
 
         public RelayCommand ExportSelectedTourCommand => new RelayCommand(execute => ExportSelectedTour());
-        //public RelayCommand ExportAllToursCommand => new RelayCommand(execute => ExportSummarizeReport());
+
+        public RelayCommand ExportAllToursCommand => new RelayCommand(execute => ExportAllTours());
         public RelayCommand SummarizeReportCommand => new RelayCommand(execute => ExportSummarizeReport());
 
         public RelayCommand ImportFromCsvCommand => new RelayCommand(execute => ImportFromCsv());
@@ -64,6 +65,21 @@ namespace TourPlanner.UI.ViewModels
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "TourReport.pdf");
 
             _reportService.GenerateTourReport(tour, path);
+
+            MessageBox.Show("PDF erfolgreich erstellt auf dem Desktop.");
+        }
+
+        private void ExportAllTours()
+        {
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "TourReport.pdf");
+            var tours = _tourService.GetTours();
+
+            foreach (var tour in tours)
+            {
+                tour.TourLogs = _tourLogService.GetTourLogsForTour(tour.Id);
+            }
+
+            _reportService.GenerateAllToursReport(tours, path);
 
             MessageBox.Show("PDF erfolgreich erstellt auf dem Desktop.");
         }
