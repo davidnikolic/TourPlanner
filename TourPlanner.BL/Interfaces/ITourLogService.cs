@@ -12,6 +12,7 @@ namespace TourPlanner.BL.Interfaces
     {
         void AddTourLog(TourLogDTO log);
         List<TourLogDTO> GetTourLogsForTour(int tourId);
+        List<TourLogDTO> GetAllTourLogs();
         void UpdateTourLog(TourLogDTO log);
         void DeleteTourLog(TourLogDTO log);
         List<TourLogDTO> SearchTourLogs(string searchTerm);

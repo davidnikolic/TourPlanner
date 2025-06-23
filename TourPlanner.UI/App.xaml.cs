@@ -88,6 +88,7 @@ namespace TourPlanner.UI
             services.AddSingleton<ISelectedTourService, SelectedTourService>();
             services.AddSingleton<Interfaces.IDialogService, DialogService>();
             services.AddSingleton<IReportService, ReportService>();
+            services.AddSingleton<ITourStatisticsService, TourStatisticsService>();
 
             // Repositories (DAL)
             services.AddScoped<ITourRepository, TourRepositories>();

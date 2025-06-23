@@ -35,6 +35,7 @@
                     <MenuItem Header="Export..." >
                         <MenuItem Header="Selected Tour" Command="{Binding ExportSelectedTourCommand}" />
                         <MenuItem Header="All Tours" Command="{Binding ExportAllToursCommand}" />
+                        <MenuItem Header="Summarize Report" Command="{Binding SummarizeReportCommand}" />
                     </MenuItem>
                     <Separator />
                     <MenuItem Header="Quit" Command="{Binding ExitCommand}" />

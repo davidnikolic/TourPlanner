@@ -19,6 +19,8 @@ namespace TourPlanner.UI.ViewModels
 
         private ISelectedTourService _selectedTourService;
 
+        private ITourStatisticsService _tourStatisticsService;
+
         private IReportService _reportService;
 
         public TourNavBarViewModel
@@ -26,18 +28,21 @@ namespace TourPlanner.UI.ViewModels
             ITourService tourService,
             ITourLogService tourLogService,
             ISelectedTourService selectedTourService,
+            ITourStatisticsService ourStatisticsService,
             IReportService reportService
             ) 
         { 
             _tourService = tourService;
             _tourLogService = tourLogService;
             _selectedTourService = selectedTourService;
+            _tourStatisticsService = ourStatisticsService;
             _reportService = reportService;
         }
 
 
         public RelayCommand ExportSelectedTourCommand => new RelayCommand(execute => ExportSelectedTour());
-        public RelayCommand ExportAllToursCommand => new RelayCommand(execute => ExportSummarizeReport());
+        //public RelayCommand ExportAllToursCommand => new RelayCommand(execute => ExportSummarizeReport());
+        public RelayCommand SummarizeReportCommand => new RelayCommand(execute => ExportSummarizeReport());
 
         public RelayCommand ImportFromCsvCommand => new RelayCommand(execute => ImportFromCsv());
         public RelayCommand ImportFromJSONCommand => new RelayCommand(execute => ImportFromJSON());
@@ -63,18 +68,16 @@ namespace TourPlanner.UI.ViewModels
             MessageBox.Show("PDF erfolgreich erstellt auf dem Desktop.");
         }
 
-        private void ExportSummarizeReport()
+        public void ExportSummarizeReport()
         {
 
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "TourReport.pdf");
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "SummarizeReport.pdf");
             var tours = _tourService.GetTours();
+            var logs = _tourLogService.GetAllTourLogs();
 
-            foreach (var tour in tours)
-            {
-                tour.TourLogs = _tourLogService.GetTourLogsForTour(tour.Id);
-            }
+            var stats = _tourStatisticsService.CalculateAllTourStatistics(tours, logs);
 
-            _reportService.GenerateSummarizeReport(tours, path);
+            _reportService.GenerateSummarizeReport(stats, path);
 
             MessageBox.Show("PDF erfolgreich erstellt auf dem Desktop.");
         }

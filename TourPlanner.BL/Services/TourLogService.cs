@@ -31,6 +31,12 @@ namespace TourPlanner.BL.Services
             return entities.Select(e => ToModel(e)).ToList();
         }
 
+        public List<TourLogDTO> GetAllTourLogs()
+        {
+            var entities = _tourLogRepository.GetAllTourLogs();
+            return entities.Select(e => ToModel(e)).ToList();
+        }
+
         public void UpdateTourLog(TourLogDTO log)
         {
             var entity = ToEntity(log);
