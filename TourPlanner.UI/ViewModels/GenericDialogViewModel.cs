@@ -38,18 +38,18 @@ namespace TourPlanner.UI.ViewModels
 
                 if (field.Type == "TextBox" && field.Value == String.Empty)
                 {
-                    field.Error = "Diese Zeile darf nicht leer sein.";
+                    field.Error = "This line must not be empty.";
                 }
 
-                if (field.Type == "TextBox" && (field.Label.Contains("Distanz") || field.Label.Contains("Dauer")))
+                if (field.Type == "TextBox" && (field.Label.Contains("Distance") || field.Label.Contains("Duration")))
                 {
                     if (!float.TryParse(field.Value?.ToString(), out _))
-                        field.Error = "Bitte eine gültige Zahl eingeben.";
+                        field.Error = "Please enter a valid number.";
                 }
 
                 if (field.Type == "DatePicker" && field.Value is not DateTime)
                 {
-                    field.Error = "Bitte ein Datum auswählen.";
+                    field.Error = "Please select a date.";
                 }
             }
             return Fields.All(f => f.IsValid);

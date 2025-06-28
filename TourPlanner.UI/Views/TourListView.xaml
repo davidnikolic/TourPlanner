@@ -5,53 +5,67 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:components="clr-namespace:TourPlanner.UI.Views.Components"
              mc:Ignorable="d"
-             d:DesignHeight="800" d:DesignWidth="300">
-
-    <Grid Background="#F5F5F5">
+             d:DesignHeight="800" d:DesignWidth="320">
+    <Grid Background="#F9FAFB">
         <Border Background="White"
                 VerticalAlignment="Stretch"
                 CornerRadius="12"
                 BorderThickness="1"
-                BorderBrush="#D1D5DB"
-                Padding="15"
-                Margin="10">
+                BorderBrush="#E5E7EB"
+                Padding="20"
+                Margin="16">
+            <Border.Effect>
+                <DropShadowEffect Color="Gray" Direction="270" ShadowDepth="2" Opacity="0.1" BlurRadius="12"/>
+            </Border.Effect>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                
-                <!-- Title and buttons -->
-                <DockPanel Grid.Row="0"
-                           Margin="0 0 0 10">
-                    <TextBlock  
-                               Text="Tours"
-                               FontSize="18"
-                               FontWeight="Bold"
-                               VerticalAlignment="Center"
-                               DockPanel.Dock="Left"/>
 
-                    <!-- Reusable button component -->
+                <!-- Title and buttons -->
+                <DockPanel Grid.Row="0" Margin="0,0,0,20">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" VerticalAlignment="Center">
+                        <Border Width="6" Height="24" Background="#3B82F6" CornerRadius="3" Margin="0,0,12,0"/>
+                        <TextBlock Text="Tours" FontSize="20" FontWeight="Bold" 
+                                   Foreground="#1F2937" VerticalAlignment="Center"/>
+                    </StackPanel>
                     <components:TourActionButtons DockPanel.Dock="Right" HorizontalAlignment="Right" />
                 </DockPanel>
 
                 <!-- List -->
-                <ListView Grid.Row ="1" 
-                          ItemsSource="{Binding Tours}" 
-                          SelectedItem="{Binding SelectedTour}" 
-                          Height="Auto" 
-                          ScrollViewer.VerticalScrollBarVisibility="Auto"
-                          >
-                    <ListView.ItemTemplate>
-                        <DataTemplate >
-                            <StackPanel Orientation="Horizontal" Margin="4">
-                                <TextBlock Text="{Binding Name}" Width="150"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-
+                <Border Grid.Row="1" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="8">
+                    <ListView ItemsSource="{Binding Tours}" 
+                              SelectedItem="{Binding SelectedTour}" 
+                              BorderThickness="0"
+                              Background="Transparent"
+                              ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="16,12" BorderBrush="#F3F4F6" BorderThickness="0,0,0,1"
+                                        Background="Transparent">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#F9FAFB"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Width="4" Height="16" Background="#10B981" CornerRadius="2" 
+                                                Margin="0,0,12,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="Medium"
+                                                   Foreground="#1F2937" VerticalAlignment="Center" 
+                                                   TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Border>
             </Grid>
         </Border>
     </Grid>

@@ -56,7 +56,7 @@ namespace TourPlanner.UI.ViewModels
 
             if (tour == null)
             {
-                MessageBox.Show("Keine Tour ausgewählt.");
+                MessageBox.Show("No Tour selected");
                 return;
             }
 
@@ -66,7 +66,7 @@ namespace TourPlanner.UI.ViewModels
 
             _reportService.GenerateTourReport(tour, path);
 
-            MessageBox.Show("PDF erfolgreich erstellt auf dem Desktop.");
+            MessageBox.Show("PDF successfully created on the desktop.");
         }
 
         private void ExportAllTours()
@@ -81,7 +81,7 @@ namespace TourPlanner.UI.ViewModels
 
             _reportService.GenerateAllToursReport(tours, path);
 
-            MessageBox.Show("PDF erfolgreich erstellt auf dem Desktop.");
+            MessageBox.Show("PDF successfully created on the desktop.");
         }
 
         public void ExportSummarizeReport()
@@ -95,7 +95,7 @@ namespace TourPlanner.UI.ViewModels
 
             _reportService.GenerateSummarizeReport(stats, path);
 
-            MessageBox.Show("PDF erfolgreich erstellt auf dem Desktop.");
+            MessageBox.Show("PDF successfully created on the desktop.");
         }
 
         public void ImportFromCsv()

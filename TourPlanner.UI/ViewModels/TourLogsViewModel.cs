@@ -105,7 +105,7 @@ namespace TourPlanner.UI.ViewModels
         {
             if (SelectedTour == null || SelectedTour.Id <= 0)
             {
-                MessageBox.Show("Bitte zuerst eine gültige Tour auswählen.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please select a valid tour first", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -124,7 +124,7 @@ namespace TourPlanner.UI.ViewModels
         {
             if (selectedLog == null)
             {
-                MessageBox.Show("Bitte zuerst einen Tour-Log auswählen.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please select a tour log first.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -144,7 +144,7 @@ namespace TourPlanner.UI.ViewModels
         {
             if (selectedLog == null)
             {
-                MessageBox.Show("Bitte zuerst einen Tour-Log auswählen.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please select a tour log first.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 

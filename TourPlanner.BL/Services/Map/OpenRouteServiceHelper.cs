@@ -31,7 +31,7 @@ namespace TourPlanner.BL.Services.Map
             Env.Load(envPath);
 
             ApiKey = Environment.GetEnvironmentVariable("TOURPLANNER_APIKEY")
-                     ?? throw new InvalidOperationException("API-Key 'TOURPLANNER_APIKEY' nicht gefunden. Stelle sicher, dass die .env-Datei im Projekt-Root liegt und den Key enthält.");
+                     ?? throw new InvalidOperationException("API-Key 'TOURPLANNER_APIKEY' NOT FOUND");
 
             // HTTP request
             _httpClient = new HttpClient();

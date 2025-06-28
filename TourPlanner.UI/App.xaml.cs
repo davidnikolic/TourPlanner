@@ -44,21 +44,21 @@ namespace TourPlanner.UI
         {
             base.OnStartup(e);
 
-            // DB-Verbindung testen
+            // DB test
             using (var scope = Services.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<TourPlannerDBContext>();
                 if (!dbContext.Database.CanConnect())
                 {
                     MessageBox.Show(
-                        "Die Verbindung zur Datenbank konnte nicht hergestellt werden.\n" +
-                        "Bitte überprüfen Sie Ihre Konfiguration und versuchen Sie es erneut.",
-                        "Verbindungsfehler",
+                        "The connection to the database could not be established.\n" +
+                         "Please check your configuration and try again.",
+                         "Connection error",
                         MessageBoxButton.OK,
                         MessageBoxImage.Error
                     );
 
-                    Shutdown(); // Beendet die Anwendung sauber
+                    Shutdown(); // Shutdown the application if the database connection fails
                     return;
                 }
             }

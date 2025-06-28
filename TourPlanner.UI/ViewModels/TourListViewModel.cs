@@ -105,7 +105,7 @@ namespace TourPlanner.UI.ViewModels
         {
             if (SelectedTour == null || SelectedTour.Id <= 0)
             {
-                MessageBox.Show("Bitte zuerst eine gültige Tour auswählen.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please select a valid tour first.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -122,14 +122,14 @@ namespace TourPlanner.UI.ViewModels
         {
             if (SelectedTour == null || SelectedTour.Id <= 0)
             {
-                MessageBox.Show("Bitte zuerst eine gültige Tour auswählen.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please select a valid tour first.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            var result = MessageBox.Show($"Möchtest du Tour '{SelectedTour.Name}' wirklich löschen?", "Tour löschen", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var result = MessageBox.Show($"Do you really want to delete '{SelectedTour.Name}' tour", "Delete Tour", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 _tourService.DeleteTour(SelectedTour);
-                _selectedTourService.SelectedTour = null; // Auswahl zurücksetzen, da die Tour gelöscht wurde
+                _selectedTourService.SelectedTour = null; // Reset selection, as the tour has been deleted
                 RefreshTours();
             }
         }
