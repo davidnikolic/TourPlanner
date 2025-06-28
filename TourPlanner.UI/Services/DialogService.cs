@@ -43,7 +43,8 @@ namespace TourPlanner.UI.Services
             if (dialog.ShowDialog() == true)
             {
                 var res = FormFieldFactory.ToTourDTO(fields);
-
+                TourPlanner.UI.Map.MapEventService.RequestMapUpdate(res.StartLocation, res.EndLocation);
+                TourPlanner.UI.Map.MapEventService.RequestMapImageSave();
                 return res;
 
             }

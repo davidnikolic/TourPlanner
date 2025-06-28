@@ -56,6 +56,9 @@ namespace TourPlanner.DAL.Repositories
             _dbContext.Tours.Remove(tour);
             _dbContext.SaveChanges();
         }
-
+        public IEnumerable<TourLogEntity> GetAllTourLogs()
+        {
+            return _dbContext.TourLogs.ToList();
+        }
     }
 }

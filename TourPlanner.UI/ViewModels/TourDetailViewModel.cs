@@ -44,7 +44,7 @@ namespace TourPlanner.UI.ViewModels
             }
         }
 
-        private int _selectedTabIndex = 0;
+        private int _selectedTabIndex = 1;
         public int SelectedTabIndex
         {
             get => _selectedTabIndex;

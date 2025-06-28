@@ -11,7 +11,8 @@ using System.Windows;
 using TourPlanner.BL.Interfaces;
 using TourPlanner.BL.Services.Map;
 using TourPlanner.UI.Map.Interface;
-using Microsoft.Win32; // Required for SaveFileDialog
+using Microsoft.Win32;
+using System.Globalization; // Required for SaveFileDialog
 
 namespace TourPlanner.UI.Map.Services
 {
@@ -24,62 +25,55 @@ namespace TourPlanner.UI.Map.Services
 
         public async Task InitializeMapAsync(object webViewObj)
         {
-            // Check if object is a valid WebView2 isntance
-            if (webViewObj is not WebView2 webView)
-                throw new ArgumentException("Invalid WebView object");
+            if (webViewObj is not WebView2 webView) return;
 
-            string htmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Map", "MapTemplate.html");
-
-            if (!File.Exists(htmlPath)) return;
-
-            // Make sure WebView2 is initialized
-            await webView.EnsureCoreWebView2Async();
-            // Only init once
-            if (!_isMapInitialized)
+            string htmlPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Map", "MapTemplate.html");
+            if (!System.IO.File.Exists(htmlPath))
             {
-                // Register event handler for when the map page has finished loading
-                webView.CoreWebView2.NavigationCompleted += (sender, args) =>
-                {
-                    // Check if the CoreWebView2 instance is valid and if map is not already initialized
-                    if (sender is CoreWebView2 coreWebView2 && !_isMapInitialized)
-                    {
-                        // When loading completes, execute JS to initialize the map and set flag
-                        string js = $"initMap(48.2082, 16.3738, 47.8095, 13.0550)"; 
-                        coreWebView2.ExecuteScriptAsync(js);
-                        _isMapInitialized = true; 
-                    }
-                };
+                MessageBox.Show($"Map.html not found: {htmlPath}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            // Load the HTML file into the WebView2
+            await webView.EnsureCoreWebView2Async();
+            if (webView.CoreWebView2 == null) return;
+
             webView.CoreWebView2.Navigate(new Uri(htmlPath).ToString());
         }
 
         public async Task UpdateMapAsync(object webViewObj, string startLocation, string endLocation)
         {
-            if (webViewObj is not WebView2 webView) return;
+            if (webViewObj is not WebView2 webView || webView.CoreWebView2 == null) return;
+            if (string.IsNullOrWhiteSpace(startLocation) || string.IsNullOrWhiteSpace(endLocation)) return;
 
-            await webView.EnsureCoreWebView2Async();
-
-            if (webView.CoreWebView2 == null) return;
-
-            if (string.IsNullOrEmpty(startLocation) || string.IsNullOrEmpty(endLocation))
+            try
             {
-                startLocation = "Vienna, Austria"; 
-                endLocation = "Salzburg, Austria";
+                var (routeCoordinates, distance) = await _geoHelper.GetRouteAsync(startLocation, endLocation);
+                var startCoords = await _geoHelper.GetCoordinatesAsync(startLocation);
+                var endCoords = await _geoHelper.GetCoordinatesAsync(endLocation);
+
+                // Local helper function to format double values with 6 decimal places wit decimal points
+                string Format(double value) => value.ToString("F6", CultureInfo.InvariantCulture);
+
+                string routeJsArray;
+                if (routeCoordinates != null && routeCoordinates.Count > 0)
+                {
+                    // Represents exact driving paths with turns on street leve, each coordinate pair turn into js array 
+                    var coordinatePairs = routeCoordinates.Select(coord => $"[{Format(coord[0])}, {Format(coord[1])}]");
+                    routeJsArray = "[" + string.Join(",", coordinatePairs) + "]";
+                }
+                else
+                {
+                    routeJsArray = "[]";
+                }
+                // Build js function as string and displays driving route, if nothing found empty array and default start/end line
+                string jsCommand = $"initMap({Format(startCoords.Lat)}, {Format(startCoords.Lng)}, {Format(endCoords.Lat)}, {Format(endCoords.Lng)}, {routeJsArray})";
+                await webView.CoreWebView2.ExecuteScriptAsync(jsCommand);
             }
-
-            var startCoords = _geoHelper.GetCoordinates(startLocation);
-            var endCoords = _geoHelper.GetCoordinates(endLocation);
-
-            // Helper method to format double with 6 decimal places
-            string Format(double value) => value.ToString("F6", System.Globalization.CultureInfo.InvariantCulture);
-
-            // Build the JavaScript string to call initMap with new coordinates
-            string js = $"initMap({Format(startCoords.Lat)}, {Format(startCoords.Lng)}, {Format(endCoords.Lat)}, {Format(endCoords.Lng)})";
-
-            await Task.Delay(150); 
-            await webView.CoreWebView2.ExecuteScriptAsync(js);
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Route could not be loaded. Check the locations or your internet connection.\n\nERROR: {ex.Message}", "MAP ERROR", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
+
 
         public async Task SaveMapImageAsync(object webViewObj)
         {
@@ -103,7 +97,7 @@ namespace TourPlanner.UI.Map.Services
                 // If the user cancels, exit
                 bool? result = saveFileDialog.ShowDialog();
                 if (result != true)
-                    return; 
+                    return;
 
                 string chosenPath = saveFileDialog.FileName;
 

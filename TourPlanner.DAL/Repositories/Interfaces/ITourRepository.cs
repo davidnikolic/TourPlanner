@@ -16,5 +16,6 @@ namespace TourPlanner.DAL.Repositories.Interfaces
         void DeleteTour(int id);
         TourEntity GetTourById(int id);
         int GetLastTourId();
+        IEnumerable<TourLogEntity> GetAllTourLogs();
     }
 }
