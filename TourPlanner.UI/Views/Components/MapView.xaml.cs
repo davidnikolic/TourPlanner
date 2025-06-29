@@ -40,7 +40,7 @@ namespace TourPlanner.UI.Views.Components
 
             MapWebView.Loaded += async (sender, e) => await _mapService.InitializeMapAsync(MapWebView);
             MapEventService.UpdateMapRequested += async (start, end) => await _mapService.UpdateMapAsync(MapWebView, start, end);
-            MapEventService.SaveMapImageRequested += async () => await _mapService.SaveMapImageAsync(MapWebView);
+            MapEventService.SaveMapImageRequested += async (fullImagePath) => await _mapService.SaveMapImageAsync(MapWebView, fullImagePath);
         }
 
     }

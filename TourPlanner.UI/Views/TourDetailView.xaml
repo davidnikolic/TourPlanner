@@ -24,6 +24,7 @@
                     <TextBlock FontSize="16" Text="{Binding SelectedTour.TransportType, StringFormat='Transport-Type: {0}'}" Margin="0,4,0,0"/>
                     <TextBlock FontSize="16" Text="{Binding SelectedTour.DistanceKm, StringFormat='Distance: {0}km'}" Margin="0,4,0,0"/>
                     <TextBlock FontSize="16" Text="{Binding SelectedTour.EstimatedTimeHours, StringFormat='Estimated-Hours: {0}'}" Margin="0,4,0,0"/>
+                    <TextBlock FontSize="16" Text="{Binding SelectedTour.RouteImagePath, StringFormat='Image-Path: {0}'}" Margin="0,4,0,0"/>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Route">

@@ -75,7 +75,7 @@ namespace TourPlanner.UI.Map.Services
         }
 
 
-        public async Task SaveMapImageAsync(object webViewObj)
+        public async Task SaveMapImageAsync(object webViewObj, string fullImagePath)
         {
             if (webViewObj is not WebView2 webView) return;
 
@@ -86,31 +86,20 @@ namespace TourPlanner.UI.Map.Services
                 if (webView.CoreWebView2 == null) return;
                 await Task.Delay(2000);
 
-                // Open save dialog for the user to choose file location and name
-                var saveFileDialog = new SaveFileDialog
+                string chosenPath = fullImagePath;
+
+                if (File.Exists(chosenPath))
                 {
-                    Filter = "PNG Image|*.png",// Allow only .png files
-                    FileName = $"map_{DateTime.Now:yyyyMMdd_HHmmss}.png",
-                    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)// Default document folder
-                };
-
-                // If the user cancels, exit
-                bool? result = saveFileDialog.ShowDialog();
-                if (result != true)
-                    return;
-
-                string chosenPath = saveFileDialog.FileName;
+                    File.Delete(chosenPath);
+                }
 
                 // Take a screenshot of the WebView2 and save it as PNG
                 using var fileStream = new FileStream(chosenPath, FileMode.Create);
+
                 await webView.CoreWebView2.CapturePreviewAsync(CoreWebView2CapturePreviewImageFormat.Png, fileStream);
 
-                // Update database with the path to the saved map image
-                var tourService = ((App)Application.Current).Services.GetRequiredService<ITourService>();
-                int lastTourId = tourService.GetLastTourId();
-                tourService.UpdateTourMapImagePath(lastTourId, chosenPath);
 
-                MessageBox.Show("Image is saved and the path is updated in the database.");
+                // LOG, dass das Bild unter Pfad hinterlegt wurde.
             }
             catch (Exception ex)
             {

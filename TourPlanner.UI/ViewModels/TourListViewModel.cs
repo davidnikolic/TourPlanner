@@ -96,7 +96,11 @@ namespace TourPlanner.UI.ViewModels
         {
             var tour = _dialogService.DisplayTourPopUp("Add new tour");
 
-            if (tour != null) _tourService.AddTour(tour);
+            if (tour != null)
+            {
+                _tourService.AddTour(tour);
+                HandleMap(tour);
+            }
 
             RefreshTours();
         }
@@ -112,7 +116,11 @@ namespace TourPlanner.UI.ViewModels
             var tour = _dialogService.DisplayTourPopUp("Modify Tour", SelectedTour);
             tour.Id = SelectedTour.Id;
 
-            if (tour != null) _tourService.UpdateTour(tour);
+            if (tour != null)
+            {
+                _tourService.UpdateTour(tour);
+                HandleMap(tour);
+            }
 
             RefreshTours();
 
@@ -171,5 +179,10 @@ namespace TourPlanner.UI.ViewModels
             }
         }
 
+        public void HandleMap(TourDTO tour)
+        {
+            TourPlanner.UI.Map.MapEventService.RequestMapUpdate(tour.StartLocation, tour.EndLocation);
+            TourPlanner.UI.Map.MapEventService.RequestMapImageSave(tour.RouteImagePath);
+        }
     }
 }

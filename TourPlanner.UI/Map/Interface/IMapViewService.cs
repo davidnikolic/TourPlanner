@@ -11,6 +11,6 @@ namespace TourPlanner.UI.Map.Interface
     {
         Task InitializeMapAsync(object webView);
         Task UpdateMapAsync(object webView, string startLocation, string endLocation);
-        Task SaveMapImageAsync(object webView);
+        Task SaveMapImageAsync(object webView, string fullImagePath);
     }
 }

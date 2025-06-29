@@ -27,7 +27,13 @@ namespace TourPlanner.BL.Services
 
         public void AddTour(TourDTO tour)
         {
-           TourEntity entity = ToEntity(tour);
+            string outputDir = Path.Combine(AppContext.BaseDirectory, "GeneratedImages");
+            Directory.CreateDirectory(outputDir);
+            string fileName = Guid.NewGuid() + ".png";
+            tour.RouteImagePath = Path.Combine(outputDir, fileName);
+
+
+            TourEntity entity = ToEntity(tour);
            _tourRepository.AddTour(entity);
         }
 
