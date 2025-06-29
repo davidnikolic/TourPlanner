@@ -11,8 +11,6 @@ namespace TourPlanner.DAL.Repositories.Interfaces
     {
         Task AddTourLogAsync(TourLogEntity log);
         void AddTourLog(TourLogEntity log);
-
-        Task<IEnumerable<TourLogEntity>> GetAllTourLogsForTourAsync(int tourId);
         IEnumerable<TourLogEntity> GetAllTourLogsForTour(int tourId);
 
         Task UpdateTourLogAsync(TourLogEntity log);
@@ -22,5 +20,6 @@ namespace TourPlanner.DAL.Repositories.Interfaces
         void DeleteTourLog(int logId);
         IEnumerable<TourLogEntity> GetAllTourLogs();
         IEnumerable<TourLogEntity> FindTourLogsByFullText(string searchTerm);
+        TourLogEntity GetTourLogById(int tourLogId);
     }
 }

@@ -32,13 +32,6 @@ namespace TourPlanner.DAL.Repositories
             _dbContext.SaveChanges();
         }
 
-        public async Task<IEnumerable<TourLogEntity>> GetAllTourLogsForTourAsync(int tourId)
-        {
-            return await _dbContext.TourLogs
-                .Where(log => log.TourId == tourId)
-                .ToListAsync();
-        }
-
         public IEnumerable<TourLogEntity> GetAllTourLogsForTour(int tourId)
         {
             return _dbContext.TourLogs
@@ -98,6 +91,13 @@ namespace TourPlanner.DAL.Repositories
             return _dbContext.TourLogs
                 .Where(l => l.Comment != null && l.Comment.ToLower().Contains(searchTerm.ToLower()))
                 .ToList();
+        }
+        public TourLogEntity GetTourLogById(int tourLogId)
+        {
+            return _dbContext.TourLogs
+                .Include(log => log.Tour)
+                .ThenInclude(tour => tour.TourLogs)
+                .First(log => log.Id == tourLogId); // throws InvalidOperationException, if null
         }
     }
 }

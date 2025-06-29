@@ -27,7 +27,7 @@ namespace TourPlanner.BL.DTOs
 
         public float EstimatedTimeHours { get; set; } = 0;
 
-        public string? RouteImagePath { get; set; } = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "res", "dummy-map.jpg");
+        public string? RouteImagePath { get; set; }
 
         public ICollection<TourLogDTO> TourLogs { get; set; } = new List<TourLogDTO>();
     }

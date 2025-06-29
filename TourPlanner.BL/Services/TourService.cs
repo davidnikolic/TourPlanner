@@ -17,15 +17,23 @@ namespace TourPlanner.BL.Services
     public class TourService : ITourService
     {
         public ITourRepository _tourRepository;
+        private ITourLogService _tourLogService;
 
-        public TourService(ITourRepository TourRepo)
+        public TourService(ITourRepository TourRepo, ITourLogService tourLogService)
         {
             _tourRepository = TourRepo;
+            _tourLogService = tourLogService;
         }
 
         public void AddTour(TourDTO tour)
         {
-           TourEntity entity = ToEntity(tour);
+            string outputDir = Path.Combine(AppContext.BaseDirectory, "GeneratedImages");
+            Directory.CreateDirectory(outputDir);
+            string fileName = Guid.NewGuid() + ".png";
+            tour.RouteImagePath = Path.Combine(outputDir, fileName);
+
+
+            TourEntity entity = ToEntity(tour);
            _tourRepository.AddTour(entity);
         }
 
@@ -116,42 +124,64 @@ namespace TourPlanner.BL.Services
 
             var lowerSearchTerm = searchTerm.ToLower().Trim();
 
-            // Filter the list of tours based on the search term
-            var filteredEntities = allTourEntities.Where(t =>
+            // Handle special search prefixes - delegate to TourLogService
+            if (lowerSearchTerm.StartsWith("popularity:") ||
+                lowerSearchTerm.StartsWith("childfriendliness:") ||
+                lowerSearchTerm.StartsWith("distance:") ||
+                lowerSearchTerm.StartsWith("duration:"))
             {
-                // Check if the search term appears in any of the string fields:
-                // - Name
-                // - Description
-                // - StartLocation
-                // - EndLocation
+                // Use existing TourLogService logic to find matching logs
+                var matchingLogs = _tourLogService.SearchTourLogs(searchTerm);
+                var tourIds = matchingLogs.Select(log => log.TourId).Distinct();
+
+                // Return tours that have matching logs
+                return allTourEntities.Where(t => tourIds.Contains(t.Id)).Select(ToModel).ToList();
+            }
+
+            // Avoid duplicates int
+            var matchingTourIds = new HashSet<int>();
+
+            // First, find tours that match directly in their own fields
+            var directlyMatchingTours = allTourEntities.Where(t =>
+            {
                 if ((t.Name != null && t.Name.ToLower().Contains(lowerSearchTerm)) ||
                     (t.Description != null && t.Description.ToLower().Contains(lowerSearchTerm)) ||
                     (t.StartLocation != null && t.StartLocation.ToLower().Contains(lowerSearchTerm)) ||
-                    (t.EndLocation != null && t.EndLocation.ToLower().Contains(lowerSearchTerm)))
-                {
-                    return true;
-                }
-
-                // Check if the search term appears in the TransportType field
-                if (t.TransportType.ToString().ToLower().Contains(lowerSearchTerm))
-                {
-                    return true;
-                }
-
-                // Check if the search term appears in numeric fields 
-                // Numeric number to string and "."
-                if (t.DistanceKm.ToString(CultureInfo.InvariantCulture).ToLower().Contains(lowerSearchTerm) ||
+                    (t.EndLocation != null && t.EndLocation.ToLower().Contains(lowerSearchTerm)) ||
+                    t.TransportType.ToString().ToLower().Contains(lowerSearchTerm) ||
+                    t.DistanceKm.ToString(CultureInfo.InvariantCulture).ToLower().Contains(lowerSearchTerm) ||
                     t.EstimatedTimeHours.ToString(CultureInfo.InvariantCulture).ToLower().Contains(lowerSearchTerm))
                 {
                     return true;
                 }
-
-                // If none of the above conditions are met, the tour does not match the search term
                 return false;
+            });
 
-            }).ToList();
+            // Add directly matching tour IDs
+            foreach (var tour in directlyMatchingTours)
+            {
+                matchingTourIds.Add(tour.Id);
+            }
 
-            //Convert the filtered entities to TourDTO objects for UI consumption
+            // Now find tours that have matching tour logs
+            var allTourLogs = _tourRepository.GetAllTourLogs();
+            var toursWithMatchingLogs = allTourLogs.Where(log =>
+                (log.Comment != null && log.Comment.ToLower().Contains(lowerSearchTerm)) ||
+                log.Difficulty.ToString().ToLower().Contains(lowerSearchTerm) ||
+                log.DistanceKm.ToString(CultureInfo.InvariantCulture).ToLower().Contains(lowerSearchTerm) ||
+                log.DurationHours.ToString(CultureInfo.InvariantCulture).ToLower().Contains(lowerSearchTerm) ||
+                log.Rating.ToString().ToLower().Contains(lowerSearchTerm) ||
+                log.LogDate.ToString().ToLower().Contains(lowerSearchTerm)
+            ).Select(log => log.TourId);
+
+            // Add tour IDs that have matching logs
+            foreach (var tourId in toursWithMatchingLogs)
+            {
+                matchingTourIds.Add(tourId);
+            }
+
+            // Return all tours that match either directly or through their logs
+            var filteredEntities = allTourEntities.Where(t => matchingTourIds.Contains(t.Id)).ToList();
             return filteredEntities.Select(ToModel).ToList();
         }
     }

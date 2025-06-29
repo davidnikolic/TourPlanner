@@ -13,7 +13,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <!-- SearchBar -->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
@@ -23,15 +22,15 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Button  Grid.Column="0" Content="Suchen" Command="{Binding SearchCommand}" Grid.Row="0" />
-            <!-- Suchfeld -->
+            <Button  Grid.Column="0" Content="Search" Command="{Binding SearchCommand}" Grid.Row="0" />
+            <!-- Searchbar -->
             <TextBox 
                 Grid.Column="1" 
                 Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" 
                 Margin="5" 
                 Grid.Row="0" />
 
-            <!-- Searchfilter info -->
+            <!-- Searchbar info -->
             <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,5,0,0"
                        HorizontalAlignment="Left" VerticalAlignment="Center"
                        Text="Search filters: (duration:), (distance:), (childfriendliness:), (popularity:)"
@@ -55,12 +54,12 @@
                         <ColumnDefinition Width="100"/>
                         <ColumnDefinition Width="100"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Datum" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="1" Text="Kommentar" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="2" Text="Schwierigkeit" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="3" Text="Distanz (km)" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="4" Text="Dauer (h)" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="5" Text="Bewertung" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="0" Text="Date" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="1" Text="Comment" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="2" Text="Difficulty" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="3" Text="Distance (km)" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="4" Text="Duration (h)" FontWeight="Bold"/>
+                    <TextBlock Grid.Column="5" Text="Rating" FontWeight="Bold"/>
                 </Grid>
 
                 <!-- ListView -->

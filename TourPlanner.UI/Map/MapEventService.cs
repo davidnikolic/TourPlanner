@@ -9,16 +9,16 @@ namespace TourPlanner.UI.Map
     public static class MapEventService
     {
         public static event Action<string, string>? UpdateMapRequested;
-        public static event Action? SaveMapImageRequested;
+        public static event Action<string>? SaveMapImageRequested;
 
         public static void RequestMapUpdate(string startLocation, string endLocation)
         {
             // Triggers the event
             UpdateMapRequested?.Invoke(startLocation, endLocation);
         }
-        public static void RequestMapImageSave()
+        public static void RequestMapImageSave(string path)
         {
-            SaveMapImageRequested?.Invoke();
+            SaveMapImageRequested?.Invoke(path);
         }
     }
 }

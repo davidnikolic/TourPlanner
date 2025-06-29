@@ -3,15 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <title>Tour Route Map</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    <!-- Leaflet CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <style>
         html, body, #map {
             height: 100%;
+            width: 100%;
             margin: 0;
             padding: 0;
         }
@@ -23,56 +23,52 @@
     <script>
         let map;
         let startMarker, endMarker;
-        let line;
+        let routeLine;
 
-        function initMap(startLat, startLng, endLat, endLng) {
-            // Initialize map if it doesn't exist
+        // init or update map view mapview
+        function initMap(startLat, startLng, endLat, endLng, routeCoordinates = []) {
+            // init map if not created yet
             if (!map) {
-                map = L.map('map');
-
+                map = L.map('map').setView([47.5, 13.3], 7); // Default view of Austria
+                // Add OpenStreetMap tile layer with attribution
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 18
+                    maxZoom: 18,
+                    attribution: '© OpenStreetMap contributors'
                 }).addTo(map);
             }
+            // Remove previous markers and route line if they exist (for refreshing)
+            if (startMarker) map.removeLayer(startMarker);
+            if (endMarker) map.removeLayer(endMarker);
+            if (routeLine) map.removeLayer(routeLine);
 
-            // Create or update markers
-            if (startMarker) {
-                startMarker.setLatLng([startLat, startLng]);
-                endMarker.setLatLng([endLat, endLng]);
+            // Add markers for start and end locations with popups
+            startMarker = L.marker([startLat, startLng]).addTo(map).bindPopup('Start');
+            endMarker = L.marker([endLat, endLng]).addTo(map).bindPopup('End');
+
+            if (routeCoordinates && routeCoordinates.length > 0) {
+
+                // Draw the actual route line on the map in blue
+                const leafletCoords = routeCoordinates.map(coord => [coord[1], coord[0]]);
+                routeLine = L.polyline(leafletCoords, {
+                    color: '#3388ff',
+                    weight: 5,
+                    opacity: 0.7
+                }).addTo(map);
+
+                map.fitBounds(routeLine.getBounds(), { padding: [40, 40] });
+
             } else {
-                startMarker = L.marker([startLat, startLng]).addTo(map).bindPopup('Start');
-                endMarker = L.marker([endLat, endLng]).addTo(map).bindPopup('End');
+                // If no route points, draw simple straight line between start and end
+                const points = [[startLat, startLng], [endLat, endLng]];
+                routeLine = L.polyline(points, {
+                    color: 'red',
+                    weight: 3,
+                    opacity: 0.7,
+                    dashArray: '5, 10'
+                }).addTo(map);
+
+                map.fitBounds(points, { padding: [50, 50] });
             }
-
-            // Create or update line/polyline
-            const points = [[startLat, startLng], [endLat, endLng]];
-            if (line) {
-                line.setLatLngs(points);
-            } else {
-                line = L.polyline(points, { color: 'blue' }).addTo(map);
-            }
-
-            // Create a bounds object and fit the map to it
-            const bounds = L.latLngBounds([
-                [startLat, startLng],
-                [endLat, endLng]
-            ]);
-
-            // Add some padding around the bounds
-            map.fitBounds(bounds, {
-                padding: [50, 50],  // Padding in pixels [top/bottom, left/right]
-                maxZoom: 13         // Limit how much it zooms in for short distances
-            });
-
-            // Open text/pop up for the marker
-            setTimeout(() => {
-                startMarker.openPopup();
-            }, 300);
-        }
-
-        // Function to check if map is fully loaded/for screenshot process
-        function isMapReady() {
-            return map && map._loaded;
         }
     </script>
 </body>

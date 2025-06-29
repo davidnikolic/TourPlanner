@@ -43,7 +43,7 @@ namespace TourPlanner.UI.Services
             if (dialog.ShowDialog() == true)
             {
                 var res = FormFieldFactory.ToTourDTO(fields);
-
+                if (tour != null) res.RouteImagePath = tour.RouteImagePath;
                 return res;
 
             }

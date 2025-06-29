@@ -51,12 +51,16 @@ namespace TourPlanner.UI.ViewModels
         private void ExecuteSearch()
         {
             var result = _tourLogService.SearchTourLogs(SearchQuery);
-            TourLogs.Clear();
+            // If SelectedTour set → show log for the TOUR
+            if (SelectedTour != null)
+            {
+                result = result.Where(log => log.TourId == SelectedTour.Id).ToList();
+            }
 
+            // Set List
+            TourLogs.Clear();
             foreach (var log in result)
                 TourLogs.Add(log);
-
-            RefreshTourLogs();
         }
 
         public TourDTO SelectedTour
@@ -101,7 +105,7 @@ namespace TourPlanner.UI.ViewModels
         {
             if (SelectedTour == null || SelectedTour.Id <= 0)
             {
-                MessageBox.Show("Bitte zuerst eine gültige Tour auswählen.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please select a valid tour first", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -120,7 +124,7 @@ namespace TourPlanner.UI.ViewModels
         {
             if (selectedLog == null)
             {
-                MessageBox.Show("Bitte zuerst einen Tour-Log auswählen.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please select a tour log first.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -140,7 +144,7 @@ namespace TourPlanner.UI.ViewModels
         {
             if (selectedLog == null)
             {
-                MessageBox.Show("Bitte zuerst einen Tour-Log auswählen.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please select a tour log first.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -160,6 +164,7 @@ namespace TourPlanner.UI.ViewModels
             }
 
             SelectedTour = tour;
+            _searchQuery = string.Empty;
             RefreshTourLogs();
         }
 

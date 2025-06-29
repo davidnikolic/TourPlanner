@@ -5,26 +5,44 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TourPlanner.UI.Views"
              mc:Ignorable="d" 
-             Height="60" Background="#1F2937">
+             Height="70" Background="#1F2937">
 
-    <DockPanel VerticalAlignment="Top" Height="60" LastChildFill="True">
+    <UserControl.Resources>
+        <Style TargetType="MenuItem">
+            <Setter Property="Background" Value="#374151"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsHighlighted" Value="True">
+                    <Setter Property="Background" Value="#4B5563"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Separator">
+            <Setter Property="Background" Value="#4B5563"/>
+        </Style>
+    </UserControl.Resources>
+
+    <DockPanel VerticalAlignment="Top" Height="70" LastChildFill="True">
         <!-- App Title -->
-        <TextBlock Text="TourPlanner"
-                   FontSize="20"
-                   FontWeight="Bold"
-                   Foreground="White"
-                   VerticalAlignment="Center"
-                   Margin="20,0,0,0"
-                   DockPanel.Dock="Left" />
-
-        <!-- Navigation Buttons -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" DockPanel.Dock="Left" Margin="20,0,0,0">
+            <Border Width="32" Height="32" Background="#3B82F6" CornerRadius="8" Margin="0,0,15,0">
+                <TextBlock Text="T" FontSize="18" FontWeight="Bold" Foreground="White" 
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <TextBlock Text="TourPlanner"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       VerticalAlignment="Center" />
+        </StackPanel>
+        <!-- Navigation Menu -->
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Margin="0,0,20,0"
                     DockPanel.Dock="Right">
-            <Menu>
-                <MenuItem Header="_File">
+            <Menu Background="Transparent">
+                <MenuItem Header="File" Foreground="White" FontSize="18" FontWeight="SemiBold" Padding="20,12" Margin="6,0">
                     <MenuItem Header="New Tour" Command="{Binding AddTourCommand}" />
                     <MenuItem Header="New Tour-Log" Command="{Binding AddTourLogCommand}" />
                     <Separator />
@@ -48,18 +66,18 @@
                     <Separator />
                     <MenuItem Header="Quit" Command="{Binding ExitCommand}" />
                 </MenuItem>
-                <MenuItem Header="_Edit">
+                <MenuItem Header="Edit" Foreground="White" FontSize="18" FontWeight="SemiBold" Padding="20,12" Margin="6,0">
                 </MenuItem>
-                <MenuItem Header="_View">
-                    <MenuItem Header="Tour-List" InputGestureText="Strg+N" Command="{Binding NewTabCommand}" />
-                    <MenuItem Header="Detail-View" InputGestureText="Strg+Umschalt+N" Command="{Binding NewWindowCommand}" />
-                    <MenuItem Header="Tour-Log-List" InputGestureText="Strg+Umschalt+N" Command="{Binding NewWindowCommand}" />
+                <MenuItem Header="View" Foreground="White" FontSize="18" FontWeight="SemiBold" Padding="20,12" Margin="6,0">
+                    <MenuItem Header="Tour-List" Command="{Binding NewTabCommand}" />
+                    <MenuItem Header="Detail-View" Command="{Binding NewWindowCommand}" />
+                    <MenuItem Header="Tour-Log-List" Command="{Binding NewWindowCommand}" />
                 </MenuItem>
-                <MenuItem Header="_Help">
-                    <MenuItem Header="About..." InputGestureText="Strg+N" Command="{Binding NewTabCommand}" />
-                    <MenuItem Header="How to use..." InputGestureText="Strg+Umschalt+N" Command="{Binding NewWindowCommand}" />
+                <MenuItem Header="Help" Foreground="White" FontSize="18" FontWeight="SemiBold" Padding="20,12" Margin="6,0">
+                    <MenuItem Header="About..." Command="{Binding NewTabCommand}" />
+                    <MenuItem Header="How to use..." Command="{Binding NewWindowCommand}" />
                     <Separator />
-                    <MenuItem Header="Visit GitHub-Repository" InputGestureText="Strg+Umschalt+N" Command="{Binding NewWindowCommand}" />
+                    <MenuItem Header="Visit GitHub-Repository" Command="{Binding NewWindowCommand}" />
                 </MenuItem>
             </Menu>
         </StackPanel>

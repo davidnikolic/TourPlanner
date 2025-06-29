@@ -15,12 +15,12 @@ namespace TourPlanner.UI.ViewModels.Components
         {
             var fields = new ObservableCollection<FormField>
         {
-            new() { Label = "Datum", Type = "DatePicker", Value = dto?.LogDate ?? DateTime.Now },
-            new() { Label = "Kommentar", Type = "TextBox", Value = dto?.Comment ?? "" },
-            new() { Label = "Schwierigkeit", Type = "ComboBox", Value = dto?.Difficulty ?? DifficultyLevel.medium, Options = Enum.GetValues(typeof(DifficultyLevel)).Cast<object>() },
-            new() { Label = "Distanz (in km)", Type = "TextBox", Value = dto?.DistanceKm ?? 0 },
-            new() { Label = "Dauer (in h)", Type = "TextBox", Value = dto?.DurationHours ?? 0 },
-            new() { Label = "Bewertung", Type = "ComboBox", Value = dto?.Rating ?? SatisfactionRating.neutral, Options = Enum.GetValues(typeof(SatisfactionRating)).Cast<object>() }
+            new() { Label = "Date", Type = "DatePicker", Value = dto?.LogDate ?? DateTime.Now },
+            new() { Label = "Comment", Type = "TextBox", Value = dto?.Comment ?? "" },
+            new() { Label = "Difficulty", Type = "ComboBox", Value = dto?.Difficulty ?? DifficultyLevel.medium, Options = Enum.GetValues(typeof(DifficultyLevel)).Cast<object>() },
+            new() { Label = "Distance (in km)", Type = "TextBox", Value = dto?.DistanceKm ?? 0 },
+            new() { Label = "Duration (in h)", Type = "TextBox", Value = dto?.DurationHours ?? 0 },
+            new() { Label = "Rating", Type = "ComboBox", Value = dto?.Rating ?? SatisfactionRating.neutral, Options = Enum.GetValues(typeof(SatisfactionRating)).Cast<object>() }
         };
 
             return fields;
@@ -31,12 +31,12 @@ namespace TourPlanner.UI.ViewModels.Components
             return new ObservableCollection<FormField>
             {
                 new() { Label = "Name", Type = "TextBox", Value = dto?.Name ?? "" },
-                new() { Label = "Beschreibung", Type = "TextBox", Value = dto?.Description ?? "" },
-                new() { Label = "Startort", Type = "TextBox", Value = dto?.StartLocation ?? "" },
-                new() { Label = "Zielort", Type = "TextBox", Value = dto?.EndLocation ?? "" },
-                new() { Label = "Transportmittel", Type = "ComboBox", Value = dto?.TransportType ?? TransportType.foot, Options = Enum.GetValues(typeof(TransportType)).Cast<object>() },
-                new() { Label = "Distanz (in km)", Type = "TextBox", Value = dto?.DistanceKm ?? 0f },
-                new() { Label = "Dauer (in h)", Type = "TextBox", Value = dto?.EstimatedTimeHours ?? 0f }
+                new() { Label = "Comment", Type = "TextBox", Value = dto?.Description ?? "" },
+                new() { Label = "StartLocation", Type = "TextBox", Value = dto?.StartLocation ?? "" },
+                new() { Label = "EndLocation", Type = "TextBox", Value = dto?.EndLocation ?? "" },
+                new() { Label = "Transporttype", Type = "ComboBox", Value = dto?.TransportType ?? TransportType.foot, Options = Enum.GetValues(typeof(TransportType)).Cast<object>() },
+                new() { Label = "Distance (in km)", Type = "TextBox", Value = dto?.DistanceKm ?? 0f },
+                new() { Label = "Duration (in h)", Type = "TextBox", Value = dto?.EstimatedTimeHours ?? 0f }
             };
         }
 
@@ -46,12 +46,12 @@ namespace TourPlanner.UI.ViewModels.Components
 
             return new TourLogDTO
             {
-                LogDate = (DateTime)(dict["Datum"] ?? DateTime.Today),
-                Comment = dict["Kommentar"]?.ToString() ?? "",
-                Difficulty = (DifficultyLevel)(dict["Schwierigkeit"] ?? DifficultyLevel.medium),
-                DistanceKm = float.TryParse(dict["Distanz (in km)"]?.ToString(), out var km) ? km : 0f,
-                DurationHours = float.TryParse(dict["Dauer (in h)"]?.ToString(), out var h) ? h : 0f,
-                Rating = (SatisfactionRating)(dict["Bewertung"] ?? SatisfactionRating.neutral)
+                LogDate = (DateTime)(dict["Date"] ?? DateTime.Today),
+                Comment = dict["Comment"]?.ToString() ?? "",
+                Difficulty = (DifficultyLevel)(dict["Difficulty"] ?? DifficultyLevel.medium),
+                DistanceKm = float.TryParse(dict["Distance (in km)"]?.ToString(), out var km) ? km : 0f,
+                DurationHours = float.TryParse(dict["Duration (in h)"]?.ToString(), out var h) ? h : 0f,
+                Rating = (SatisfactionRating)(dict["Rating"] ?? SatisfactionRating.neutral)
             };
         }
 
@@ -62,12 +62,12 @@ namespace TourPlanner.UI.ViewModels.Components
             return new TourDTO
             {
                 Name = dict["Name"]?.ToString() ?? "",
-                Description = dict["Beschreibung"]?.ToString() ?? "",
-                StartLocation = dict["Startort"]?.ToString() ?? "",
-                EndLocation = dict["Zielort"]?.ToString() ?? "",
-                TransportType = (TransportType)(dict["Transportmittel"] ?? TransportType.foot),
-                DistanceKm = float.TryParse(dict["Distanz (in km)"]?.ToString(), out var km) ? km : 0f,
-                EstimatedTimeHours = float.TryParse(dict["Dauer (in h)"]?.ToString(), out var hours) ? hours : 0f
+                Description = dict["Comment"]?.ToString() ?? "",
+                StartLocation = dict["StartLocation"]?.ToString() ?? "",
+                EndLocation = dict["EndLocation"]?.ToString() ?? "",
+                TransportType = (TransportType)(dict["Transporttype"] ?? TransportType.foot),
+                DistanceKm = float.TryParse(dict["Distance (in km)"]?.ToString(), out var km) ? km : 0f,
+                EstimatedTimeHours = float.TryParse(dict["Duration (in h)"]?.ToString(), out var hours) ? hours : 0f
             };
         }
     }
