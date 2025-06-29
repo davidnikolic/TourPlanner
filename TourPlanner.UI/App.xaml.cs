@@ -14,6 +14,7 @@ using GalaSoft.MvvmLight.Views;
 using TourPlanner.UI.Services;
 using TourPlanner.UI.Map.Interface;
 using TourPlanner.UI.Map.Services;
+using TourPlanner.BL.Services.Map;
 
 namespace TourPlanner.UI
 {
@@ -94,6 +95,12 @@ namespace TourPlanner.UI
             services.AddScoped<ITourRepository, TourRepositories>();
             services.AddScoped<ITourLogRepository, TourLogRepository>();
 
+            // UI Services
+            services.AddSingleton<IMapViewService, MapViewService>();
+
+            // BL
+            services.AddSingleton<IMapService, MapService>();
+
             // ViewModels
             services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<TourNavBarViewModel>();
@@ -101,8 +108,6 @@ namespace TourPlanner.UI
             services.AddSingleton<TourLogsViewModel>();
             services.AddSingleton<TourDetailViewModel>();
 
-            // UI Services
-            services.AddSingleton<IMapViewService, MapViewService>();
         }
     }
 

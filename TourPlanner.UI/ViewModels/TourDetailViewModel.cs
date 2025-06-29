@@ -8,12 +8,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Interfaces;
-using TourPlanner.UI.Map;
+using TourPlanner.BL.Services.Map;
 
 namespace TourPlanner.UI.ViewModels
 {
     public class TourDetailViewModel : ViewModelBase
     {
+        private readonly IMapService _mapService;
         private ISelectedTourService _selectedTourService;
 
         private TourDTO selectedTour;
@@ -58,7 +59,7 @@ namespace TourPlanner.UI.ViewModels
 
         private bool _mapLoaded = false;
 
-        private void EvaluateLazyLoading()
+        private async void EvaluateLazyLoading()
         {
             if (SelectedTabIndex == 1)
             {
@@ -76,8 +77,7 @@ namespace TourPlanner.UI.ViewModels
                     start = SelectedTour.StartLocation;
                     end = SelectedTour.EndLocation;
                 }
-                // Request a map update via event service using start and end locations
-                MapEventService.RequestMapUpdate(start, end);
+                await _mapService.UpdateMapAsync(start, end);
             }
             else // if another tab is selcted
             {
@@ -87,10 +87,10 @@ namespace TourPlanner.UI.ViewModels
             }
         }
 
-        public TourDetailViewModel(ISelectedTourService selectedTourService)
+        public TourDetailViewModel(ISelectedTourService selectedTourService, IMapService mapService)
         {
             _selectedTourService = selectedTourService;
-
+            _mapService = mapService;
             _selectedTourService.SelectedTourChanged += OnSelectedTourChanged;
         }
 

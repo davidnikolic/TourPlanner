@@ -30,4 +30,8 @@
     <ProjectReference Include="..\TourPlanner.Logging\TourPlanner.Logging.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Map\Interface\" />
+  </ItemGroup>
+
 </Project>

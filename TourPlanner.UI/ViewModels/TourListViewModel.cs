@@ -12,13 +12,14 @@ using TourPlanner.BL.DTOs;
 using TourPlanner.UI.Views.Components;
 using TourPlanner.BL.Services;
 using System.Windows;
+using TourPlanner.BL.Services.Map;
 
 
 namespace TourPlanner.UI.ViewModels
 {
     public class TourListViewModel : ViewModelBase
     {
-
+        private readonly IMapService _mapService;
         private ITourService _tourService;
 
         private ISelectedTourService? _selectedTourService;
@@ -48,13 +49,15 @@ namespace TourPlanner.UI.ViewModels
             ITourService tourService,
             ISelectedTourService selectedTourService,
             IDialogService dialogService,
-            TourLogsViewModel tourLogsViewModel
+            TourLogsViewModel tourLogsViewModel,
+            IMapService mapService
             )
         {
             _tourService = tourService;
             _selectedTourService = selectedTourService;
             _dialogService = dialogService;
             _tourLogsViewModel = tourLogsViewModel;
+            _mapService = mapService;
             _tourLogsViewModel.PropertyChanged += OnTourLogsViewModelPropertyChanged;
             var tours = _tourService.GetTours();
 
@@ -179,10 +182,10 @@ namespace TourPlanner.UI.ViewModels
             }
         }
 
-        public void HandleMap(TourDTO tour)
+        public async void HandleMap(TourDTO tour)
         {
-            TourPlanner.UI.Map.MapEventService.RequestMapUpdate(tour.StartLocation, tour.EndLocation);
-            TourPlanner.UI.Map.MapEventService.RequestMapImageSave(tour.RouteImagePath);
+            await _mapService.UpdateMapAsync(tour.StartLocation, tour.EndLocation);
+            await _mapService.SaveMapImageAsync(tour.RouteImagePath);
         }
     }
 }
