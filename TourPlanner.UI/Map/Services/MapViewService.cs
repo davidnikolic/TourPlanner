@@ -86,7 +86,7 @@ namespace TourPlanner.UI.Map.Services
                 // WebView2 initialized and map ready with 2sec delay
                 await webView.EnsureCoreWebView2Async();
                 if (webView.CoreWebView2 == null) return;
-                await Task.Delay(2000);
+                await Task.Delay(1000);
 
                 string chosenPath = fullImagePath;
 

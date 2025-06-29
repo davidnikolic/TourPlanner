@@ -87,7 +87,7 @@ namespace TourPlanner.UI.ViewModels
 
             switch (type)
             {
-                case CsvContentType.Tour:
+                case ContentType.Tour:
                     var tours = _importService.ImportToursFromCSV(path);
                     foreach (var t in tours)
                     {
@@ -95,7 +95,7 @@ namespace TourPlanner.UI.ViewModels
                     }
                     break;
 
-                case CsvContentType.TourLog:
+                case ContentType.TourLog:
                     var logs = _importService.ImportTourLogsFromCSV(path);
                     foreach (var l in logs)
                         _tourLogService.AddTourLog(l);
@@ -113,7 +113,34 @@ namespace TourPlanner.UI.ViewModels
 
         private void ImportFromJson()
         {
-            MessageBox.Show("Diese Funktion wird noch implementiert.", "WIP", MessageBoxButton.OK, MessageBoxImage.Information);
+            var path = _dialogService.ShowOpenFileDialog("JSON Files (*.json)|*.json|All Files (*.*)|*.*");
+
+            var type = _importService.DetectJsonType(path);
+
+            switch (type)
+            {
+                case ContentType.Tour:
+                    var tours = _importService.ImportToursFromJson(path);
+                    foreach (var t in tours)
+                    {
+                        _tourService.AddTour(t);
+                    }
+                    break;
+
+                case ContentType.TourLog:
+                    var logs = _importService.ImportTourLogsFromJson(path);
+                    foreach (var l in logs)
+                        _tourLogService.AddTourLog(l);
+                    break;
+
+                default:
+                    _dialogService.ShowMessage("Unbekanntes JSON-Format.");
+                    break;
+            }
+
+
+
+            _tourCoordinatorService.RequestTourRefresh();
         }
 
         private void ExportSelectedTourAsPdf()

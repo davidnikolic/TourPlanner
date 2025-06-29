@@ -8,23 +8,25 @@ using CsvHelper;
 using System.Globalization;
 using TourPlanner.BL.DTOs;
 using CsvHelper.Configuration;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace TourPlanner.BL.Services
 {
     public class ImportService : IImportService
     {
-        public enum CsvContentType
+        public enum ContentType
         {
             Unknown,
             Tour,
             TourLog
         }
 
-        public CsvContentType DetectCsvType(string filePath)
+        public ContentType DetectCsvType(string filePath)
         {
             var headerLine = File.ReadLines(filePath).FirstOrDefault();
             if (headerLine is null)
-                return CsvContentType.Unknown;
+                return ContentType.Unknown;
 
             var headers = headerLine.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
@@ -32,12 +34,12 @@ namespace TourPlanner.BL.Services
             var logHeaders = new[] { "Id", "TourId", "Date", "Comment", "Difficulty" };
 
             if (tourHeaders.All(h => headers.Contains(h)))
-                return CsvContentType.Tour;
+                return ContentType.Tour;
 
             if (logHeaders.All(h => headers.Contains(h)))
-                return CsvContentType.TourLog;
+                return ContentType.TourLog;
 
-            return CsvContentType.Unknown;
+            return ContentType.Unknown;
         }
 
         public List<TourDTO> ImportToursFromCSV(string filepath)
@@ -68,9 +70,52 @@ namespace TourPlanner.BL.Services
             return tourData;
         }
 
-        public void ImportJSON(string filepath)
+        public ContentType DetectJsonType(string filePath)
         {
-            throw new NotImplementedException();
+            var json = File.ReadAllText(filePath);
+            using var doc = JsonDocument.Parse(json);
+
+            var root = doc.RootElement;
+            if (root.ValueKind != JsonValueKind.Array || root.GetArrayLength() == 0)
+                return ContentType.Unknown;
+
+            var firstObj = root[0];
+
+            if (firstObj.TryGetProperty("StartLocation", out _) &&
+                firstObj.TryGetProperty("EndLocation", out _))
+                return ContentType.Tour;
+
+            if (firstObj.TryGetProperty("Comment", out _) &&
+                firstObj.TryGetProperty("Difficulty", out _))
+                return ContentType.TourLog;
+
+            return ContentType.Unknown;
+        }
+
+        public List<TourDTO> ImportToursFromJson(string filePath)
+        {
+            var json = File.ReadAllText(filePath);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                Converters = { new JsonStringEnumConverter() }
+            };
+
+            var tours = JsonSerializer.Deserialize<List<TourDTO>>(json, options);
+            return tours ?? new List<TourDTO>();
+        }
+
+        public List<TourLogDTO> ImportTourLogsFromJson(string filePath)
+        {
+            var json = File.ReadAllText(filePath);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                Converters = { new JsonStringEnumConverter() }
+            };
+
+            var tours = JsonSerializer.Deserialize<List<TourLogDTO>>(json, options);
+            return tours ?? new List<TourLogDTO>();
         }
     }
 }
