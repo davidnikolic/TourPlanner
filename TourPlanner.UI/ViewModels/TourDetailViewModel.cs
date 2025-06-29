@@ -25,6 +25,7 @@ namespace TourPlanner.UI.ViewModels
             {
                 if (selectedTour != value)
                 {
+
                     selectedTour = value;
                     OnPropertyChanged();
                     ResetTabState(); // Reset map state to null
@@ -75,9 +76,8 @@ namespace TourPlanner.UI.ViewModels
                 {
                     start = SelectedTour.StartLocation;
                     end = SelectedTour.EndLocation;
+                    MapEventService.RequestMapUpdate(start, end);
                 }
-                // Request a map update via event service using start and end locations
-                MapEventService.RequestMapUpdate(start, end);
             }
             else // if another tab is selcted
             {
@@ -92,6 +92,8 @@ namespace TourPlanner.UI.ViewModels
             _selectedTourService = selectedTourService;
 
             _selectedTourService.SelectedTourChanged += OnSelectedTourChanged;
+
+            MapEventService.MapReady += OnMapReady;
         }
 
         private void ResetTabState()
@@ -103,6 +105,14 @@ namespace TourPlanner.UI.ViewModels
         private void OnSelectedTourChanged(TourDTO tour)
         {
             SelectedTour = tour;
+        }
+
+        private void OnMapReady()
+        {
+            if (SelectedTour != null)
+            {
+                MapEventService.RequestMapImageSave(SelectedTour.RouteImagePath);
+            }
         }
     }
 }

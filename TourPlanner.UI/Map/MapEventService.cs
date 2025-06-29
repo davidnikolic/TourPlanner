@@ -11,6 +11,8 @@ namespace TourPlanner.UI.Map
         public static event Action<string, string>? UpdateMapRequested;
         public static event Action<string>? SaveMapImageRequested;
 
+        public static event Action? MapReady; // NEU
+
         public static void RequestMapUpdate(string startLocation, string endLocation)
         {
             // Triggers the event
@@ -19,6 +21,11 @@ namespace TourPlanner.UI.Map
         public static void RequestMapImageSave(string path)
         {
             SaveMapImageRequested?.Invoke(path);
+        }
+
+        public static void NotifyMapReady()
+        {
+            MapReady?.Invoke();
         }
     }
 }

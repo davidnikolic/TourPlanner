@@ -67,6 +67,8 @@ namespace TourPlanner.UI.Map.Services
                 // Build js function as string and displays driving route, if nothing found empty array and default start/end line
                 string jsCommand = $"initMap({Format(startCoords.Lat)}, {Format(startCoords.Lng)}, {Format(endCoords.Lat)}, {Format(endCoords.Lng)}, {routeJsArray})";
                 await webView.CoreWebView2.ExecuteScriptAsync(jsCommand);
+
+                MapEventService.NotifyMapReady();
             }
             catch (Exception ex)
             {

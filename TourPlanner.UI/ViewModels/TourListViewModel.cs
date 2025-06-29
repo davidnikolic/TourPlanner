@@ -41,7 +41,6 @@ namespace TourPlanner.UI.ViewModels
                 {
                     selectedTour = value;
                     OnPropertyChanged();
-                    HandleMap(selectedTour);
                     _selectedTourService.SelectedTour = value; 
                 }
             }
@@ -175,12 +174,6 @@ namespace TourPlanner.UI.ViewModels
                 // Otherwise, select the first item in the list or set to null if none exist  / First Tour or "null" no tour displayed
                 SelectedTour = null; 
             }
-        }
-
-        public void HandleMap(TourDTO tour)
-        {
-            TourPlanner.UI.Map.MapEventService.RequestMapUpdate(tour.StartLocation, tour.EndLocation);
-            TourPlanner.UI.Map.MapEventService.RequestMapImageSave(tour.RouteImagePath);
         }
     }
 }
