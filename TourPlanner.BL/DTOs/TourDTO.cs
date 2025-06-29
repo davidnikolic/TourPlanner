@@ -30,5 +30,13 @@ namespace TourPlanner.BL.DTOs
         public string? RouteImagePath { get; set; }
 
         public ICollection<TourLogDTO> TourLogs { get; set; } = new List<TourLogDTO>();
+
+        public TourDTO()
+        {
+            string outputDir = Path.Combine(AppContext.BaseDirectory, "GeneratedImages");
+            Directory.CreateDirectory(outputDir);
+            string fileName = Guid.NewGuid() + ".png";
+            RouteImagePath = Path.Combine(outputDir, fileName);
+        }
     }
 }

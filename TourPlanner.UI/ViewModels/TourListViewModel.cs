@@ -27,6 +27,8 @@ namespace TourPlanner.UI.ViewModels
 
         private TourLogsViewModel _tourLogsViewModel;
 
+        private ITourCoordinatorService _tourCoordinatorService;
+
         public ObservableCollection<TourDTO> Tours { get; set; } = new();
 
         private TourDTO selectedTour;
@@ -39,6 +41,7 @@ namespace TourPlanner.UI.ViewModels
                 {
                     selectedTour = value;
                     OnPropertyChanged();
+                    HandleMap(selectedTour);
                     _selectedTourService.SelectedTour = value; 
                 }
             }
@@ -48,13 +51,16 @@ namespace TourPlanner.UI.ViewModels
             ITourService tourService,
             ISelectedTourService selectedTourService,
             IDialogService dialogService,
-            TourLogsViewModel tourLogsViewModel
+            TourLogsViewModel tourLogsViewModel,
+            ITourCoordinatorService tourCoordinatorService
             )
         {
             _tourService = tourService;
             _selectedTourService = selectedTourService;
             _dialogService = dialogService;
             _tourLogsViewModel = tourLogsViewModel;
+            _tourCoordinatorService = tourCoordinatorService;
+            _tourCoordinatorService.ToursChanged += RefreshTours;
             _tourLogsViewModel.PropertyChanged += OnTourLogsViewModelPropertyChanged;
             var tours = _tourService.GetTours();
 
@@ -94,15 +100,7 @@ namespace TourPlanner.UI.ViewModels
 
         private void AddTour()
         {
-            var tour = _dialogService.DisplayTourPopUp("Add new tour");
-
-            if (tour != null)
-            {
-                _tourService.AddTour(tour);
-                HandleMap(tour);
-            }
-
-            RefreshTours();
+            _tourCoordinatorService.AddTour();
         }
 
         private void ModifyTour()
@@ -114,12 +112,12 @@ namespace TourPlanner.UI.ViewModels
             }
 
             var tour = _dialogService.DisplayTourPopUp("Modify Tour", SelectedTour);
-            tour.Id = SelectedTour.Id;
 
             if (tour != null)
             {
+                tour.Id = SelectedTour.Id;
                 _tourService.UpdateTour(tour);
-                HandleMap(tour);
+                
             }
 
             RefreshTours();

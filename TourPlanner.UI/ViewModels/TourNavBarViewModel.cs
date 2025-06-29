@@ -28,6 +28,8 @@ namespace TourPlanner.UI.ViewModels
 
         private IImportService _importService;
 
+        private ITourCoordinatorService _tourCoordinatorService;
+
         public TourNavBarViewModel
             (
             ITourService tourService,
@@ -36,7 +38,8 @@ namespace TourPlanner.UI.ViewModels
             ITourStatisticsService ourStatisticsService,
             IDialogService dialogService,
             IImportService importService,
-            IReportService reportService
+            IReportService reportService,
+            ITourCoordinatorService tourCoordinatorService
             ) 
         { 
             _tourService = tourService;
@@ -46,6 +49,7 @@ namespace TourPlanner.UI.ViewModels
             _dialogService = dialogService;
             _importService = importService;
             _reportService = reportService;
+            _tourCoordinatorService = tourCoordinatorService;
         }
 
 
@@ -67,7 +71,7 @@ namespace TourPlanner.UI.ViewModels
 
         private void AddTour()
         {
-            MessageBox.Show("Diese Funktion wird noch implementiert.", "WIP", MessageBoxButton.OK, MessageBoxImage.Information);
+            _tourCoordinatorService.AddTour();
         }
 
         private void AddTourLog()
@@ -86,7 +90,9 @@ namespace TourPlanner.UI.ViewModels
                 case CsvContentType.Tour:
                     var tours = _importService.ImportToursFromCSV(path);
                     foreach (var t in tours)
+                    {
                         _tourService.AddTour(t);
+                    }
                     break;
 
                 case CsvContentType.TourLog:
@@ -99,6 +105,10 @@ namespace TourPlanner.UI.ViewModels
                     _dialogService.ShowMessage("Unbekanntes CSV-Format.");
                     break;
             }
+
+           
+
+            _tourCoordinatorService.RequestTourRefresh();
         }
 
         private void ImportFromJson()

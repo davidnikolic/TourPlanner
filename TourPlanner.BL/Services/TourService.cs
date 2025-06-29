@@ -11,6 +11,7 @@ using TourPlanner.DAL.Repositories;
 using System.Runtime.CompilerServices;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using iText.Svg.Renderers.Path.Impl;
 
 namespace TourPlanner.BL.Services
 {
@@ -25,14 +26,13 @@ namespace TourPlanner.BL.Services
             _tourLogService = tourLogService;
         }
 
+        public TourService(ITourRepository TourRepo)
+        {
+            _tourRepository = TourRepo;
+        }
+
         public void AddTour(TourDTO tour)
         {
-            string outputDir = Path.Combine(AppContext.BaseDirectory, "GeneratedImages");
-            Directory.CreateDirectory(outputDir);
-            string fileName = Guid.NewGuid() + ".png";
-            tour.RouteImagePath = Path.Combine(outputDir, fileName);
-
-
             TourEntity entity = ToEntity(tour);
            _tourRepository.AddTour(entity);
         }
@@ -71,6 +71,11 @@ namespace TourPlanner.BL.Services
         {
             TourEntity entity = ToEntity(tour);
             _tourRepository.DeleteTour(entity.Id);
+
+            if (File.Exists(tour.RouteImagePath))
+            {
+                File.Delete(tour.RouteImagePath);
+            }
         }
 
         public static TourDTO ToModel(TourEntity entity)
