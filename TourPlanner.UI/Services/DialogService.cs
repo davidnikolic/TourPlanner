@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using Microsoft.Win32;
 using TourPlanner.BL.DTOs;
 using TourPlanner.UI.Interfaces;
 using TourPlanner.UI.ViewModels;
@@ -49,6 +51,43 @@ namespace TourPlanner.UI.Services
             }
 
             return null;
+        }
+
+        public void ShowMessage(string message)
+        {
+            MessageBox.Show(message);
+        }
+
+        public string? ShowOpenFileDialog(string filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*")
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = filter,
+                Title = "Datei auswählen"
+            };
+
+            bool? result = openFileDialog.ShowDialog();
+
+            if (result == true)
+            {
+                return openFileDialog.FileName;
+            }
+
+            return null;
+        }
+
+        public string? ShowSaveFileDialog(string defaultFileName = "export.csv", string filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*")
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = filter,
+                FileName = defaultFileName,
+                Title = "Datei speichern"
+            };
+
+            bool? result = saveFileDialog.ShowDialog();
+
+            return result == true ? saveFileDialog.FileName : null;
         }
     }
 }

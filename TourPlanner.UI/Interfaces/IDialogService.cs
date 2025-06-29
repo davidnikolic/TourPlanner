@@ -13,5 +13,11 @@ namespace TourPlanner.UI.Interfaces
 
         public TourLogDTO? DisplayTourLogPopUp(string title, TourLogDTO tourLog = null);
 
+        string? ShowOpenFileDialog(string filter);
+
+        string? ShowSaveFileDialog(string defaultFileName, string filter);
+
+        void ShowMessage(string message);
+
     }
 }

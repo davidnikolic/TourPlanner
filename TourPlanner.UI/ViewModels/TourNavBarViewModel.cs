@@ -8,6 +8,7 @@ using System.Windows;
 using TourPlanner.BL.Interfaces;
 using TourPlanner.BL.Services;
 using TourPlanner.UI.Interfaces;
+using static TourPlanner.BL.Services.ImportService;
 
 namespace TourPlanner.UI.ViewModels
 {
@@ -23,12 +24,18 @@ namespace TourPlanner.UI.ViewModels
 
         private IReportService _reportService;
 
+        private IDialogService _dialogService;
+
+        private IImportService _importService;
+
         public TourNavBarViewModel
             (
             ITourService tourService,
             ITourLogService tourLogService,
             ISelectedTourService selectedTourService,
             ITourStatisticsService ourStatisticsService,
+            IDialogService dialogService,
+            IImportService importService,
             IReportService reportService
             ) 
         { 
@@ -36,6 +43,8 @@ namespace TourPlanner.UI.ViewModels
             _tourLogService = tourLogService;
             _selectedTourService = selectedTourService;
             _tourStatisticsService = ourStatisticsService;
+            _dialogService = dialogService;
+            _importService = importService;
             _reportService = reportService;
         }
 
@@ -68,7 +77,28 @@ namespace TourPlanner.UI.ViewModels
 
         private void ImportFromCsv()
         {
-            MessageBox.Show("Diese Funktion wird noch implementiert.", "WIP", MessageBoxButton.OK, MessageBoxImage.Information);
+            var path = _dialogService.ShowOpenFileDialog("CSV Files (*.csv)|*.csv|All Files (*.*)|*.*");
+
+            var type = _importService.DetectCsvType(path);
+
+            switch (type)
+            {
+                case CsvContentType.Tour:
+                    var tours = _importService.ImportToursFromCSV(path);
+                    foreach (var t in tours)
+                        _tourService.AddTour(t);
+                    break;
+
+                case CsvContentType.TourLog:
+                    var logs = _importService.ImportTourLogsFromCSV(path);
+                    foreach (var l in logs)
+                        _tourLogService.AddTourLog(l);
+                    break;
+
+                default:
+                    _dialogService.ShowMessage("Unbekanntes CSV-Format.");
+                    break;
+            }
         }
 
         private void ImportFromJson()
@@ -82,7 +112,7 @@ namespace TourPlanner.UI.ViewModels
 
             if (tour == null)
             {
-                MessageBox.Show("No Tour selected");
+                _dialogService.ShowMessage("No Tour selected");
                 return;
             }
 
