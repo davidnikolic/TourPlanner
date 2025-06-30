@@ -34,7 +34,7 @@ namespace TourPlanner.BL.Services
                 var headers = headerLine.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
                 var tourHeaders = new[] {"Name", "StartLocation", "EndLocation", "TransportType" };
-                var logHeaders = new[] {"TourId", "Date", "Comment", "Difficulty" };
+                var logHeaders = new[] {"LogDate", "Comment", "Difficulty" };
 
                 if (tourHeaders.All(h => headers.Contains(h)))
                     return ContentType.Tour;

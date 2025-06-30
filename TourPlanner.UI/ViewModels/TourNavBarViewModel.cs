@@ -104,9 +104,20 @@ namespace TourPlanner.UI.ViewModels
                     break;
 
                 case ContentType.TourLog:
+                    var tour = _selectedTourService.SelectedTour;
+
+                    if (tour == null)
+                    {
+                        _dialogService.ShowMessage("No Tour selected");
+                        return;
+                    }
+
                     var logs = _importService.ImportTourLogsFromCSV(path);
                     foreach (var l in logs)
+                    {
+                        l.TourId = tour.Id;
                         _tourLogService.AddTourLog(l);
+                    }
                     break;
                 case ContentType.Error:
                     _dialogService.ShowMessage("Die Datei ist bereits geöffnet (z. B. in Excel) und kann nicht gelesen werden. Bitte schließe sie zuerst.");
@@ -179,22 +190,34 @@ namespace TourPlanner.UI.ViewModels
 
         private void ExportSelectedTourAsCsv()
         {
+            var tour = _selectedTourService.SelectedTour;
+
+            if (tour == null)
+            {
+                _dialogService.ShowMessage("No Tour selected");
+                return;
+            }
+
             var path = _dialogService.ShowSaveFileDialog("output.csv", "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*");
 
             if (path == null) return;
-
-            var tour = _selectedTourService.SelectedTour;
 
             _exportService.ExportToursToCsv(new List<TourDTO> { tour }, path);
         }
 
         private void ExportSelectedTourAsJson()
         {
+            var tour = _selectedTourService.SelectedTour;
+
+            if (tour == null)
+            {
+                _dialogService.ShowMessage("No Tour selected");
+                return;
+            }
+
             var path = _dialogService.ShowSaveFileDialog("output.json", "JSON Files (*.json)|*.json|All Files (*.*)|*.*");
 
             if (path == null) return;
-
-            var tour = _selectedTourService.SelectedTour;
 
             var logs = _tourLogService.GetTourLogsForTour(tour.Id);
 

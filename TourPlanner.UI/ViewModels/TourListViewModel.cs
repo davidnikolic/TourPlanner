@@ -12,6 +12,7 @@ using TourPlanner.BL.DTOs;
 using TourPlanner.UI.Views.Components;
 using TourPlanner.BL.Services;
 using System.Windows;
+using System.Windows.Input;
 
 
 namespace TourPlanner.UI.ViewModels
@@ -141,6 +142,13 @@ namespace TourPlanner.UI.ViewModels
 
         public void RefreshTours()
         {
+            int id = -1;
+            if (selectedTour != null)
+            {
+                id = selectedTour.Id;
+            }
+
+
             List<TourDTO> toursToDisplay;
             // Get the current search term from the TourLogsViewModel
             string currentSearchTerm = "";
@@ -164,10 +172,10 @@ namespace TourPlanner.UI.ViewModels
                 Tours.Add(tour);
 
             // Try to keep the previously selected tour if it's still in the new list, current selected tour in tourslist
-            if (_selectedTourService.SelectedTour != null && Tours.Any(t => t.Id == _selectedTourService.SelectedTour.Id))
+            if (id != -1 && Tours.Any(t => t.Id == id))
             {
                 // Set SelectedTour to the one that was previously selected and is still available / first or exception
-                SelectedTour = Tours.First(t => t.Id == _selectedTourService.SelectedTour.Id);
+                SelectedTour = Tours.First(t => t.Id == id);
             }
             else
             {
