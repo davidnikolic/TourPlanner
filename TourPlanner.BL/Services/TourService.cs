@@ -31,10 +31,11 @@ namespace TourPlanner.BL.Services
             _tourRepository = TourRepo;
         }
 
-        public void AddTour(TourDTO tour)
+        public TourDTO AddTour(TourDTO tour)
         {
-            TourEntity entity = ToEntity(tour);
-           _tourRepository.AddTour(entity);
+           TourEntity entity = ToEntity(tour);
+           var tourEntity = _tourRepository.AddTour(entity);
+           return ToModel(tourEntity);
         }
 
         public List<TourDTO> GetTours()
@@ -72,9 +73,16 @@ namespace TourPlanner.BL.Services
             TourEntity entity = ToEntity(tour);
             _tourRepository.DeleteTour(entity.Id);
 
-            if (File.Exists(tour.RouteImagePath))
+            try
             {
-                File.Delete(tour.RouteImagePath);
+                if (File.Exists(tour.RouteImagePath))
+                {
+                    File.Delete(tour.RouteImagePath);
+                }
+            }
+            catch (IOException ex)
+            {
+                //LOG
             }
         }
 

@@ -6,11 +6,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
 using static TourPlanner.BL.DTOs.EnumsDTO;
+using System.Text.Json.Serialization;
 
 namespace TourPlanner.BL.DTOs
 {
     public class TourDTO
     {
+        [JsonIgnore]
+        [CsvHelper.Configuration.Attributes.Ignore]
         public int Id { get; set; }
 
         public string Name { get; set; } = "";
@@ -27,6 +30,8 @@ namespace TourPlanner.BL.DTOs
 
         public float EstimatedTimeHours { get; set; } = 0;
 
+        [JsonIgnore]
+        [CsvHelper.Configuration.Attributes.Ignore]
         public string? RouteImagePath { get; set; }
 
         public ICollection<TourLogDTO> TourLogs { get; set; } = new List<TourLogDTO>();

@@ -17,10 +17,11 @@ namespace TourPlanner.DAL.Repositories
             _dbContext = dbContext;
         }
 
-        public void AddTour(TourEntity tour)
+        public TourEntity AddTour(TourEntity tour)
         {
             _dbContext.Tours.Add(tour);
             _dbContext.SaveChanges();
+            return tour;
         }
 
         public IEnumerable<TourEntity> GetTours()

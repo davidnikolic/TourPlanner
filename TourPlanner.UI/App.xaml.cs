@@ -90,6 +90,7 @@ namespace TourPlanner.UI
             services.AddSingleton<IReportService, ReportService>();
             services.AddSingleton<ITourStatisticsService, TourStatisticsService>();
             services.AddSingleton<IImportService, ImportService>();
+            services.AddSingleton<IExportService, ExportService>();
             services.AddSingleton<ITourCoordinatorService, TourCoordinatorService>();
 
             // Repositories (DAL)

@@ -12,6 +12,7 @@ namespace TourPlanner.BL.Interfaces
     {
         ContentType DetectCsvType(string filePath);
         List<TourDTO> ImportToursFromCSV(string filepath);
+
         List<TourLogDTO> ImportTourLogsFromCSV(string filepath);
 
         ContentType DetectJsonType(string filePath);
@@ -19,5 +20,6 @@ namespace TourPlanner.BL.Interfaces
         List<TourDTO> ImportToursFromJson(string filePath);
 
         List<TourLogDTO> ImportTourLogsFromJson(string filePath);
+
     }
 }

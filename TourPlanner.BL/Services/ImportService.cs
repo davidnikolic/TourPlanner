@@ -17,6 +17,7 @@ namespace TourPlanner.BL.Services
     {
         public enum ContentType
         {
+            Error,
             Unknown,
             Tour,
             TourLog
@@ -24,22 +25,31 @@ namespace TourPlanner.BL.Services
 
         public ContentType DetectCsvType(string filePath)
         {
-            var headerLine = File.ReadLines(filePath).FirstOrDefault();
-            if (headerLine is null)
+            try
+            {
+                var headerLine = File.ReadLines(filePath).FirstOrDefault();
+                if (headerLine is null)
+                    return ContentType.Unknown;
+
+                var headers = headerLine.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+                var tourHeaders = new[] {"Name", "StartLocation", "EndLocation", "TransportType" };
+                var logHeaders = new[] {"TourId", "Date", "Comment", "Difficulty" };
+
+                if (tourHeaders.All(h => headers.Contains(h)))
+                    return ContentType.Tour;
+
+                if (logHeaders.All(h => headers.Contains(h)))
+                    return ContentType.TourLog;
+
                 return ContentType.Unknown;
-
-            var headers = headerLine.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-
-            var tourHeaders = new[] { "Id", "Name", "StartLocation", "EndLocation", "TransportType" };
-            var logHeaders = new[] { "Id", "TourId", "Date", "Comment", "Difficulty" };
-
-            if (tourHeaders.All(h => headers.Contains(h)))
-                return ContentType.Tour;
-
-            if (logHeaders.All(h => headers.Contains(h)))
-                return ContentType.TourLog;
-
-            return ContentType.Unknown;
+            }
+            catch (IOException ex)
+            {
+                // Optional: Logging oder Fehlermeldung
+                Console.WriteLine("Datei konnte nicht gelesen werden: " + ex.Message);
+                return ContentType.Error;
+            }
         }
 
         public List<TourDTO> ImportToursFromCSV(string filepath)

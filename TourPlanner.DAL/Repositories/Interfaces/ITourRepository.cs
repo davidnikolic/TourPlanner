@@ -9,7 +9,7 @@ namespace TourPlanner.DAL.Repositories.Interfaces
 {
     public interface ITourRepository
     {
-        void AddTour(TourEntity tour);
+        TourEntity AddTour(TourEntity tour);
         IEnumerable<TourEntity> GetTours();
 
         void UpdateTour(TourEntity tour);

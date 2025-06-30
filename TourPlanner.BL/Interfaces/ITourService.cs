@@ -10,7 +10,7 @@ namespace TourPlanner.BL.Interfaces
 {
     public interface ITourService
     {
-        void AddTour(TourDTO tour);
+        TourDTO AddTour(TourDTO tour);
 
         void DeleteTour(TourDTO tour);
         List<TourDTO> GetTours();

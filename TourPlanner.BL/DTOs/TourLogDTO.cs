@@ -6,14 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static TourPlanner.BL.DTOs.EnumsDTO;
+using System.Text.Json.Serialization;
 
 namespace TourPlanner.BL.DTOs
 {
     public class TourLogDTO
     {
-        
+        [JsonIgnore]
+        [CsvHelper.Configuration.Attributes.Ignore]
         public int Id { get; set; }
 
+        [JsonIgnore]
+        [CsvHelper.Configuration.Attributes.Ignore]
         public int TourId { get; set; }
 
         public DateTime LogDate { get; set; } = DateTime.Now;
