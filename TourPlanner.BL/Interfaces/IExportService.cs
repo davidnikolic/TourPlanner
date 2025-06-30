@@ -9,7 +9,7 @@ namespace TourPlanner.BL.Interfaces
 {
     public interface IExportService
     {
-        void ExportToursToCsv(List<TourDTO> tours, string filePath);
+        void ExportToursToCsv(List<TourDTO> tours, string folderPath);
         void ExportToursToJson(List<TourDTO> tours, string filePath);
     }
 }

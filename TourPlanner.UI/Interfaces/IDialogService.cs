@@ -17,6 +17,8 @@ namespace TourPlanner.UI.Interfaces
 
         string? ShowSaveFileDialog(string defaultFileName, string filter);
 
+        string? ShowFolderDialog();
+
         void ShowMessage(string message);
 
     }

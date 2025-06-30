@@ -15,12 +15,35 @@ namespace TourPlanner.BL.Services
     public class ExportService : IExportService
     {
 
-        public void ExportToursToCsv(List<TourDTO> tours, string filePath)
+        public void ExportToursToCsv(List<TourDTO> tours, string folderPath)
         {
-            using var writer = new StreamWriter(filePath);
-            using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+            // 1. Export tours.csv
+            var toursFilePath = Path.Combine(folderPath, "tours.csv");
+            using (var writer = new StreamWriter(toursFilePath))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                csv.WriteRecords(tours);
+            }
 
-            csv.WriteRecords(tours);
+            // 2. Erstelle Unterordner für Logs
+            var logsFolder = Path.Combine(folderPath, "logs");
+            Directory.CreateDirectory(logsFolder);
+
+            // 3. Für jede Tour ein Log-File erzeugen
+            foreach (var tour in tours)
+            {
+                var logs = tour.TourLogs;
+                if (logs.Count == 0)
+                    continue;
+
+
+                var logFilePath = Path.Combine(logsFolder, $"{tour.Name}_logs.csv");
+
+                using var writer = new StreamWriter(logFilePath);
+                using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+
+                csv.WriteRecords(logs);
+            }
         }
 
         public void ExportToursToJson(List<TourDTO> tours, string filePath)

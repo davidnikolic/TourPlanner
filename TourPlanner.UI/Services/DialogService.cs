@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Win32;
+using Ookii.Dialogs.Wpf;
 using TourPlanner.BL.DTOs;
 using TourPlanner.UI.Interfaces;
 using TourPlanner.UI.ViewModels;
@@ -74,6 +75,18 @@ namespace TourPlanner.UI.Services
             }
 
             return null;
+        }
+
+        public string? ShowFolderDialog()
+        {
+            var dialog = new VistaFolderBrowserDialog
+            {
+                Description = "Bitte Ordner zum Exportieren wählen",
+                UseDescriptionForTitle = true,
+                ShowNewFolderButton = true
+            };
+
+            return dialog.ShowDialog() == true ? dialog.SelectedPath : null;
         }
 
         public string? ShowSaveFileDialog(string defaultFileName = "export.csv", string filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*")

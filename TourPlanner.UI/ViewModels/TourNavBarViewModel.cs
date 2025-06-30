@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Interfaces;
 using TourPlanner.BL.Services;
@@ -198,11 +199,13 @@ namespace TourPlanner.UI.ViewModels
                 return;
             }
 
-            var path = _dialogService.ShowSaveFileDialog("output.csv", "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*");
+            tour.TourLogs = _tourLogService.GetTourLogsForTour(tour.Id);
 
-            if (path == null) return;
+            var folderPath = _dialogService.ShowFolderDialog();
 
-            _exportService.ExportToursToCsv(new List<TourDTO> { tour }, path);
+            if (folderPath == null) return;
+
+            _exportService.ExportToursToCsv(new List<TourDTO> { tour }, folderPath);
         }
 
         private void ExportSelectedTourAsJson()
@@ -243,11 +246,17 @@ namespace TourPlanner.UI.ViewModels
 
         private void ExportAllToursAsCsv()
         {
-            var path = _dialogService.ShowSaveFileDialog("output.csv", "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*");
+            var folderPath = _dialogService.ShowFolderDialog();
 
-            if (path == null) return;
+            if (folderPath == null) return;
 
-            _exportService.ExportToursToCsv(_tourService.GetTours(), path);
+            var tours = _tourService.GetTours();
+
+            foreach (var tour in tours) {
+                tour.TourLogs = _tourLogService.GetTourLogsForTour(tour.Id);
+            }
+
+            _exportService.ExportToursToCsv(tours, folderPath);
         }
 
         private void ExportAllToursAsJson()
