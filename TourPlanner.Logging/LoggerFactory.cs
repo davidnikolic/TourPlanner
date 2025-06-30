@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TourPlanner.Logging.Interfaces;
 
 namespace TourPlanner.Logging
 {
-    public static class LoggerFactory
+    public class LoggerFactory : ILoggerFactory
     {
-        public static ILoggerWrapper GetLogger<T>()
+        public ILoggerWrapper CreateLogger<T>()
         {
             return Log4NetWrapper.CreateLogger(typeof(T), "log4net.config");
         }

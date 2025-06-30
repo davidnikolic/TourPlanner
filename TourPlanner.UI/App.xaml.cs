@@ -14,6 +14,8 @@ using GalaSoft.MvvmLight.Views;
 using TourPlanner.UI.Services;
 using TourPlanner.UI.Map.Interface;
 using TourPlanner.UI.Map.Services;
+using TourPlanner.Logging.Interfaces;
+using TourPlanner.Logging;
 
 namespace TourPlanner.UI
 {
@@ -92,6 +94,9 @@ namespace TourPlanner.UI
             services.AddSingleton<IImportService, ImportService>();
             services.AddSingleton<IExportService, ExportService>();
             services.AddSingleton<ITourCoordinatorService, TourCoordinatorService>();
+
+            // Logging
+            services.AddSingleton<ILoggerFactory, LoggerFactory>();
 
             // Repositories (DAL)
             services.AddScoped<ITourRepository, TourRepositories>();

@@ -12,6 +12,8 @@ using System.Runtime.CompilerServices;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using iText.Svg.Renderers.Path.Impl;
+using TourPlanner.Logging;
+using TourPlanner.Logging.Interfaces;
 
 namespace TourPlanner.BL.Services
 {
@@ -20,10 +22,14 @@ namespace TourPlanner.BL.Services
         public ITourRepository _tourRepository;
         private ITourLogService _tourLogService;
 
-        public TourService(ITourRepository TourRepo, ITourLogService tourLogService)
+        private readonly ILoggerWrapper _logger;
+
+        public TourService(ITourRepository TourRepo, ITourLogService tourLogService, ILoggerFactory factory)
         {
             _tourRepository = TourRepo;
             _tourLogService = tourLogService;
+
+            _logger = factory.CreateLogger<TourService>();
         }
 
         public TourService(ITourRepository TourRepo)
@@ -33,9 +39,10 @@ namespace TourPlanner.BL.Services
 
         public TourDTO AddTour(TourDTO tour)
         {
-           TourEntity entity = ToEntity(tour);
-           var tourEntity = _tourRepository.AddTour(entity);
-           return ToModel(tourEntity);
+            TourEntity entity = ToEntity(tour);
+            var tourEntity = _tourRepository.AddTour(entity);
+            _logger.Info($"Tour with ID {tour.Id} added");
+            return ToModel(tourEntity);
         }
 
         public List<TourDTO> GetTours()
@@ -73,6 +80,8 @@ namespace TourPlanner.BL.Services
             TourEntity entity = ToEntity(tour);
             _tourRepository.DeleteTour(entity.Id);
 
+            _logger.Info($"Tour with ID {tour.Id} deleted");
+
             try
             {
                 if (File.Exists(tour.RouteImagePath))
@@ -86,12 +95,12 @@ namespace TourPlanner.BL.Services
             }
         }
 
-        public static TourDTO ToModel(TourEntity entity)
+        public TourDTO ToModel(TourEntity entity)
         {
             if (entity == null)
                 return null;
 
-            return new TourDTO
+            var model = new TourDTO
             {
                 Id = entity.Id,
                 Name = entity.Name,
@@ -103,6 +112,10 @@ namespace TourPlanner.BL.Services
                 EstimatedTimeHours = entity.EstimatedTimeHours,
                 RouteImagePath = entity.RouteImagePath
             };
+
+            _logger.Debug($"Tour-Entity with ID {model.Id} successully converted to Model");
+
+            return model;
         }
 
         public static TourEntity ToEntity(TourDTO model)
