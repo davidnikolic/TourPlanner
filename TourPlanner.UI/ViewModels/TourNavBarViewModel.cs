@@ -59,8 +59,6 @@ namespace TourPlanner.UI.ViewModels
 
 
         public RelayCommand AddTourCommand => new RelayCommand(execute => AddTour());
-
-        public RelayCommand AddTourLogCommand => new RelayCommand(execute => AddTourLog());
         
         public RelayCommand ImportFromCsvCommand => new RelayCommand(execute => ImportFromCsv());
         
@@ -87,14 +85,11 @@ namespace TourPlanner.UI.ViewModels
             _tourCoordinatorService.AddTour();
         }
 
-        private void AddTourLog()
-        {
-            MessageBox.Show("Diese Funktion wird noch implementiert.", "WIP", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
         private void ImportFromCsv()
         {
             var path = _dialogService.ShowOpenFileDialog("CSV Files (*.csv)|*.csv|All Files (*.*)|*.*");
+
+            if (path == null) return;
 
             var type = _importService.DetectCsvType(path);
 
@@ -127,6 +122,8 @@ namespace TourPlanner.UI.ViewModels
         {
             var path = _dialogService.ShowOpenFileDialog("JSON Files (*.json)|*.json|All Files (*.*)|*.*");
 
+            if (path == null) return;
+
             var type = _importService.DetectJsonType(path);
 
             switch (type)
@@ -158,9 +155,6 @@ namespace TourPlanner.UI.ViewModels
                     _dialogService.ShowMessage("Unbekanntes JSON-Format.");
                     break;
             }
-
-
-
             _tourCoordinatorService.RequestTourRefresh();
         }
 
@@ -187,6 +181,8 @@ namespace TourPlanner.UI.ViewModels
         {
             var path = _dialogService.ShowSaveFileDialog("output.csv", "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*");
 
+            if (path == null) return;
+
             var tour = _selectedTourService.SelectedTour;
 
             _exportService.ExportToursToCsv(new List<TourDTO> { tour }, path);
@@ -195,6 +191,8 @@ namespace TourPlanner.UI.ViewModels
         private void ExportSelectedTourAsJson()
         {
             var path = _dialogService.ShowSaveFileDialog("output.json", "JSON Files (*.json)|*.json|All Files (*.*)|*.*");
+
+            if (path == null) return;
 
             var tour = _selectedTourService.SelectedTour;
 
@@ -224,12 +222,16 @@ namespace TourPlanner.UI.ViewModels
         {
             var path = _dialogService.ShowSaveFileDialog("output.csv", "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*");
 
+            if (path == null) return;
+
             _exportService.ExportToursToCsv(_tourService.GetTours(), path);
         }
 
         private void ExportAllToursAsJson()
         {
             var path = _dialogService.ShowSaveFileDialog("output.json", "JSON Files (*.json)|*.json|All Files (*.*)|*.*");
+
+            if (path == null) return;
 
             var tours = _tourService.GetTours();
 

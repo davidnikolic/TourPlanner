@@ -44,7 +44,6 @@
             <Menu Background="Transparent">
                 <MenuItem Header="File" Foreground="White" FontSize="18" FontWeight="SemiBold" Padding="20,12" Margin="6,0">
                     <MenuItem Header="New Tour" Command="{Binding AddTourCommand}" />
-                    <MenuItem Header="New Tour-Log" Command="{Binding AddTourLogCommand}" />
                     <Separator />
                     <MenuItem Header="Import...">
                         <MenuItem Header="from .csv" Command="{Binding ImportFromCsvCommand}" />
