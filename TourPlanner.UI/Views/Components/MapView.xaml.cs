@@ -36,11 +36,20 @@ namespace TourPlanner.UI.Views.Components
         public MapView()
         {
             InitializeComponent();
-            _mapService = ((App)Application.Current).Services.GetRequiredService<IMapViewService>();
+            Loaded += OnLoaded;
+        }
+        private async void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var mapViewService = ((App)Application.Current).Services.GetRequiredService<IMapViewService>();
+            var mapService = ((App)Application.Current).Services.GetRequiredService<IMapService>();
 
-            MapWebView.Loaded += async (sender, e) => await _mapService.InitializeMapAsync(MapWebView);
-            MapEventService.UpdateMapRequested += async (start, end) => await _mapService.UpdateMapAsync(MapWebView, start, end);
-            MapEventService.SaveMapImageRequested += async (fullImagePath) => await _mapService.SaveMapImageAsync(MapWebView, fullImagePath);
+            await mapViewService.InitializeMapAsync(MapWebView);
+
+            // WebView an MapService weitergeben
+            if (mapService is MapService concreteMapService)
+            {
+                concreteMapService.SetWebView(MapWebView);
+            }
         }
 
     }

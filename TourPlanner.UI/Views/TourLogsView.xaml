@@ -7,87 +7,136 @@
              xmlns:components="clr-namespace:TourPlanner.UI.Views.Components"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Grid.Column="2"  Margin="10,10,10,10">
+
+    <UserControl.Resources>
+        <!-- Button -->
+        <Style x:Key="SearchBtn" TargetType="Button">
+            <Setter Property="Background" Value="#3B82F6"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- TextBox -->
+        <Style x:Key="SearchBox" TargetType="TextBox">
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="6" Background="White">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Grid.Column="2" Margin="10,10,10,10" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="8*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Button  Grid.Column="0" Content="Search" Command="{Binding SearchCommand}" Grid.Row="0" />
-            <!-- Searchbar -->
-            <TextBox 
-                Grid.Column="1" 
-                Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" 
-                Margin="5" 
-                Grid.Row="0" />
 
-            <!-- Searchbar info -->
-            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,5,0,0"
-                       HorizontalAlignment="Left" VerticalAlignment="Center"
-                       Text="Search filters: (duration:), (distance:), (childfriendliness:), (popularity:)"
-                       Foreground="Black"/>
+        <!-- Search Section -->
+        <Border Grid.Row="0" Background="White" CornerRadius="8" Padding="15" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-        </Grid>
+                <Button Grid.Column="0" Grid.Row="0" Content="Search" Command="{Binding SearchCommand}" 
+                        Style="{StaticResource SearchBtn}" Margin="0,0,10,0"/>
+                <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" 
+                         Style="{StaticResource SearchBox}"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,8,0,0"
+                           Text="Search filters: (duration:), (distance:), (childfriendliness:), (popularity:)"
+                           Foreground="#6B7280" FontSize="12" TextWrapping="Wrap"/>
+            </Grid>
+        </Border>
+
         <DockPanel Grid.Row="1" Margin="0 10 0 10">
-            <TextBlock  Text="TourLogs" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" DockPanel.Dock="Left"/>
-            <components:TourActionButtons DockPanel.Dock="Right" HorizontalAlignment="Right" />
+            <TextBlock Text="TourLogs" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" DockPanel.Dock="Left"/>
+            <components:TourActionButtons DockPanel.Dock="Right" HorizontalAlignment="Right"/>
         </DockPanel>
-        <!-- Table -->
-        <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <!-- Header -->
-                <Grid Margin="0,0,0,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="100"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Date" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="1" Text="Comment" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="2" Text="Difficulty" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="3" Text="Distance (km)" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="4" Text="Duration (h)" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="5" Text="Rating" FontWeight="Bold"/>
-                </Grid>
 
-                <!-- ListView -->
-                <ListView 
-              ItemsSource="{Binding TourLogs}" 
-              SelectedItem="{Binding SelectedLog}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="4">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100"/>
-                                    <ColumnDefinition Width="200"/>
-                                    <ColumnDefinition Width="100"/>
-                                    <ColumnDefinition Width="100"/>
-                                    <ColumnDefinition Width="100"/>
-                                    <ColumnDefinition Width="100"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="{Binding LogDate, StringFormat={}{0:dd.MM.yyyy}}" />
-                                <TextBlock Grid.Column="1" Text="{Binding Comment}" TextWrapping="Wrap"/>
-                                <TextBlock Grid.Column="2" Text="{Binding Difficulty}" />
-                                <TextBlock Grid.Column="3" Text="{Binding DistanceKm}" />
-                                <TextBlock Grid.Column="4" Text="{Binding DurationHours}" />
-                                <TextBlock Grid.Column="5" Text="{Binding Rating}" />
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackPanel>
-        </ScrollViewer>
+        <!-- Table -->
+        <Border Grid.Row="2" Background="White" CornerRadius="8" BorderBrush="#E5E7EB" BorderThickness="1">
+            <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <!-- Header -->
+                    <Grid Margin="15,10,15,5" Background="#F8FAFC" Height="35">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" MinWidth="80"/>
+                            <!-- Date -->
+                            <ColumnDefinition Width="2*" MinWidth="150"/>
+                            <!-- Comment -->
+                            <ColumnDefinition Width="*" MinWidth="80"/>
+                            <!-- Difficulty -->
+                            <ColumnDefinition Width="*" MinWidth="90"/>
+                            <!-- Distance (km) -->
+                            <ColumnDefinition Width="*" MinWidth="90"/>
+                            <!-- Duration (h) -->
+                            <ColumnDefinition Width="*" MinWidth="80"/>
+                            <!-- Rating -->
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Date" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0"/>
+                        <TextBlock Grid.Column="1" Text="Comment" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0"/>
+                        <TextBlock Grid.Column="2" Text="Difficulty" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0"/>
+                        <TextBlock Grid.Column="3" Text="Distance (km)" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0"/>
+                        <TextBlock Grid.Column="4" Text="Duration (h)" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0"/>
+                        <TextBlock Grid.Column="5" Text="Rating" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0"/>
+                    </Grid>
+
+                    <ListView ItemsSource="{Binding TourLogs}" SelectedItem="{Binding SelectedLog}" BorderThickness="0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="#F3F4F6" BorderThickness="0,0,0,1" Padding="10,8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" MinWidth="80"/>
+                                            <!-- Date -->
+                                            <ColumnDefinition Width="2*" MinWidth="150"/>
+                                            <!-- Comment -->
+                                            <ColumnDefinition Width="*" MinWidth="80"/>
+                                            <!-- Difficulty -->
+                                            <ColumnDefinition Width="*" MinWidth="90"/>
+                                            <!-- Distance (km) -->
+                                            <ColumnDefinition Width="*" MinWidth="90"/>
+                                            <!-- Duration (h) -->
+                                            <ColumnDefinition Width="*" MinWidth="80"/>
+                                            <!-- Rating -->
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding LogDate, StringFormat={}{0:dd.MM.yyyy}}" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Comment}" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding Difficulty}" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="3" Text="{Binding DistanceKm}" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="4" Text="{Binding DurationHours}" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="5" Text="{Binding Rating}" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
     </Grid>
 </UserControl>

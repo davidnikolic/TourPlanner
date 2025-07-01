@@ -5,33 +5,61 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:components="clr-namespace:TourPlanner.UI.Views.Components"
              xmlns:converters="clr-namespace:TourPlanner.UI.Converters"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-
+             mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        <Style x:Key="TailwindTab" TargetType="TabItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border Name="TabBorder" Background="Transparent" BorderBrush="#E5E7EB" 
+                                BorderThickness="0,0,0,2" Padding="24,12" Margin="0,0,2,0">
+                            <TextBlock Text="{TemplateBinding Header}" FontWeight="Medium" 
+                                       FontSize="14" Foreground="#6B7280"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="#3B82F6"/>
+                                <Setter TargetName="TabBorder" Property="TextBlock.Foreground" Value="#1F2937"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
-    <Grid Margin="16">
-        <TabControl SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}" Margin="0,0,0,16">
-            <TabItem Header="General" Height="32">
-                <StackPanel Visibility="{Binding SelectedTour, Converter={StaticResource NullToVisibilityConverter}}" Margin="0,0,0,16">
-                    <TextBlock FontSize="16" Text="{Binding SelectedTour.Id, StringFormat='Identifier: {0}'}" Margin="0,4,0,0"/>
-                    <TextBlock FontSize="16" Text="{Binding SelectedTour.Name, StringFormat='Name: {0}'}" Margin="0,4,0,0"/>
-                    <TextBlock FontSize="16" Text="{Binding SelectedTour.Description, StringFormat='Description: {0}'}" Margin="0,4,0,0"/>
-                    <TextBlock FontSize="16" Text="{Binding SelectedTour.StartLocation, StringFormat='Start-Location: {0}'}" Margin="0,4,0,0"/>
-                    <TextBlock FontSize="16" Text="{Binding SelectedTour.EndLocation, StringFormat='End-Location: {0}'}" Margin="0,4,0,0"/>
-                    <TextBlock FontSize="16" Text="{Binding SelectedTour.TransportType, StringFormat='Transport-Type: {0}'}" Margin="0,4,0,0"/>
-                    <TextBlock FontSize="16" Text="{Binding SelectedTour.DistanceKm, StringFormat='Distance: {0}km'}" Margin="0,4,0,0"/>
-                    <TextBlock FontSize="16" Text="{Binding SelectedTour.EstimatedTimeHours, StringFormat='Estimated-Hours: {0}'}" Margin="0,4,0,0"/>
-                    <TextBlock FontSize="16" Text="{Binding SelectedTour.RouteImagePath, StringFormat='Image-Path: {0}'}" Margin="0,4,0,0"/>
-                </StackPanel>
+    <Grid Background="#F9FAFB" Margin="16">
+        <TabControl SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}" 
+                    Background="Transparent" BorderThickness="0">
+            <TabItem Header="General" Style="{StaticResource TailwindTab}">
+                <Border Background="White" CornerRadius="8" Margin="0,16,0,0" 
+                        BorderBrush="#E5E7EB" BorderThickness="1">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel Visibility="{Binding SelectedTour, Converter={StaticResource NullToVisibilityConverter}}" Margin="12">
+                            <TextBlock Text="{Binding SelectedTour.Id, StringFormat='Identifier: {0}'}" FontSize="14" Foreground="#374151" Margin="0,0,0,12" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding SelectedTour.Name, StringFormat='Name: {0}'}" FontSize="14" Foreground="#374151" Margin="0,0,0,12" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding SelectedTour.Description, StringFormat='Description: {0}'}" FontSize="14" Foreground="#374151" Margin="0,0,0,12" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding SelectedTour.StartLocation, StringFormat='Start-Location: {0}'}" FontSize="14" Foreground="#374151" Margin="0,0,0,12" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding SelectedTour.EndLocation, StringFormat='End-Location: {0}'}" FontSize="14" Foreground="#374151" Margin="0,0,0,12" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding SelectedTour.TransportType, StringFormat='Transport-Type: {0}'}" FontSize="14" Foreground="#374151" Margin="0,0,0,12" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding SelectedTour.DistanceKm, StringFormat='Distance: {0}km'}" FontSize="14" Foreground="#374151" Margin="0,0,0,12" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding SelectedTour.EstimatedTimeHours, StringFormat='Estimated-Hours: {0}'}" FontSize="14" Foreground="#374151" Margin="0,0,0,12" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding SelectedTour.RouteImagePath, StringFormat='Image-Path: {0}'}" FontSize="14" Foreground="#374151" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
             </TabItem>
-            <TabItem Header="Route">
-                <components:MapView />
+            <TabItem Header="Route" Style="{StaticResource TailwindTab}">
+                <Border Background="White" CornerRadius="8" Margin="0,16,0,0" BorderBrush="#E5E7EB" BorderThickness="1">
+                    <components:MapView Margin="8"/>
+                </Border>
             </TabItem>
-            <TabItem Header="Misc.">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Text="- The Weather will be displayed here -" Margin="0,16"/>
+            <TabItem Header="Misc." Style="{StaticResource TailwindTab}">
+                <Border Background="White" CornerRadius="8" Margin="0,16,0,0" BorderBrush="#E5E7EB" BorderThickness="1">
+                    <TextBlock Text="- The Weather will be displayed here -" FontSize="14" Foreground="#9CA3AF" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
             </TabItem>
         </TabControl>
     </Grid>

@@ -13,13 +13,14 @@ using TourPlanner.UI.Views.Components;
 using TourPlanner.BL.Services;
 using System.Windows;
 using System.Windows.Input;
+using TourPlanner.BL.Services.Map;
 
 
 namespace TourPlanner.UI.ViewModels
 {
     public class TourListViewModel : ViewModelBase
     {
-
+        private readonly IMapService _mapService;
         private ITourService _tourService;
 
         private ISelectedTourService? _selectedTourService;
@@ -52,13 +53,15 @@ namespace TourPlanner.UI.ViewModels
             ISelectedTourService selectedTourService,
             IDialogService dialogService,
             TourLogsViewModel tourLogsViewModel,
-            ITourCoordinatorService tourCoordinatorService
+            ITourCoordinatorService tourCoordinatorService,
+            IMapService mapService
             )
         {
             _tourService = tourService;
             _selectedTourService = selectedTourService;
             _dialogService = dialogService;
             _tourLogsViewModel = tourLogsViewModel;
+            _mapService = mapService;
             _tourCoordinatorService = tourCoordinatorService;
             _tourCoordinatorService.ToursChanged += RefreshTours;
             _tourLogsViewModel.PropertyChanged += OnTourLogsViewModelPropertyChanged;
@@ -183,6 +186,12 @@ namespace TourPlanner.UI.ViewModels
                 // Otherwise, select the first item in the list or set to null if none exist  / First Tour or "null" no tour displayed
                 SelectedTour = null; 
             }
+        }
+
+        public async void HandleMap(TourDTO tour)
+        {
+            await _mapService.UpdateMapAsync(tour.StartLocation, tour.EndLocation);
+            await _mapService.SaveMapImageAsync(tour.RouteImagePath);
         }
     }
 }
