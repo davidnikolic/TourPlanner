@@ -10,11 +10,21 @@ using TourPlanner.BL.DTOs;
 using CsvHelper.Configuration;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using TourPlanner.Logging;
+using TourPlanner.Logging.Interfaces;
 
 namespace TourPlanner.BL.Services
 {
     public class ImportService : IImportService
     {
+
+        private readonly ILoggerWrapper _logger;
+
+        public ImportService(ILoggerFactory factory)
+        {
+            _logger = factory.CreateLogger<ImportService>();
+        }
+
         public enum ContentType
         {
             Error,
@@ -47,7 +57,7 @@ namespace TourPlanner.BL.Services
             catch (IOException ex)
             {
                 // Optional: Logging oder Fehlermeldung
-                Console.WriteLine("Datei konnte nicht gelesen werden: " + ex.Message);
+                _logger.Error("Datei konnte nicht gelesen werden: " + ex.Message);
                 return ContentType.Error;
             }
         }
