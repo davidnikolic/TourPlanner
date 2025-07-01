@@ -9,53 +9,73 @@ using TourPlanner.BL.DTOs;
 using CsvHelper;
 using System.Globalization;
 using TourPlanner.BL.Interfaces;
+using TourPlanner.Logging;
+using TourPlanner.Logging.Interfaces;
 
 namespace TourPlanner.BL.Services
 {
     public class ExportService : IExportService
     {
 
+        public ILoggerWrapper _logger {  get; set; }
+
+        public ExportService(ILoggerFactory logger)
+        {
+            _logger = logger.CreateLogger<ExportService>();
+        }
+
         public void ExportToursToCsv(List<TourDTO> tours, string folderPath)
         {
-            // 1. Export tours.csv
-            var toursFilePath = Path.Combine(folderPath, "tours.csv");
-            using (var writer = new StreamWriter(toursFilePath))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            try
             {
-                csv.WriteRecords(tours);
+                var toursFilePath = Path.Combine(folderPath, "tours.csv");
+                using (var writer = new StreamWriter(toursFilePath))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteRecords(tours);
+                }
+
+                var logsFolder = Path.Combine(folderPath, "logs");
+                Directory.CreateDirectory(logsFolder);
+
+                foreach (var tour in tours)
+                {
+                    var logs = tour.TourLogs;
+                    if (logs.Count == 0)
+                        continue;
+
+
+                    var logFilePath = Path.Combine(logsFolder, $"{tour.Name}_logs.csv");
+
+                    using var writer = new StreamWriter(logFilePath);
+                    using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+
+                    csv.WriteRecords(logs);
+                }
             }
-
-            // 2. Erstelle Unterordner für Logs
-            var logsFolder = Path.Combine(folderPath, "logs");
-            Directory.CreateDirectory(logsFolder);
-
-            // 3. Für jede Tour ein Log-File erzeugen
-            foreach (var tour in tours)
+            catch (IOException ex)
             {
-                var logs = tour.TourLogs;
-                if (logs.Count == 0)
-                    continue;
-
-
-                var logFilePath = Path.Combine(logsFolder, $"{tour.Name}_logs.csv");
-
-                using var writer = new StreamWriter(logFilePath);
-                using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
-
-                csv.WriteRecords(logs);
+                _logger.Error("Cannot read file: " + ex.Message);
             }
         }
 
         public void ExportToursToJson(List<TourDTO> tours, string filePath)
         {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                Converters = { new JsonStringEnumConverter() } 
-            };
+            try
+            { 
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    Converters = { new JsonStringEnumConverter() } 
+                };
 
-            var json = JsonSerializer.Serialize(tours, options);
-            File.WriteAllText(filePath, json);
+                var json = JsonSerializer.Serialize(tours, options);
+                File.WriteAllText(filePath, json);
+            }
+            catch (IOException ex)
+            {
+                _logger.Error("Cannot read file: " + ex.Message);
+            }
         }
     }
 }

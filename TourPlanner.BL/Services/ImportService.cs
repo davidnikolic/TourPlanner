@@ -56,86 +56,127 @@ namespace TourPlanner.BL.Services
             }
             catch (IOException ex)
             {
-                // Optional: Logging oder Fehlermeldung
-                _logger.Error("Datei konnte nicht gelesen werden: " + ex.Message);
-                return ContentType.Error;
+                _logger.Error("Cannot read file: " + ex.Message);
             }
+            return ContentType.Error;
         }
 
         public List<TourDTO> ImportToursFromCSV(string filepath)
         {
-            using var reader = new StreamReader(filepath);
-            
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            try
             {
-                MissingFieldFound = null,                // Ignoriere fehlende Spalten
-                HeaderValidated = null,                  // Ignoriere fehlende Header
-                IgnoreBlankLines = true
-            };
+                using var reader = new StreamReader(filepath);
 
-            using var csv = new CsvReader(reader, config);
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    MissingFieldFound = null,                // Ignoriere fehlende Spalten
+                    HeaderValidated = null,                  // Ignoriere fehlende Header
+                    IgnoreBlankLines = true
+                };
 
-            var tourData = csv.GetRecords<TourDTO>().ToList();
+                using var csv = new CsvReader(reader, config);
 
-            return tourData;
+                var tourData = csv.GetRecords<TourDTO>().ToList();
+
+                return tourData;
+            } 
+            catch (IOException ex)
+            {
+                _logger.Error("Cannot read file: " + ex.Message);
+            }
+
+            return new List<TourDTO>();
         }
 
         public List<TourLogDTO> ImportTourLogsFromCSV(string filepath)
         {
-            using var reader = new StreamReader(filepath);
-            using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+            try
+            {
+                using var reader = new StreamReader(filepath);
+                using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
 
-            var tourData = csv.GetRecords<TourLogDTO>().ToList();
+                var tourData = csv.GetRecords<TourLogDTO>().ToList();
 
-            return tourData;
+                return tourData;
+            }
+            catch (IOException ex)
+            {
+                _logger.Error("Cannot read file: " + ex.Message);
+            }
+
+            return new List<TourLogDTO>();
         }
 
         public ContentType DetectJsonType(string filePath)
         {
-            var json = File.ReadAllText(filePath);
-            using var doc = JsonDocument.Parse(json);
+            try 
+            { 
+                var json = File.ReadAllText(filePath);
+                using var doc = JsonDocument.Parse(json);
 
-            var root = doc.RootElement;
-            if (root.ValueKind != JsonValueKind.Array || root.GetArrayLength() == 0)
+                var root = doc.RootElement;
+                if (root.ValueKind != JsonValueKind.Array || root.GetArrayLength() == 0)
+                    return ContentType.Unknown;
+
+                var firstObj = root[0];
+
+                if (firstObj.TryGetProperty("StartLocation", out _) &&
+                    firstObj.TryGetProperty("EndLocation", out _))
+                    return ContentType.Tour;
+
+                if (firstObj.TryGetProperty("Comment", out _) &&
+                    firstObj.TryGetProperty("Difficulty", out _))
+                    return ContentType.TourLog;
+
                 return ContentType.Unknown;
-
-            var firstObj = root[0];
-
-            if (firstObj.TryGetProperty("StartLocation", out _) &&
-                firstObj.TryGetProperty("EndLocation", out _))
-                return ContentType.Tour;
-
-            if (firstObj.TryGetProperty("Comment", out _) &&
-                firstObj.TryGetProperty("Difficulty", out _))
-                return ContentType.TourLog;
-
-            return ContentType.Unknown;
+            }
+            catch (IOException ex)
+            {
+                _logger.Error("Cannot read file: " + ex.Message);
+            }
+            return ContentType.Error;
         }
 
         public List<TourDTO> ImportToursFromJson(string filePath)
         {
-            var json = File.ReadAllText(filePath);
-            var options = new JsonSerializerOptions
+            try 
             {
-                PropertyNameCaseInsensitive = true,
-                Converters = { new JsonStringEnumConverter() }
-            };
+                var json = File.ReadAllText(filePath);
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    Converters = { new JsonStringEnumConverter() }
+                };
 
-            var tours = JsonSerializer.Deserialize<List<TourDTO>>(json, options);
-            return tours ?? new List<TourDTO>();
+                var tours = JsonSerializer.Deserialize<List<TourDTO>>(json, options);
+                return tours ?? new List<TourDTO>();
+            }
+            catch (IOException ex)
+            {
+                _logger.Error("Cannot read file: " + ex.Message);
+            }
+            return new List<TourDTO>();
         }
 
         public List<TourLogDTO> ImportTourLogsFromJson(string filePath)
         {
-            var json = File.ReadAllText(filePath);
-            var options = new JsonSerializerOptions
+            try
             {
-                PropertyNameCaseInsensitive = true,
-                Converters = { new JsonStringEnumConverter() }
-            };
+                var json = File.ReadAllText(filePath);
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    Converters = { new JsonStringEnumConverter() }
+                };
 
-            var tours = JsonSerializer.Deserialize<List<TourLogDTO>>(json, options);
-            return tours ?? new List<TourLogDTO>();
+                var tours = JsonSerializer.Deserialize<List<TourLogDTO>>(json, options);
+                return tours ?? new List<TourLogDTO>();
+            }
+            catch (IOException ex)
+            {
+                _logger.Error("Cannot read file: " + ex.Message);
+            }
+            return new List<TourLogDTO>();
         }
     }
 }
