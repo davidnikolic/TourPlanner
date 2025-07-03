@@ -71,12 +71,15 @@ namespace TourPlanner.UI.ViewModels
         public TourListViewModel(
             ITourService tourService,
             ISelectedTourService selectedTourService,
-            IDialogService dialogService
+            IDialogService dialogService,
+            TourLogsViewModel tourLogsViewModel
             )
         {
             _tourService = tourService;
             _selectedTourService = selectedTourService;
             _dialogService = dialogService;
+            _tourLogsViewModel = tourLogsViewModel;
+
             var tours = _tourService.GetTours();
 
             Tours = new ObservableCollection<TourDTO>(tours);
