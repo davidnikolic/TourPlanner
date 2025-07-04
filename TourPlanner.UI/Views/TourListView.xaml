@@ -27,7 +27,6 @@
                 <!-- Title and buttons -->
                 <DockPanel Grid.Row="0" Margin="0,0,0,20">
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" VerticalAlignment="Center">
-                        <Border Width="6" Height="24" Background="#3B82F6" CornerRadius="3" Margin="0,0,12,0"/>
                         <TextBlock Text="Tours" FontSize="20" FontWeight="Bold" 
                                    Foreground="#1F2937" VerticalAlignment="Center"/>
                     </StackPanel>

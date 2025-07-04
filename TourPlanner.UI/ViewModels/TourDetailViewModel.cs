@@ -8,12 +8,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Interfaces;
-using TourPlanner.UI.Map;
+using TourPlanner.BL.Services.Map;
 
 namespace TourPlanner.UI.ViewModels
 {
     public class TourDetailViewModel : ViewModelBase
     {
+        private readonly IMapService _mapService;
         private ISelectedTourService _selectedTourService;
 
         private TourDTO selectedTour;
@@ -59,7 +60,7 @@ namespace TourPlanner.UI.ViewModels
 
         private bool _mapLoaded = false;
 
-        private void EvaluateLazyLoading()
+        private async Task EvaluateLazyLoading()
         {
             if (SelectedTabIndex == 1)
             {
@@ -76,8 +77,8 @@ namespace TourPlanner.UI.ViewModels
                 {
                     start = SelectedTour.StartLocation;
                     end = SelectedTour.EndLocation;
-                    MapEventService.RequestMapUpdate(start, end);
                 }
+                await _mapService.UpdateMapAsync(start, end);
             }
             else // if another tab is selcted
             {
@@ -87,13 +88,21 @@ namespace TourPlanner.UI.ViewModels
             }
         }
 
-        public TourDetailViewModel(ISelectedTourService selectedTourService)
+        // Add this method to force refresh the map
+        public async Task RefreshMapAsync()
+        {
+            if (SelectedTabIndex == 1 && SelectedTour != null)
+            {
+                ResetTabState();
+                await EvaluateLazyLoading();
+            }
+        }
+
+        public TourDetailViewModel(ISelectedTourService selectedTourService, IMapService mapService)
         {
             _selectedTourService = selectedTourService;
-
+            _mapService = mapService;
             _selectedTourService.SelectedTourChanged += OnSelectedTourChanged;
-
-            MapEventService.MapReady += OnMapReady;
         }
 
         private void ResetTabState()
@@ -105,14 +114,16 @@ namespace TourPlanner.UI.ViewModels
         private void OnSelectedTourChanged(TourDTO tour)
         {
             SelectedTour = tour;
-        }
 
-        private void OnMapReady()
-        {
-            if (SelectedTour != null)
+            // If tour is null (deleted), reset the map completely
+            if (tour == null)
             {
-                MapEventService.RequestMapImageSave(SelectedTour.RouteImagePath);
+                ResetTabState();
+                MapImage = null;
+                // Force clear the map in the service as well
+                _ = _mapService.UpdateMapAsync("", "");
             }
         }
+
     }
 }
