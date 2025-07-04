@@ -10,6 +10,7 @@ using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Interfaces;
 using TourPlanner.BL.Services;
 using TourPlanner.UI.Interfaces;
+using TourPlanner.UI.Interfaces.Coordinators;
 using static TourPlanner.BL.Services.ImportService;
 
 namespace TourPlanner.UI.ViewModels
@@ -34,6 +35,8 @@ namespace TourPlanner.UI.ViewModels
 
         private ITourCoordinatorService _tourCoordinatorService;
 
+        private ITourExportCoordinator _tourExportCoordinator;
+
         public TourNavBarViewModel
             (
             ITourService tourService,
@@ -44,7 +47,8 @@ namespace TourPlanner.UI.ViewModels
             IImportService importService,
             IExportService exportService,
             IReportService reportService,
-            ITourCoordinatorService tourCoordinatorService
+            ITourCoordinatorService tourCoordinatorService,
+            ITourExportCoordinator tourExportCoordinator
             ) 
         { 
             _tourService = tourService;
@@ -56,6 +60,7 @@ namespace TourPlanner.UI.ViewModels
             _exportService = exportService;
             _reportService = reportService;
             _tourCoordinatorService = tourCoordinatorService;
+            _tourExportCoordinator = tourExportCoordinator;
         }
 
 
@@ -250,13 +255,7 @@ namespace TourPlanner.UI.ViewModels
 
             if (folderPath == null) return;
 
-            var tours = _tourService.GetTours();
-
-            foreach (var tour in tours) {
-                tour.TourLogs = _tourLogService.GetTourLogsForTour(tour.Id);
-            }
-
-            _exportService.ExportToursToCsv(tours, folderPath);
+            _tourExportCoordinator.ExportAllToursAsCsv(folderPath); 
         }
 
         private void ExportAllToursAsJson()

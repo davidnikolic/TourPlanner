@@ -17,6 +17,8 @@ using TourPlanner.UI.Map.Services;
 using TourPlanner.Logging.Interfaces;
 using TourPlanner.Logging;
 using TourPlanner.BL.Services.Map;
+using TourPlanner.UI.Interfaces.Coordinators;
+using TourPlanner.UI.Services.Coordinators;
 
 namespace TourPlanner.UI
 {
@@ -94,8 +96,11 @@ namespace TourPlanner.UI
             services.AddSingleton<ITourStatisticsService, TourStatisticsService>();
             services.AddSingleton<IImportService, ImportService>();
             services.AddSingleton<IExportService, ExportService>();
-            services.AddSingleton<ITourCoordinatorService, TourCoordinatorService>();
             services.AddSingleton<ISearchService, SearchService>();
+
+            // Coordinators
+            services.AddSingleton<ITourCoordinatorService, TourCoordinatorService>();
+            services.AddSingleton<ITourExportCoordinator, TourExportCoordinator>();
 
             // Logging
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
