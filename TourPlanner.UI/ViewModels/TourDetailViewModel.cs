@@ -16,8 +16,12 @@ namespace TourPlanner.UI.ViewModels
     {
         private readonly IMapService _mapService;
         private ISelectedTourService _selectedTourService;
+        private readonly ITourStatisticsService _tourStatisticsService;
+        private ITourLogService _tourLogService;
 
         private TourDTO selectedTour;
+
+        private TourStatisticsDTO statistics;
 
         public TourDTO SelectedTour
         {
@@ -81,12 +85,19 @@ namespace TourPlanner.UI.ViewModels
                 await _mapService.UpdateMapAsync(start, end);
                 await _mapService.SaveMapImageAsync(selectedTour.RouteImagePath);
             }
+            if (SelectedTabIndex == 2)
+            {
+                var logs = _tourLogService.GetTourLogsForTour(selectedTour.Id);
+
+                if(logs.Count != 0) statistics = _tourStatisticsService.CalculateTourStatistic(SelectedTour, logs);
+            }
             else // if another tab is selcted
             {
                 // Reset map
                 MapImage = null; 
                 _mapLoaded = false;
-            }
+                statistics = null;
+            } 
         }
 
         // Add this method to force refresh the map
