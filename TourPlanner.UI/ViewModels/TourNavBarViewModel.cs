@@ -1,76 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using TourPlanner.BL.DTOs;
-using TourPlanner.BL.Interfaces;
-using TourPlanner.BL.Services;
+﻿using TourPlanner.BL.Interfaces;
 using TourPlanner.UI.Interfaces;
 using TourPlanner.UI.Interfaces.Coordinators;
-using static TourPlanner.BL.Services.ImportService;
 
 namespace TourPlanner.UI.ViewModels
 {
     public class TourNavBarViewModel : ViewModelBase
     {
-        private ITourService _tourService;
-
-        private ITourLogService _tourLogService;
-
-        private ISelectedTourService _selectedTourService;
-
-        private ITourStatisticsService _tourStatisticsService;
-
-        private IReportService _reportService;
-
         private IDialogService _dialogService;
-
-        private IImportService _importService;
 
         private ITourCoordinatorService _tourCoordinatorService;
 
         private ITourExportCoordinator _tourExportCoordinator;
 
+        private ITourImportCoordinator _tourImportCoordinator;
+
         public TourNavBarViewModel
             (
             ITourService tourService,
             ITourLogService tourLogService,
-            ISelectedTourService selectedTourService,
-            ITourStatisticsService ourStatisticsService,
             IDialogService dialogService,
-            IImportService importService,
-            IReportService reportService,
             ITourCoordinatorService tourCoordinatorService,
-            ITourExportCoordinator tourExportCoordinator
+            ITourExportCoordinator tourExportCoordinator,
+            ITourImportCoordinator tourImportCoordinator
             ) 
         { 
-            _tourService = tourService;
-            _tourLogService = tourLogService;
-            _selectedTourService = selectedTourService;
-            _tourStatisticsService = ourStatisticsService;
             _dialogService = dialogService;
-            _importService = importService;
-            _reportService = reportService;
             _tourCoordinatorService = tourCoordinatorService;
             _tourExportCoordinator = tourExportCoordinator;
+            _tourImportCoordinator = tourImportCoordinator;
         }
 
 
-        public RelayCommand AddTourCommand => new RelayCommand(execute => AddTour());
+        public RelayCommand AddTourCommand => new RelayCommand(execute => _tourCoordinatorService.AddTour());
         
         public RelayCommand ImportFromCsvCommand => new RelayCommand(execute => ImportFromCsv());
         
         public RelayCommand ImportFromJSONCommand => new RelayCommand(execute => ImportFromJson());
         
-        public RelayCommand SelectedTourPdfCommand => new RelayCommand(execute => ExportSelectedTourAsPdf());
+        public RelayCommand SelectedTourPdfCommand => new RelayCommand(execute => _tourExportCoordinator.ExportSelectedTourAsPdf());
         
-        public RelayCommand SelectedTourCsvCommand => new RelayCommand(execute => ExportSelectedTourAsCsv());
+        public RelayCommand SelectedTourCsvCommand => new RelayCommand(execute => _tourExportCoordinator.ExportSelectedTourAsCsv());
         
-        public RelayCommand SelectedTourJsonCommand => new RelayCommand(execute => ExportSelectedTourAsJson());
+        public RelayCommand SelectedTourJsonCommand => new RelayCommand(execute => _tourExportCoordinator.ExportSelectedTourAsJson());
         
         public RelayCommand AllToursPdfCommand => new RelayCommand(execute => ExportAllToursAsPdf());
         
@@ -78,112 +49,30 @@ namespace TourPlanner.UI.ViewModels
         
         public RelayCommand AllToursJsonCommand => new RelayCommand(execute => ExportAllToursAsJson());
         
-        public RelayCommand SummarizeReportCommand => new RelayCommand(execute => ExportSummarizeReportAsPdf());
+        public RelayCommand SummarizeReportCommand => new RelayCommand(execute => _tourExportCoordinator.ExportSummarizeReport());
 
         public RelayCommand ExitCommand => new RelayCommand(execute => Environment.Exit(0));
-
-        private void AddTour()
-        {
-            _tourCoordinatorService.AddTour();
-        }
 
         private void ImportFromCsv()
         {
             var path = _dialogService.ShowOpenFileDialog("CSV Files (*.csv)|*.csv|All Files (*.*)|*.*");
 
-            if (path == null) return;
-
-            var type = _importService.DetectCsvType(path);
-
-            switch (type)
+            if (path != null)
             {
-                case ContentType.Tour:
-                    var tours = _importService.ImportToursFromCSV(path);
-                    foreach (var t in tours)
-                    {
-                        _tourService.AddTour(t);
-                    }
-                    break;
-
-                case ContentType.TourLog:
-                    var tour = _selectedTourService.SelectedTour;
-
-                    if (tour == null)
-                    {
-                        _dialogService.ShowMessage("No Tour selected");
-                        return;
-                    }
-
-                    var logs = _importService.ImportTourLogsFromCSV(path);
-                    foreach (var l in logs)
-                    {
-                        l.TourId = tour.Id;
-                        _tourLogService.AddTourLog(l);
-                    }
-                    break;
-                case ContentType.Error:
-                    _dialogService.ShowMessage("Die Datei ist bereits geöffnet (z. B. in Excel) und kann nicht gelesen werden. Bitte schließe sie zuerst.");
-                    break;
-                default:
-                    _dialogService.ShowMessage("Unbekanntes CSV-Format.");
-                    break;
+                _tourImportCoordinator.ImportFromCsv(path);
+                _tourCoordinatorService.RequestTourRefresh();
             }
-            _tourCoordinatorService.RequestTourRefresh();
         }
 
         private void ImportFromJson()
         {
             var path = _dialogService.ShowOpenFileDialog("JSON Files (*.json)|*.json|All Files (*.*)|*.*");
 
-            if (path == null) return;
-
-            var type = _importService.DetectJsonType(path);
-
-            switch (type)
+            if (path != null)
             {
-                case ContentType.Tour:
-                    var tours = _importService.ImportToursFromJson(path);
-                    foreach (var t in tours)
-                    {
-                        var tour = _tourService.AddTour(t);
-                        if (t.TourLogs != null)
-                        {
-                            
-                            foreach (var log in t.TourLogs)
-                            {
-                                log.TourId = tour.Id;
-                                _tourLogService.AddTourLog(log);
-                            }
-                        }
-                    }
-                    break;
-
-                case ContentType.TourLog:
-                    var logs = _importService.ImportTourLogsFromJson(path);
-                    foreach (var l in logs)
-                        _tourLogService.AddTourLog(l);
-                    break;
-
-                default:
-                    _dialogService.ShowMessage("Unbekanntes JSON-Format.");
-                    break;
+                _tourImportCoordinator.ImportFromJson(path);
+                _tourCoordinatorService.RequestTourRefresh();
             }
-            _tourCoordinatorService.RequestTourRefresh();
-        }
-
-        private void ExportSelectedTourAsPdf()
-        {
-            _tourExportCoordinator.ExportSelectedTourAsPdf();
-        }
-
-        private void ExportSelectedTourAsCsv()
-        {
-            _tourExportCoordinator.ExportSelectedTourAsCsv();
-        }
-
-        private void ExportSelectedTourAsJson()
-        {
-            _tourExportCoordinator.ExportSelectedTourAsJson();
         }
 
         private void ExportAllToursAsPdf()
@@ -202,11 +91,6 @@ namespace TourPlanner.UI.ViewModels
         {
             var path = _dialogService.ShowSaveFileDialog("output.json", "JSON Files (*.json)|*.json|All Files (*.*)|*.*");
             if (path != null) _tourExportCoordinator.ExportAllToursAsJson(path);
-        }
-
-        public void ExportSummarizeReportAsPdf()
-        {
-            _tourExportCoordinator.ExportSummarizeReport();
         }
     }
 }

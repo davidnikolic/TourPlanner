@@ -101,6 +101,7 @@ namespace TourPlanner.UI
             // Coordinators
             services.AddSingleton<ITourCoordinatorService, TourCoordinatorService>();
             services.AddSingleton<ITourExportCoordinator, TourExportCoordinator>();
+            services.AddSingleton<ITourImportCoordinator, TourImportCoordinator>();
 
             // Logging
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
