@@ -23,6 +23,16 @@ namespace TourPlanner.UI.ViewModels
 
         private TourStatisticsDTO statistics;
 
+        public TourStatisticsDTO Statistics
+        {
+            get => statistics;
+            set
+            {
+                statistics = value;
+                OnPropertyChanged();
+            }
+        }
+
         public TourDTO SelectedTour
         {
             get => selectedTour;
@@ -64,6 +74,22 @@ namespace TourPlanner.UI.ViewModels
 
         private bool _mapLoaded = false;
 
+        public TourDetailViewModel
+            (
+            ISelectedTourService selectedTourService,
+            IMapService mapService,
+            ITourStatisticsService tourStatisticsService,
+            ITourLogService tourLogService
+            )
+        {
+            _selectedTourService = selectedTourService;
+            _mapService = mapService;
+            _tourStatisticsService = tourStatisticsService;
+            _tourLogService = tourLogService;
+
+            _selectedTourService.SelectedTourChanged += OnSelectedTourChanged;
+        }
+
         private async Task EvaluateLazyLoading()
         {
             if (SelectedTabIndex == 1)
@@ -89,7 +115,7 @@ namespace TourPlanner.UI.ViewModels
             {
                 var logs = _tourLogService.GetTourLogsForTour(selectedTour.Id);
 
-                if(logs.Count != 0) statistics = _tourStatisticsService.CalculateTourStatistic(SelectedTour, logs);
+                if(logs.Count != 0 && SelectedTour != null) Statistics = _tourStatisticsService.CalculateTourStatistic(SelectedTour, logs);
             }
             else // if another tab is selcted
             {
@@ -108,13 +134,6 @@ namespace TourPlanner.UI.ViewModels
                 ResetTabState();
                 await EvaluateLazyLoading();
             }
-        }
-
-        public TourDetailViewModel(ISelectedTourService selectedTourService, IMapService mapService)
-        {
-            _selectedTourService = selectedTourService;
-            _mapService = mapService;
-            _selectedTourService.SelectedTourChanged += OnSelectedTourChanged;
         }
 
         private void ResetTabState()

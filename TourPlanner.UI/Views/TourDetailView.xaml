@@ -45,7 +45,6 @@
                             <TextBlock Text="{Binding SelectedTour.TransportType, StringFormat='Transport-Type: {0}'}" FontSize="14" Foreground="#374151" Margin="0,0,0,12" TextWrapping="Wrap"/>
                             <TextBlock Text="{Binding SelectedTour.DistanceKm, StringFormat='Distance: {0}km'}" FontSize="14" Foreground="#374151" Margin="0,0,0,12" TextWrapping="Wrap"/>
                             <TextBlock Text="{Binding SelectedTour.EstimatedTimeHours, StringFormat='Estimated-Hours: {0}'}" FontSize="14" Foreground="#374151" Margin="0,0,0,12" TextWrapping="Wrap"/>
-                            <TextBlock Text="{Binding SelectedTour.RouteImagePath, StringFormat='Image-Path: {0}'}" FontSize="14" Foreground="#374151" TextWrapping="Wrap"/>
                         </StackPanel>
                     </ScrollViewer>
                 </Border>
@@ -57,8 +56,14 @@
             </TabItem>
             <TabItem Header="Misc." Style="{StaticResource TailwindTab}">
                 <Border Background="White" CornerRadius="8" Margin="0,16,0,0" BorderBrush="#E5E7EB" BorderThickness="1">
-                    <TextBlock Text="- The Weather will be displayed here -" FontSize="14" Foreground="#9CA3AF" 
-                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel Margin="12" Visibility="{Binding Statistics, Converter={StaticResource NullToVisibilityConverter}}">
+                            <TextBlock Text="{Binding Statistics.AvgDifficulty, StringFormat='Avg. Difficulty: {0:F2}'}" FontSize="14" Foreground="#374151" Margin="0,0,0,12"/>
+                            <TextBlock Text="{Binding Statistics.AvgRating, StringFormat='Avg. Rating: {0:F2}'}" FontSize="14" Foreground="#374151" Margin="0,0,0,12"/>
+                            <TextBlock Text="{Binding Statistics.Popularity, StringFormat='Popularity (Total Logs): {0}'}" FontSize="14" Foreground="#374151" Margin="0,0,0,12"/>
+                            <TextBlock Text="{Binding Statistics.IsChildFriendly, StringFormat='Child Friendly: {0}'}" FontSize="14" Foreground="#374151" Margin="0,0,0,12"/>
+                        </StackPanel>
+                    </ScrollViewer>
                 </Border>
             </TabItem>
         </TabControl>
