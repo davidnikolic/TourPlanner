@@ -79,6 +79,7 @@ namespace TourPlanner.UI.ViewModels
                     end = SelectedTour.EndLocation;
                 }
                 await _mapService.UpdateMapAsync(start, end);
+                await _mapService.SaveMapImageAsync(selectedTour.RouteImagePath);
             }
             else // if another tab is selcted
             {

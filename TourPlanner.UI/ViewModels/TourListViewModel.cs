@@ -21,6 +21,7 @@ namespace TourPlanner.UI.ViewModels
     public class TourListViewModel : ViewModelBase
     {
         private readonly IMapService _mapService;
+
         private ITourService _tourService;
 
         private ISelectedTourService? _selectedTourService;
@@ -189,12 +190,6 @@ namespace TourPlanner.UI.ViewModels
                 // Otherwise, select the first item in the list or set to null if none exist  / First Tour or "null" no tour displayed
                 SelectedTour = null; 
             }
-        }
-
-        public async void HandleMap(TourDTO tour)
-        {
-            await _mapService.UpdateMapAsync(tour.StartLocation, tour.EndLocation);
-            await _mapService.SaveMapImageAsync(tour.RouteImagePath);
         }
     }
 }
