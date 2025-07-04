@@ -67,11 +67,12 @@ namespace TourPlanner.UI.ViewModels
             _tourLogsViewModel = tourLogsViewModel;
             _mapService = mapService;
             _tourCoordinatorService = tourCoordinatorService;
-            _tourCoordinatorService.ToursChanged += RefreshTours;
-            _tourLogsViewModel.PropertyChanged += OnTourLogsViewModelPropertyChanged;
             _searchService = searchService;
-            var tours = _tourService.GetTours();
 
+            _tourCoordinatorService.ToursChanged += RefreshTours;
+            _searchService.SearchTermChanged += (s, e) => RefreshTours();
+
+            var tours = _tourService.GetTours();
             Tours = new ObservableCollection<TourDTO>(tours);
             RefreshTours();
         }
@@ -92,17 +93,6 @@ namespace TourPlanner.UI.ViewModels
 
             Tours = new ObservableCollection<TourDTO>(tours);
             RefreshTours();
-        }
-
-        private void OnTourLogsViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            // Check if the property that changed is "SearchQuery"
-            // This means the user typed something into the TourLog search field
-            if (e.PropertyName == nameof(TourLogsViewModel.SearchQuery))
-            {
-                // When the search query changes, we need to update the tour list accordingly
-                RefreshTours();
-            }
         }
 
         public RelayCommand AddCommand => new RelayCommand(execute => AddTour());
@@ -161,10 +151,8 @@ namespace TourPlanner.UI.ViewModels
 
 
             List<TourDTO> toursToDisplay;
-            // Get the current search term from the TourLogsViewModel
-            string currentSearchTerm = "";
-
-            if (_tourLogsViewModel != null) currentSearchTerm = _tourLogsViewModel.SearchQuery; 
+            // Get the current search term from the SearchService
+            string currentSearchTerm = _searchService.CurrentSearchTerm;
 
             if (!string.IsNullOrWhiteSpace(currentSearchTerm))
             {

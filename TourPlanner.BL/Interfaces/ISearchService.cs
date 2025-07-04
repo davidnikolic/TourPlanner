@@ -9,6 +9,9 @@ namespace TourPlanner.BL.Interfaces
 {
     public interface ISearchService
     {
+        string CurrentSearchTerm { get; set; }
+
+        event EventHandler SearchTermChanged;
         List<TourDTO> SearchTours(string searchTerm);
     }
 }

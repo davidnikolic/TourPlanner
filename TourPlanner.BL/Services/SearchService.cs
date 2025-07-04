@@ -7,12 +7,28 @@ using System.Threading.Tasks;
 using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Interfaces;
 
-namespace TourPlanner.BL
+namespace TourPlanner.BL.Services
 {
     public class SearchService : ISearchService
     {
         private readonly ITourService _tourService;
         private readonly ITourLogService _tourLogService;
+
+        private string _currentSearchTerm = string.Empty;
+        public string CurrentSearchTerm
+        {
+            get => _currentSearchTerm;
+            set
+            {
+                if (_currentSearchTerm != value)
+                {
+                    _currentSearchTerm = value;
+                    SearchTermChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        public event EventHandler? SearchTermChanged;
 
         public SearchService(ITourService tourService, ITourLogService tourLogService)
         {
@@ -42,10 +58,10 @@ namespace TourPlanner.BL
 
             foreach (var t in allTours)
             {
-                if ((t.Name != null && t.Name.ToLower().Contains(lowerTerm)) ||
-                    (t.Description != null && t.Description.ToLower().Contains(lowerTerm)) ||
-                    (t.StartLocation != null && t.StartLocation.ToLower().Contains(lowerTerm)) ||
-                    (t.EndLocation != null && t.EndLocation.ToLower().Contains(lowerTerm)) ||
+                if (t.Name != null && t.Name.ToLower().Contains(lowerTerm) ||
+                    t.Description != null && t.Description.ToLower().Contains(lowerTerm) ||
+                    t.StartLocation != null && t.StartLocation.ToLower().Contains(lowerTerm) ||
+                    t.EndLocation != null && t.EndLocation.ToLower().Contains(lowerTerm) ||
                     t.TransportType.ToString().ToLower().Contains(lowerTerm) ||
                     t.DistanceKm.ToString(CultureInfo.InvariantCulture).Contains(lowerTerm) ||
                     t.EstimatedTimeHours.ToString(CultureInfo.InvariantCulture).Contains(lowerTerm))
@@ -58,7 +74,7 @@ namespace TourPlanner.BL
             var logs = _tourLogService.GetAllTourLogs();
             foreach (var log in logs)
             {
-                if ((log.Comment != null && log.Comment.ToLower().Contains(lowerTerm)) ||
+                if (log.Comment != null && log.Comment.ToLower().Contains(lowerTerm) ||
                     log.Difficulty.ToString().ToLower().Contains(lowerTerm) ||
                     log.DistanceKm.ToString(CultureInfo.InvariantCulture).Contains(lowerTerm) ||
                     log.DurationHours.ToString(CultureInfo.InvariantCulture).Contains(lowerTerm) ||

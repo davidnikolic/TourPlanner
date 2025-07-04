@@ -23,6 +23,8 @@ namespace TourPlanner.UI.ViewModels
 
         private ISelectedTourService _selectedTourService;
 
+        private ISearchService _searchService;
+
         private IDialogService _dialogService;
         public ObservableCollection<TourLogDTO> TourLogs { get; set; } = new();
 
@@ -30,20 +32,16 @@ namespace TourPlanner.UI.ViewModels
 
         private TourLogDTO selectedLog;
 
-        private string _searchQuery = string.Empty;
         public string SearchQuery
         {
-            get => _searchQuery;
+            get => _searchService.CurrentSearchTerm;
             set
             {
-                // Only update if the value has actually changed to avoid unnecessary UI updates
-                if (_searchQuery != value)
+                if (_searchService.CurrentSearchTerm != value)
                 {
-                    _searchQuery = value;
-                    // Notify the UI that this property has changed (data binding)
+                    _searchService.CurrentSearchTerm = value;
                     OnPropertyChanged();
-                    // Execute the search logic and filter TourLogs based on the new query
-                    ExecuteSearch(); 
+                    RefreshTourLogs();
                 }
             }
         }
@@ -86,14 +84,17 @@ namespace TourPlanner.UI.ViewModels
         public TourLogsViewModel(
             ITourLogService tourLogService,
             ISelectedTourService selectedTourService,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            ISearchService searchService)
         {
 
             _tourLogService = tourLogService;
             _selectedTourService = selectedTourService;
             _dialogService = dialogService;
+            _searchService = searchService;
 
             _selectedTourService.SelectedTourChanged += OnSelectedTourChanged;
+            _searchService.SearchTermChanged += OnSearchTermChanged;
         }
 
         public RelayCommand AddCommand => new RelayCommand(execute => AddTourLog());
@@ -164,7 +165,11 @@ namespace TourPlanner.UI.ViewModels
             }
 
             SelectedTour = tour;
-            _searchQuery = string.Empty;
+            RefreshTourLogs();
+        }
+
+        private void OnSearchTermChanged(object sender, EventArgs e)
+        {
             RefreshTourLogs();
         }
 
@@ -172,12 +177,14 @@ namespace TourPlanner.UI.ViewModels
         {
             List<TourLogDTO> filteredLogs;
 
+            string searchTerm = _searchService.CurrentSearchTerm;
+
             if (SelectedTour == null)
             {
                 // If no tour is selected, show all matching logs system-wide
-                if (!string.IsNullOrWhiteSpace(_searchQuery))
+                if (!string.IsNullOrWhiteSpace(searchTerm))
                 {
-                    filteredLogs = _tourLogService.SearchTourLogs(_searchQuery);
+                    filteredLogs = _tourLogService.SearchTourLogs(searchTerm);
                 }
                 else
                 {
@@ -189,9 +196,9 @@ namespace TourPlanner.UI.ViewModels
             else
             {
                 // A tour is selected → only show logs related to this specific tour
-                if (!string.IsNullOrWhiteSpace(_searchQuery))
+                if (!string.IsNullOrWhiteSpace(searchTerm))
                 {
-                    filteredLogs = _tourLogService.SearchTourLogs(_searchQuery)
+                    filteredLogs = _tourLogService.SearchTourLogs(searchTerm)
                                                   .Where(log => log.TourId == SelectedTour.Id)
                                                   .ToList();
                 }

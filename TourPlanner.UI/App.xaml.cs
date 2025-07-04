@@ -17,7 +17,6 @@ using TourPlanner.UI.Map.Services;
 using TourPlanner.Logging.Interfaces;
 using TourPlanner.Logging;
 using TourPlanner.BL.Services.Map;
-using TourPlanner.BL;
 
 namespace TourPlanner.UI
 {
