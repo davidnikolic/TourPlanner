@@ -24,5 +24,25 @@ namespace TourPlanner.UI.Services
         {
             return tour ?? sampleTour;
         }
+
+        public string? ShowFolderDialog()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowMessage(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string? ShowOpenFileDialog(string filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string? ShowSaveFileDialog(string defaultFileName, string filter)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

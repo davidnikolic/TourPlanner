@@ -32,6 +32,8 @@ namespace TourPlanner.UI.ViewModels
 
         private ITourCoordinatorService _tourCoordinatorService;
 
+        private ISearchService _searchService;
+
         public ObservableCollection<TourDTO> Tours { get; set; } = new();
 
         private TourDTO selectedTour;
@@ -55,7 +57,8 @@ namespace TourPlanner.UI.ViewModels
             IDialogService dialogService,
             TourLogsViewModel tourLogsViewModel,
             ITourCoordinatorService tourCoordinatorService,
-            IMapService mapService
+            IMapService mapService,
+            ISearchService searchService
             )
         {
             _tourService = tourService;
@@ -66,6 +69,7 @@ namespace TourPlanner.UI.ViewModels
             _tourCoordinatorService = tourCoordinatorService;
             _tourCoordinatorService.ToursChanged += RefreshTours;
             _tourLogsViewModel.PropertyChanged += OnTourLogsViewModelPropertyChanged;
+            _searchService = searchService;
             var tours = _tourService.GetTours();
 
             Tours = new ObservableCollection<TourDTO>(tours);
@@ -76,13 +80,13 @@ namespace TourPlanner.UI.ViewModels
             ITourService tourService,
             ISelectedTourService selectedTourService,
             IDialogService dialogService,
-            TourLogsViewModel tourLogsViewModel
+            ITourCoordinatorService tourCoordinatorService
             )
         {
             _tourService = tourService;
             _selectedTourService = selectedTourService;
             _dialogService = dialogService;
-            _tourLogsViewModel = tourLogsViewModel;
+            _tourCoordinatorService = tourCoordinatorService;
 
             var tours = _tourService.GetTours();
 
@@ -166,7 +170,7 @@ namespace TourPlanner.UI.ViewModels
             {
                 id = -1;
                 // If a search term is provided, filter tours using SearchTours()
-                toursToDisplay = _tourService.SearchTours(currentSearchTerm);
+                toursToDisplay = _searchService.SearchTours(currentSearchTerm);
             }
             else
             {

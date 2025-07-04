@@ -18,12 +18,13 @@ namespace TourPlanner.Tests
     {
         ITourRepository tourRepository;
 
-
         ITourService tourService;
+        ITourCoordinatorService tourCoordinatorService;
         MockDialogService dialogService;
         ISelectedTourService selectedTourService;
 
         TourListViewModel tourListViewModel;
+
 
         [SetUp]
         public void Setup()
@@ -34,7 +35,9 @@ namespace TourPlanner.Tests
             dialogService = new MockDialogService();
             selectedTourService = new SelectedTourService();
 
-            tourListViewModel = new(tourService, selectedTourService, dialogService);
+            tourCoordinatorService = new TourCoordinatorService(tourService, dialogService, selectedTourService);
+            tourListViewModel = new(tourService, selectedTourService, dialogService, tourCoordinatorService);
+            
         }
 
         [Test]

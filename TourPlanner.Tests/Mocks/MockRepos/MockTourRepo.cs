@@ -14,9 +14,11 @@ namespace TourPlanner.BL.MockRepos
     {
         public List<TourEntity> Tours { get; set; } = new List<TourEntity>();
 
-        public void AddTour(TourEntity tour)
+        public TourEntity AddTour(TourEntity tour)
         {
             Tours.Add(tour);
+
+            return tour;
         }
 
         public IEnumerable<TourEntity> GetTours()
@@ -46,6 +48,11 @@ namespace TourPlanner.BL.MockRepos
         public void DeleteTour(int id)
         {
             Tours.RemoveAll(i => i.Id == id);
+        }
+
+        public IEnumerable<TourLogEntity> GetAllTourLogs()
+        {
+            throw new NotImplementedException();
         }
     }
 }
