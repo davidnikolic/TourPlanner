@@ -73,7 +73,7 @@
                     <MenuItem Header="Tour-Log-List" Command="{Binding NewWindowCommand}" />
                 </MenuItem>
                 <MenuItem Header="Help" Foreground="White" FontSize="18" FontWeight="SemiBold" Padding="20,12" Margin="6,0">
-                    <MenuItem Header="About..." Command="{Binding NewTabCommand}" />
+                    <MenuItem Header="About..." Command="{Binding AboutCommand}" />
                     <MenuItem Header="How to use..." Command="{Binding NewWindowCommand}" />
                     <Separator />
                     <MenuItem Header="Visit GitHub-Repository" Command="{Binding NewWindowCommand}" />
