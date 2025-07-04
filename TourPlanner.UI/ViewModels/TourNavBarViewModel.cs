@@ -16,8 +16,6 @@ namespace TourPlanner.UI.ViewModels
 
         public TourNavBarViewModel
             (
-            ITourService tourService,
-            ITourLogService tourLogService,
             IDialogService dialogService,
             ITourCoordinatorService tourCoordinatorService,
             ITourExportCoordinator tourExportCoordinator,

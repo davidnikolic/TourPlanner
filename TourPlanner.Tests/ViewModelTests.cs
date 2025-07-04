@@ -22,6 +22,7 @@ namespace TourPlanner.Tests
         ITourCoordinatorService tourCoordinatorService;
         MockDialogService dialogService;
         ISelectedTourService selectedTourService;
+        ISearchService searchService;
 
         TourListViewModel tourListViewModel;
 
@@ -31,12 +32,13 @@ namespace TourPlanner.Tests
         {
             tourRepository = new MockTourRepo();
 
-            tourService = new TourService(tourRepository);
+            tourService = new TourService(tourRepository, null);
             dialogService = new MockDialogService();
             selectedTourService = new SelectedTourService();
+            searchService = new SearchService(null, null);
 
             tourCoordinatorService = new TourCoordinatorService(tourService, dialogService, selectedTourService);
-            tourListViewModel = new(tourService, selectedTourService, dialogService, tourCoordinatorService);
+            tourListViewModel = new(tourService, selectedTourService, dialogService, tourCoordinatorService, searchService);
             
         }
 
@@ -151,6 +153,32 @@ namespace TourPlanner.Tests
 
             // Assert
             Assert.That(tourRepository.GetTours().Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void ModifyCommand_ShouldNotUpdate_WhenDialogReturnsNull()
+        {
+            // Arrange
+            TourDTO tour = new TourDTO()
+            {
+                Id = 1,
+                Name = "Sample-Tour",
+                Description = "This is a mock-tour",
+                EstimatedTimeHours = 1
+            };
+
+            tourService.AddTour(tour);
+            tourListViewModel.SelectedTour = tour;
+
+            // Simuliere: Benutzer klickt "Abbrechen" im Dialog
+            dialogService.sampleTour = null;
+
+            // Act
+            tourListViewModel.ModifyCommand.Execute(null);
+
+            // Assert
+            var unchanged = tourRepository.GetTours().First();
+            Assert.That(unchanged.EstimatedTimeHours, Is.EqualTo(1)); // original value
         }
     }
 }

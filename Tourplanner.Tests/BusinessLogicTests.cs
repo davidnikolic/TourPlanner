@@ -19,7 +19,7 @@ namespace TourPlanner.Tests
         public void Setup()
         {
             tourRepository = new MockTourRepo();
-            tourService = new TourService(tourRepository);
+            tourService = new TourService(tourRepository, null);
         }
 
         [Test]
