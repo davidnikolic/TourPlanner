@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Views;
-using TourPlanner.BL.DTOs;
+﻿using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Interfaces;
-using TourPlanner.BL.Services;
-using TourPlanner.UI.Interfaces;
 using TourPlanner.UI.Interfaces.Coordinators;
 using IDialogService = TourPlanner.UI.Interfaces.IDialogService;
 

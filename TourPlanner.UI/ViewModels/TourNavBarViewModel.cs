@@ -31,8 +31,6 @@ namespace TourPlanner.UI.ViewModels
 
         private IImportService _importService;
 
-        private IExportService _exportService;
-
         private ITourCoordinatorService _tourCoordinatorService;
 
         private ITourExportCoordinator _tourExportCoordinator;
@@ -45,7 +43,6 @@ namespace TourPlanner.UI.ViewModels
             ITourStatisticsService ourStatisticsService,
             IDialogService dialogService,
             IImportService importService,
-            IExportService exportService,
             IReportService reportService,
             ITourCoordinatorService tourCoordinatorService,
             ITourExportCoordinator tourExportCoordinator
@@ -57,7 +54,6 @@ namespace TourPlanner.UI.ViewModels
             _tourStatisticsService = ourStatisticsService;
             _dialogService = dialogService;
             _importService = importService;
-            _exportService = exportService;
             _reportService = reportService;
             _tourCoordinatorService = tourCoordinatorService;
             _tourExportCoordinator = tourExportCoordinator;
@@ -177,21 +173,7 @@ namespace TourPlanner.UI.ViewModels
 
         private void ExportSelectedTourAsPdf()
         {
-            var tour = _selectedTourService.SelectedTour;
-
-            if (tour == null)
-            {
-                _dialogService.ShowMessage("No Tour selected");
-                return;
-            }
-
-            tour.TourLogs = _tourLogService.GetTourLogsForTour(tour.Id);
-
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "TourReport.pdf");
-
-            _reportService.GenerateTourReport(tour, path);
-
-            MessageBox.Show("PDF successfully created on the desktop.");
+            _tourExportCoordinator.ExportSelectedTourAsPdf();
         }
 
         private void ExportSelectedTourAsCsv()
@@ -201,23 +183,7 @@ namespace TourPlanner.UI.ViewModels
 
         private void ExportSelectedTourAsJson()
         {
-            var tour = _selectedTourService.SelectedTour;
-
-            if (tour == null)
-            {
-                _dialogService.ShowMessage("No Tour selected");
-                return;
-            }
-
-            var path = _dialogService.ShowSaveFileDialog("output.json", "JSON Files (*.json)|*.json|All Files (*.*)|*.*");
-
-            if (path == null) return;
-
-            var logs = _tourLogService.GetTourLogsForTour(tour.Id);
-
-            tour.TourLogs = logs;
-
-            _exportService.ExportToursToJson(new List<TourDTO> { tour }, path);
+            _tourExportCoordinator.ExportSelectedTourAsJson();
         }
 
         private void ExportAllToursAsPdf()
@@ -240,16 +206,7 @@ namespace TourPlanner.UI.ViewModels
 
         public void ExportSummarizeReportAsPdf()
         {
-
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "SummarizeReport.pdf");
-            var tours = _tourService.GetTours();
-            var logs = _tourLogService.GetAllTourLogs();
-
-            var stats = _tourStatisticsService.CalculateAllTourStatistics(tours, logs);
-
-            _reportService.GenerateSummarizeReport(stats, path);
-
-            MessageBox.Show("PDF successfully created on the desktop.");
+            _tourExportCoordinator.ExportSummarizeReport();
         }
     }
 }
