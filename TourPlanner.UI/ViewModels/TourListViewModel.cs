@@ -20,15 +20,11 @@ namespace TourPlanner.UI.ViewModels
 {
     public class TourListViewModel : ViewModelBase
     {
-        private readonly IMapService _mapService;
-
         private ITourService _tourService;
 
         private ISelectedTourService? _selectedTourService;
 
         private IDialogService _dialogService;
-
-        private TourLogsViewModel _tourLogsViewModel;
 
         private ITourCoordinatorService _tourCoordinatorService;
 
@@ -55,17 +51,13 @@ namespace TourPlanner.UI.ViewModels
             ITourService tourService,
             ISelectedTourService selectedTourService,
             IDialogService dialogService,
-            TourLogsViewModel tourLogsViewModel,
             ITourCoordinatorService tourCoordinatorService,
-            IMapService mapService,
             ISearchService searchService
             )
         {
             _tourService = tourService;
             _selectedTourService = selectedTourService;
             _dialogService = dialogService;
-            _tourLogsViewModel = tourLogsViewModel;
-            _mapService = mapService;
             _tourCoordinatorService = tourCoordinatorService;
             _searchService = searchService;
 
@@ -73,24 +65,6 @@ namespace TourPlanner.UI.ViewModels
             _searchService.SearchTermChanged += (s, e) => RefreshTours();
 
             var tours = _tourService.GetTours();
-            Tours = new ObservableCollection<TourDTO>(tours);
-            RefreshTours();
-        }
-
-        public TourListViewModel(
-            ITourService tourService,
-            ISelectedTourService selectedTourService,
-            IDialogService dialogService,
-            ITourCoordinatorService tourCoordinatorService
-            )
-        {
-            _tourService = tourService;
-            _selectedTourService = selectedTourService;
-            _dialogService = dialogService;
-            _tourCoordinatorService = tourCoordinatorService;
-
-            var tours = _tourService.GetTours();
-
             Tours = new ObservableCollection<TourDTO>(tours);
             RefreshTours();
         }
