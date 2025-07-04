@@ -9,11 +9,11 @@ namespace TourPlanner.UI.Interfaces.Coordinators
     public interface ITourExportCoordinator
     {
         void ExportSelectedTourAsPdf();
-        void ExportAllToursAsPdf();
+        void ExportAllToursAsPdf(string path);
         void ExportSelectedTourAsCsv();
         void ExportAllToursAsCsv(string folderPath);
         void ExportSelectedTourAsJson();
-        void ExportAllToursAsJson();
+        void ExportAllToursAsJson(string path);
         void ExportSummarizeReport();
     }
 }

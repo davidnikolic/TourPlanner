@@ -196,21 +196,7 @@ namespace TourPlanner.UI.ViewModels
 
         private void ExportSelectedTourAsCsv()
         {
-            var tour = _selectedTourService.SelectedTour;
-
-            if (tour == null)
-            {
-                _dialogService.ShowMessage("No Tour selected");
-                return;
-            }
-
-            tour.TourLogs = _tourLogService.GetTourLogsForTour(tour.Id);
-
-            var folderPath = _dialogService.ShowFolderDialog();
-
-            if (folderPath == null) return;
-
-            _exportService.ExportToursToCsv(new List<TourDTO> { tour }, folderPath);
+            _tourExportCoordinator.ExportSelectedTourAsCsv();
         }
 
         private void ExportSelectedTourAsJson()
@@ -236,42 +222,20 @@ namespace TourPlanner.UI.ViewModels
 
         private void ExportAllToursAsPdf()
         {
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "TourReport.pdf");
-            var tours = _tourService.GetTours();
-
-            foreach (var tour in tours)
-            {
-                tour.TourLogs = _tourLogService.GetTourLogsForTour(tour.Id);
-            }
-
-            _reportService.GenerateAllToursReport(tours, path);
-
-            MessageBox.Show("PDF successfully created on the desktop.");
+            var path = _dialogService.ShowSaveFileDialog("output.pdf", "PDF Files (*.pdf)|*.pdf|All Files (*.*)|*.*");
+            if (path != null) _tourExportCoordinator.ExportAllToursAsPdf(path);
         }
 
         private void ExportAllToursAsCsv()
         {
             var folderPath = _dialogService.ShowFolderDialog();
-
-            if (folderPath == null) return;
-
-            _tourExportCoordinator.ExportAllToursAsCsv(folderPath); 
+            if (folderPath != null) _tourExportCoordinator.ExportAllToursAsCsv(folderPath); 
         }
 
         private void ExportAllToursAsJson()
         {
             var path = _dialogService.ShowSaveFileDialog("output.json", "JSON Files (*.json)|*.json|All Files (*.*)|*.*");
-
-            if (path == null) return;
-
-            var tours = _tourService.GetTours();
-
-            foreach (var tour in tours)
-            {
-                tour.TourLogs = _tourLogService.GetTourLogsForTour(tour.Id);
-            }
-
-            _exportService.ExportToursToJson(tours, path);
+            if (path != null) _tourExportCoordinator.ExportAllToursAsJson(path);
         }
 
         public void ExportSummarizeReportAsPdf()

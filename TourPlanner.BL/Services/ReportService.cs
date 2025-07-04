@@ -132,9 +132,16 @@ namespace TourPlanner.BL.Services
                 // 5. Optional: Add Tour Image
                 if (!string.IsNullOrEmpty(tour.RouteImagePath) && File.Exists(tour.RouteImagePath))
                 {
-                    var imgData = ImageDataFactory.Create(tour.RouteImagePath);
-                    var image = new Image(imgData).ScaleToFit(400, 300).SetMarginBottom(15);
-                    doc.Add(image);
+                    try
+                    {
+                        var imgData = ImageDataFactory.Create(tour.RouteImagePath);
+                        var image = new Image(imgData).ScaleToFit(400, 300).SetMarginBottom(15);
+                        doc.Add(image);
+                    }
+                    catch(IOException)
+                    {
+                        //LOG
+                    }
                 }
 
                 // 6. Table with more information
