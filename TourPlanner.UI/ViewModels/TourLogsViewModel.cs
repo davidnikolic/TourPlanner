@@ -50,24 +50,6 @@ namespace TourPlanner.UI.ViewModels
             }
         }
 
-        private void ExecuteSearch()
-        {
-            _logger.Debug($"Executing search for query: '{SearchQuery}'");
-            var result = _tourLogService.SearchTourLogs(SearchQuery);
-            // If SelectedTour set → show log for the TOUR
-            if (SelectedTour != null)
-            {
-                result = result.Where(log => log.TourId == SelectedTour.Id).ToList();
-                _logger.Debug($"Filtered search results for tour {SelectedTour.Name}: {result.Count} logs found");
-            }
-
-            // Set List
-            TourLogs.Clear();
-            foreach (var log in result)
-                TourLogs.Add(log);
-            _logger.Info($"Search completed. Displaying {TourLogs.Count} tour logs");
-        }
-
         public TourDTO SelectedTour
         {
             get => selectedTour;
@@ -228,33 +210,23 @@ namespace TourPlanner.UI.ViewModels
                 {
                     // No tour selected and no search query → clear the list
                     _logger.Debug("No tour selected and no search query - clearing logs");
-                    TourLogs.Clear(); 
+                    TourLogs.Clear();
                     return;
                 }
             }
             else
             {
-                // A tour is selected → only show logs related to this specific tour
-                if (!string.IsNullOrWhiteSpace(searchTerm))
-                {
-                    _logger.Debug($"Filtering logs for tour {SelectedTour.Name} with search query");
-                    filteredLogs = _tourLogService.SearchTourLogs(searchTerm)
-                                                  .Where(log => log.TourId == SelectedTour.Id)
-                                                  .ToList();
-                }
-                else
-                {
-                    // No active search → just load all logs for the selected tour
-                    _logger.Debug($"Loading all logs for tour: {SelectedTour.Name}");
-                    filteredLogs = _tourLogService.GetTourLogsForTour(SelectedTour.Id);
-                }
+                // A tour is selected -> show all logs for this tour dont care about search term
+                _logger.Debug($"Loading all logs for selected tour: {SelectedTour.Name}");
+                filteredLogs = _tourLogService.GetTourLogsForTour(SelectedTour.Id);
             }
-            // At the end clear current list of logs in the UI
-            // Add each filtered log to the UI
+
+            // Clear current list of logs in the UI and add filtered logs
             TourLogs.Clear();
             foreach (var tl in filteredLogs)
                 TourLogs.Add(tl);
-            _logger.Info($"Tour logs refreshed. Displaying {TourLogs.Count} logs");
+
+            _logger.Info($"Tour logs refreshed. Displaying {TourLogs.Count} logs for tour: {SelectedTour?.Name ?? "None"}");
         }
     }
 }

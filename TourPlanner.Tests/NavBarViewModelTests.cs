@@ -8,17 +8,20 @@ using TourPlanner.UI.Interfaces.Coordinators;
 using TourPlanner.UI.Interfaces;
 using TourPlanner.UI.Services;
 using TourPlanner.UI.ViewModels;
+using TourPlanner.BL.Interfaces;
+using TourPlanner.Logging.Interfaces;
+using TourPlanner.Logging;
 
 namespace TourPlanner.Tests
 {
     public class NavBarViewModelTests
     {
-
         private Mock<IDialogService> _dialogServiceMock;
         private Mock<ITourCoordinatorService> _tourCoordinatorMock;
         private Mock<ITourExportCoordinator> _exportMock;
         private Mock<ITourImportCoordinator> _importMock;
         private TourNavBarViewModel _viewModel;
+        ILoggerFactory loggerFactory;
 
         [SetUp]
         public void Setup()
@@ -27,12 +30,14 @@ namespace TourPlanner.Tests
             _tourCoordinatorMock = new Mock<ITourCoordinatorService>();
             _exportMock = new Mock<ITourExportCoordinator>();
             _importMock = new Mock<ITourImportCoordinator>();
+            loggerFactory = new LoggerFactory();
 
             _viewModel = new TourNavBarViewModel(
                 _dialogServiceMock.Object,
                 _tourCoordinatorMock.Object,
                 _exportMock.Object,
-                _importMock.Object
+                _importMock.Object,
+                loggerFactory
             );
         }
 

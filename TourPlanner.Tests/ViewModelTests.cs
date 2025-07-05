@@ -12,39 +12,36 @@ using TourPlanner.DAL.Repositories.Interfaces;
 using TourPlanner.BL.Services;
 using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Services.Map;
+using TourPlanner.Logging.Interfaces;
+using TourPlanner.Logging;
 
 namespace TourPlanner.Tests
 {
     public class ViewModelTests
     {
         ITourRepository tourRepository;
-
         ITourService tourService;
         ITourCoordinatorService tourCoordinatorService;
         MockDialogService dialogService;
         ISelectedTourService selectedTourService;
         ISearchService searchService;
         IMapService mapService;
-
+        ILoggerFactory loggerFactory;
         TourListViewModel tourListViewModel;
-
 
         [SetUp]
         public void Setup()
         {
             tourRepository = new MockTourRepo();
-
             tourService = new TourService(tourRepository, null);
             dialogService = new MockDialogService();
             selectedTourService = new SelectedTourService();
             searchService = new SearchService(null, null);
             mapService = new MapService(null);
-
+            loggerFactory = new LoggerFactory();
             tourCoordinatorService = new TourCoordinatorService(tourService, dialogService, selectedTourService, mapService);
-            tourListViewModel = new(tourService, selectedTourService, dialogService, tourCoordinatorService, searchService, mapService);
-            
+            tourListViewModel = new(tourService, selectedTourService, dialogService, tourCoordinatorService, searchService, loggerFactory, mapService);
         }
-
         [Test]
         public void TestSelectedTourPropagation()
         {
