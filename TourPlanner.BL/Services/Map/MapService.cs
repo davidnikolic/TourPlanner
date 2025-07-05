@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TourPlanner.UI.Map.Interface;
 using TourPlanner.BL.Interfaces;
+using Microsoft.Web.WebView2.Wpf;
 
 namespace TourPlanner.BL.Services.Map
 {
@@ -36,6 +37,13 @@ namespace TourPlanner.BL.Services.Map
             if (_currentWebView != null)
             {
                 await _mapViewService.SaveMapImageAsync(_currentWebView, fullImagePath);
+            }
+        }
+        public async Task ClearMapAsync()
+        {
+            if (_currentWebView is WebView2 webView && webView.CoreWebView2 != null)
+            {
+                await webView.CoreWebView2.ExecuteScriptAsync("clearMap()");
             }
         }
     }

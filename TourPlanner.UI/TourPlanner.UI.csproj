@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Map\Interface\**" />
+    <EmbeddedResource Remove="Map\Interface\**" />
+    <None Remove="Map\Interface\**" />
+    <Page Remove="Map\Interface\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Map\MapTemplate.html" />
   </ItemGroup>
 
@@ -29,10 +36,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TourPlanner.BL\TourPlanner.BL.csproj" />
     <ProjectReference Include="..\TourPlanner.Logging\TourPlanner.Logging.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Map\Interface\" />
   </ItemGroup>
 
 </Project>

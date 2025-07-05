@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Win32;
 using Ookii.Dialogs.Wpf;
+using TourPlanner.Logging;
 using TourPlanner.BL.DTOs;
 using TourPlanner.UI.Interfaces;
 using TourPlanner.UI.ViewModels;
@@ -16,91 +17,158 @@ namespace TourPlanner.UI.Services
 {
     internal class DialogService : IDialogService
     {
+        private readonly ILoggerWrapper _logger;
+        public DialogService(ILoggerWrapper logger)
+        {
+            _logger = logger;
+        }
         public TourLogDTO? DisplayTourLogPopUp(string title, TourLogDTO tourLog = null)
         {
-            var fields = FormFieldFactory.CreateForTourLog(tourLog);
-            var vm = new GenericDialogViewModel(title, fields);
-
-            var dialog = new GenericDialogWindowView { DataContext = vm };
-            vm.CloseRequested += () => dialog.DialogResult = true;
-
-            if (dialog.ShowDialog() == true)
+            _logger.Info($"Displaying TourLog popup with title: {title}");
+            try
             {
-                var res = FormFieldFactory.ToTourLogDTO(fields);
+                var fields = FormFieldFactory.CreateForTourLog(tourLog);
+                var vm = new GenericDialogViewModel(title, fields, _logger);
+                var dialog = new GenericDialogWindowView { DataContext = vm };
+                vm.CloseRequested += () => dialog.DialogResult = true;
 
-                return res;
+                if (dialog.ShowDialog() == true)
+                {
+                    var res = FormFieldFactory.ToTourLogDTO(fields);
+                    _logger.Info("TourLog popup completed successfully");
+                    return res;
+                }
 
+                _logger.Info("TourLog popup was cancelled");
+                return null;
             }
-
-            return null;
+            catch (Exception ex)
+            {
+                _logger.Error("Error displaying TourLog popup", ex);
+                return null;
+            }
         }
 
         public TourDTO? DisplayTourPopUp(string title, TourDTO tour = null)
         {
-            var fields = FormFieldFactory.CreateForTour(tour);
-            var vm = new GenericDialogViewModel(title, fields);
+            _logger.Info($"Displaying Tour popup with title: {title}");
 
-            var dialog = new GenericDialogWindowView { DataContext = vm };
-            vm.CloseRequested += () => dialog.DialogResult = true;
-
-            if (dialog.ShowDialog() == true)
+            try
             {
-                var res = FormFieldFactory.ToTourDTO(fields);
-                if (tour != null) res.RouteImagePath = tour.RouteImagePath;
-                return res;
+                var fields = FormFieldFactory.CreateForTour(tour);
+                var vm = new GenericDialogViewModel(title, fields, _logger);
+                var dialog = new GenericDialogWindowView { DataContext = vm };
+                vm.CloseRequested += () => dialog.DialogResult = true;
 
+                if (dialog.ShowDialog() == true)
+                {
+                    var res = FormFieldFactory.ToTourDTO(fields);
+                    if (tour != null) res.RouteImagePath = tour.RouteImagePath;
+                    _logger.Info("Tour popup completed successfully");
+                    return res;
+                }
+
+                _logger.Info("Tour popup was cancelled");
+                return null;
             }
-
-            return null;
+            catch (Exception ex)
+            {
+                _logger.Error("Error displaying Tour popup", ex);
+                return null;
+            }
         }
 
         public void ShowMessage(string message)
         {
+            _logger.Info($"Showing message to user: {message}");
             MessageBox.Show(message);
         }
 
         public string? ShowOpenFileDialog(string filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*")
         {
-            var openFileDialog = new OpenFileDialog
-            {
-                Filter = filter,
-                Title = "Datei auswählen"
-            };
+            _logger.Debug($"Opening file dialog with filter: {filter}");
 
-            bool? result = openFileDialog.ShowDialog();
-
-            if (result == true)
+            try
             {
-                return openFileDialog.FileName;
+                var openFileDialog = new OpenFileDialog
+                {
+                    Filter = filter,
+                    Title = "Datei auswählen"
+                };
+                bool? result = openFileDialog.ShowDialog();
+                if (result == true)
+                {
+                    _logger.Info($"File selected: {openFileDialog.FileName}");
+                    return openFileDialog.FileName;
+                }
+
+                _logger.Debug("File dialog cancelled");
+                return null;
             }
-
-            return null;
+            catch (Exception ex)
+            {
+                _logger.Error("Error showing open file dialog", ex);
+                return null;
+            }
         }
 
         public string? ShowFolderDialog()
         {
-            var dialog = new VistaFolderBrowserDialog
-            {
-                Description = "Bitte Ordner zum Exportieren wählen",
-                UseDescriptionForTitle = true,
-                ShowNewFolderButton = true
-            };
+            _logger.Debug("Opening folder dialog");
 
-            return dialog.ShowDialog() == true ? dialog.SelectedPath : null;
+            try
+            {
+                var dialog = new VistaFolderBrowserDialog
+                {
+                    Description = "Bitte Ordner zum Exportieren wählen",
+                    UseDescriptionForTitle = true,
+                    ShowNewFolderButton = true
+                };
+
+                if (dialog.ShowDialog() == true)
+                {
+                    _logger.Info($"Folder selected: {dialog.SelectedPath}");
+                    return dialog.SelectedPath;
+                }
+
+                _logger.Debug("Folder dialog cancelled");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Error showing folder dialog", ex);
+                return null;
+            }
         }
 
         public string? ShowSaveFileDialog(string defaultFileName = "export.csv", string filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*")
         {
-            var saveFileDialog = new SaveFileDialog
+            _logger.Debug($"Opening save file dialog with default name: {defaultFileName}");
+
+            try
             {
-                Filter = filter,
-                FileName = defaultFileName,
-                Title = "Datei speichern"
-            };
+                var saveFileDialog = new SaveFileDialog
+                {
+                    Filter = filter,
+                    FileName = defaultFileName,
+                    Title = "Datei speichern"
+                };
+                bool? result = saveFileDialog.ShowDialog();
 
-            bool? result = saveFileDialog.ShowDialog();
+                if (result == true)
+                {
+                    _logger.Info($"Save file selected: {saveFileDialog.FileName}");
+                    return saveFileDialog.FileName;
+                }
 
-            return result == true ? saveFileDialog.FileName : null;
+                _logger.Debug("Save file dialog cancelled");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Error showing save file dialog", ex);
+                return null;
+            }
         }
     }
 }

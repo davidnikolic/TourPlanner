@@ -105,7 +105,11 @@ namespace TourPlanner.UI
 
             // Logging
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
-
+            services.AddTransient<ILoggerWrapper>(provider =>
+            {
+                var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+                return loggerFactory.CreateLogger<object>();
+            });
             // Repositories (DAL)
             services.AddScoped<ITourRepository, TourRepositories>();
             services.AddScoped<ITourLogRepository, TourLogRepository>();

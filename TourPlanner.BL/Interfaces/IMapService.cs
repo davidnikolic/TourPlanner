@@ -10,5 +10,6 @@ namespace TourPlanner.BL.Interfaces
     {
         Task UpdateMapAsync(string startLocation, string endLocation);
         Task SaveMapImageAsync(string fullImagePath);
+        Task ClearMapAsync();
     }
 }

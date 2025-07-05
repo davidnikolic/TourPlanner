@@ -11,6 +11,7 @@ using TourPlanner.BL.MockRepos;
 using TourPlanner.DAL.Repositories.Interfaces;
 using TourPlanner.BL.Services;
 using TourPlanner.BL.DTOs;
+using TourPlanner.BL.Services.Map;
 
 namespace TourPlanner.Tests
 {
@@ -23,6 +24,7 @@ namespace TourPlanner.Tests
         MockDialogService dialogService;
         ISelectedTourService selectedTourService;
         ISearchService searchService;
+        IMapService mapService;
 
         TourListViewModel tourListViewModel;
 
@@ -36,9 +38,10 @@ namespace TourPlanner.Tests
             dialogService = new MockDialogService();
             selectedTourService = new SelectedTourService();
             searchService = new SearchService(null, null);
+            mapService = new MapService(null);
 
-            tourCoordinatorService = new TourCoordinatorService(tourService, dialogService, selectedTourService);
-            tourListViewModel = new(tourService, selectedTourService, dialogService, tourCoordinatorService, searchService);
+            tourCoordinatorService = new TourCoordinatorService(tourService, dialogService, selectedTourService, mapService);
+            tourListViewModel = new(tourService, selectedTourService, dialogService, tourCoordinatorService, searchService, mapService);
             
         }
 

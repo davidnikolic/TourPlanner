@@ -15,28 +15,36 @@ namespace TourPlanner.UI.Services
         private readonly IDialogService _dialogService;
         private readonly ISelectedTourService _selectedTourService;
 
-        public event Action? ToursChanged;
+        public event Action? ToursChanged; 
+        private readonly IMapService _mapService;
+
 
         public TourCoordinatorService(
             ITourService tourService,
             IDialogService dialogService,
-            ISelectedTourService selectedTourService
+            ISelectedTourService selectedTourService,
+            IMapService mapService
             )
         {
+            _mapService = mapService;
             _tourService = tourService;
             _dialogService = dialogService;
             _selectedTourService = selectedTourService;
         }
 
-        public void AddTour()
+        public async void AddTour()
         {
             var tour = _dialogService.DisplayTourPopUp("Add new tour");
-
             if (tour == null) return;
-
             _tourService.AddTour(tour);
-            
             ToursChanged?.Invoke();
+            await HandleMap(tour);
+        }
+
+        private async Task HandleMap(TourDTO tour)
+        {
+            await _mapService.UpdateMapAsync(tour.StartLocation, tour.EndLocation);
+            await _mapService.SaveMapImageAsync(tour.RouteImagePath);
         }
 
         public void RequestTourRefresh()
