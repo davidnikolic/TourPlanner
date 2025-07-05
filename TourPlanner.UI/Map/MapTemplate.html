@@ -47,15 +47,15 @@
 
             if (routeCoordinates && routeCoordinates.length > 0) {
 
-                // Draw the actual route line on the map in blue
-                const leafletCoords = routeCoordinates.map(coord => [coord[1], coord[0]]);
-                routeLine = L.polyline(leafletCoords, {
+                // Draw the actual driving route line on the map in blue
+                const leafletCoords = routeCoordinates.map(coord => [coord[1], coord[0]]);// array of routes
+                routeLine = L.polyline(leafletCoords, { 
                     color: '#3388ff',
                     weight: 5,
                     opacity: 0.7
-                }).addTo(map);
+                }).addTo(map); // add polyline to map
 
-                map.fitBounds(routeLine.getBounds(), { padding: [40, 40] });
+                map.fitBounds(routeLine.getBounds(), { padding: [40, 40] }); // adjust the map view and zoom level to ensure all points are fully visible
 
             } else {
                 // If no route points, draw simple straight line between start and end
@@ -70,7 +70,7 @@
                 map.fitBounds(points, { padding: [50, 50] });
             }
         }
-
+        // Clear the map of all markers and route lines, but the map itself remains visible
         function clearMap() {
             if (map) {
                 map.eachLayer(function (layer) {

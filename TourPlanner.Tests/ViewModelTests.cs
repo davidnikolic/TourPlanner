@@ -40,7 +40,7 @@ namespace TourPlanner.Tests
             mapService = new MapService(null);
             loggerFactory = new LoggerFactory();
             tourCoordinatorService = new TourCoordinatorService(tourService, dialogService, selectedTourService, mapService);
-            tourListViewModel = new(tourService, selectedTourService, dialogService, tourCoordinatorService, searchService, loggerFactory, mapService);
+            tourListViewModel = new(tourService, selectedTourService, dialogService, tourCoordinatorService, searchService, loggerFactory);
         }
         [Test]
         public void TestSelectedTourPropagation()

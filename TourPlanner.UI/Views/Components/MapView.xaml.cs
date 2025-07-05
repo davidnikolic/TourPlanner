@@ -36,19 +36,21 @@ namespace TourPlanner.UI.Views.Components
         public MapView()
         {
             InitializeComponent();
-            Loaded += OnLoaded;
+            Loaded += OnLoaded; // register an event handler to becalled when the view is fully loaded/rendered
         }
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
+            // Get required services from the DI container, preconfigured instances
             var mapViewService = ((App)Application.Current).Services.GetRequiredService<IMapViewService>();
             var mapService = ((App)Application.Current).Services.GetRequiredService<IMapService>();
 
             await mapViewService.InitializeMapAsync(MapWebView);
 
-            // WebView an MapService weitergeben
+            // Register webview, so it can store a reference
+            // MapService can later access the browser to execute js commands
             if (mapService is MapService concreteMapService)
             {
-                concreteMapService.SetWebView(MapWebView);
+                concreteMapService.SetWebView(MapWebView); //method in mapservice
             }
         }
 

@@ -25,7 +25,6 @@ namespace TourPlanner.UI.ViewModels
     {
         private readonly ILoggerWrapper _logger;
         private ITourService _tourService;
-        private readonly IMapService _mapService;
 
         private ISelectedTourService? _selectedTourService;
 
@@ -58,14 +57,12 @@ namespace TourPlanner.UI.ViewModels
             IDialogService dialogService,
             ITourCoordinatorService tourCoordinatorService,
             ISearchService searchService,
-            ILoggerFactory loggerFactory,
-            IMapService mapService
+            ILoggerFactory loggerFactory
             )
         {
             _logger = loggerFactory.CreateLogger<TourListViewModel>();
             _logger.Info("TourListViewModel initialized");
             _tourService = tourService;
-            _mapService = mapService;
             _selectedTourService = selectedTourService;
             _dialogService = dialogService;
             _tourCoordinatorService = tourCoordinatorService;
@@ -187,20 +184,6 @@ namespace TourPlanner.UI.ViewModels
                 SelectedTour = null; 
             }
             _logger.Info($"Tour list refreshed. Displaying {Tours.Count} tours");
-        }
-
-        public async void HandleMap(TourDTO tour)
-        {
-            await _mapService.UpdateMapAsync(tour.StartLocation, tour.EndLocation);
-
-            // Generate image path if it's empty
-            if (string.IsNullOrEmpty(tour.RouteImagePath))
-            {
-                string mapImagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Map", "Images");
-                tour.RouteImagePath = Path.Combine(mapImagePath, $"{tour.Id}_{Guid.NewGuid()}.png");
-            }
-
-            await _mapService.SaveMapImageAsync(tour.RouteImagePath);
         }
     }
 }

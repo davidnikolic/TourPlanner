@@ -107,9 +107,9 @@ namespace TourPlanner.BL.Services.Map
 
             // Main Route calculations, extract geometry contains list of coordinate pairs
             var route = features[0];
-            var geometry = route["geometry"]?["coordinates"];
+            var geometry = route["geometry"]?["coordinates"]; // if geometry not null, get coordinates
             var summary = route["properties"]?["summary"];
-            double distanceInMeters = summary?["distance"]?.Value<double>() ?? 0;
+            double distanceInMeters = summary?["distance"]?.Value<double>() ?? 0; // if value exist, convert it to double otherwise defualt 0
 
             // Prepare a list to hold all route points as arrays of[longitude, latitude]
             var routeCoordinates = new List<double[]>();
@@ -123,29 +123,5 @@ namespace TourPlanner.BL.Services.Map
             // Return the route coordinates and the distance converted to kilometers
             return (routeCoordinates, distanceInMeters / 1000);
         }
-        /*
-        public float GetDistance(string startLocation, string endLocation)
-        {
-            // Hole die Koordinaten (synchron)
-            var start = GetCoordinatesAsync(startLocation);
-            var end = GetCoordinatesAsync(endLocation);
-
-            // Erdradius in Kilometern
-            const double R = 6371;
-
-            // Radiant umrechnen
-            double dLat = (end.Lat - start.Lat) * Math.PI / 180;
-            double dLon = (end.Lng - start.Lng) * Math.PI / 180;
-
-            // Haversine-Formel, kürzeste Entfernung zwischen zwei Punkten auf einer Kugel
-            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
-                       Math.Cos(start.Lat * Math.PI / 180) * Math.Cos(end.Lat * Math.PI / 180) *
-                       Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
-
-            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-            double distanceKm = R * c;
-
-            return (float)distanceKm;
-        }*/
     }
 }

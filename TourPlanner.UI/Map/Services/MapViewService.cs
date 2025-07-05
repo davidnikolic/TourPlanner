@@ -23,8 +23,6 @@ namespace TourPlanner.UI.Map.Services
         private readonly ILoggerWrapper _logger;
         private readonly OpenRouteServiceHelper _geoHelper = new();
         private readonly string mapImagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Map", "Images");
-        // Flag to check if map is fully initialized
-        private bool _isMapInitialized = false;
 
         public MapViewService(ILoggerFactory loggerFactory)
         {
@@ -35,17 +33,17 @@ namespace TourPlanner.UI.Map.Services
         {
             if (webViewObj is not WebView2 webView) return;
 
-            string htmlPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Map", "MapTemplate.html");
+            string htmlPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Map", "MapTemplate.html"); // where the .html located is
             if (!System.IO.File.Exists(htmlPath))
             {
                 _logger.Debug("Map.html not found");
                 MessageBox.Show($"Map.html not found: {htmlPath}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            await webView.EnsureCoreWebView2Async();
+            await webView.EnsureCoreWebView2Async(); // load webview2
             if (webView.CoreWebView2 == null) return;
 
-            webView.CoreWebView2.Navigate(new Uri(htmlPath).ToString());
+            webView.CoreWebView2.Navigate(new Uri(htmlPath).ToString()); // load html
         }
 
         public async Task UpdateMapAsync(object webViewObj, string startLocation, string endLocation)
@@ -66,7 +64,7 @@ namespace TourPlanner.UI.Map.Services
                 var (routeCoordinates, distance) = await _geoHelper.GetRouteAsync(startLocation, endLocation);
                 var startCoords = await _geoHelper.GetCoordinatesAsync(startLocation);
                 var endCoords = await _geoHelper.GetCoordinatesAsync(endLocation);
-                _logger.Debug($"Route coordinates retrieved: {routeCoordinates?.Count ?? 0} points");
+                _logger.Debug($"Route coordinates retrieved: {routeCoordinates.Count} points");
 
                 // Local helper function to format double values with 6 decimal places wit decimal points
                 string Format(double value) => value.ToString("F6", CultureInfo.InvariantCulture);
@@ -112,7 +110,7 @@ namespace TourPlanner.UI.Map.Services
                     _logger.Error("SaveMapImageAsync failed - CoreWebView2 is null");
                     return;
                 }
-                await Task.Delay(1000);
+                await Task.Delay(1000); // 1sec
 
                 string chosenPath = fullImagePath;
 
@@ -126,7 +124,6 @@ namespace TourPlanner.UI.Map.Services
                 using var fileStream = new FileStream(chosenPath, FileMode.Create);
 
                 await webView.CoreWebView2.CapturePreviewAsync(CoreWebView2CapturePreviewImageFormat.Png, fileStream);
-
 
                 _logger.Info($"Map image saved successfully: {chosenPath}");
             }

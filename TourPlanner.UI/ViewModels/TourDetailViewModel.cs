@@ -95,9 +95,9 @@ namespace TourPlanner.UI.ViewModels
         private async Task EvaluateLazyLoading()
         {
             _logger.Debug($"Evaluating lazy loading for tab index: {SelectedTabIndex}");
+            // This is the Map/Route Tab
             if (SelectedTabIndex == 1)
             {
-                // This is the Map/Route Tab
                 // Check if we have a valid tour selected
                 if (SelectedTour == null)
                 {
@@ -115,7 +115,6 @@ namespace TourPlanner.UI.ViewModels
                     }
                     return;
                 }
-                // Only load the static map image once
                 if (!_mapLoaded)
                 {
                     _logger.Debug("Loading map for selected tour");
@@ -149,16 +148,6 @@ namespace TourPlanner.UI.ViewModels
                 {
                     _logger.Error("Failed to clear map on tab change", ex);
                 }
-            }
-        }
-
-        // Add this method to force refresh the map
-        public async Task RefreshMapAsync()
-        {
-            if (SelectedTabIndex == 1 && SelectedTour != null)
-            {
-                ResetTabState();
-                await EvaluateLazyLoading();
             }
         }
 
