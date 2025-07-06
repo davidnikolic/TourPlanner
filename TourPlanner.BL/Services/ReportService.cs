@@ -16,6 +16,7 @@ using System.IO;
 using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Interfaces;
 using iText.IO.Font;
+using iText.Layout.Properties;
 
 namespace TourPlanner.BL.Services
 {
@@ -47,9 +48,16 @@ namespace TourPlanner.BL.Services
             // 5. Optional: Tour Image
             if (!string.IsNullOrEmpty(tour.RouteImagePath) && File.Exists(tour.RouteImagePath))
             {
-                var imgData = ImageDataFactory.Create(tour.RouteImagePath);
-                var image = new Image(imgData).ScaleToFit(400, 300).SetMarginBottom(15);
-                doc.Add(image);
+                try
+                {
+                    var imgData = ImageDataFactory.Create(tour.RouteImagePath);
+                    var image = new Image(imgData).ScaleToFit(400, 300).SetMarginBottom(15);
+                    doc.Add(image);
+                }
+                catch (iText.IO.Exceptions.IOException ex)
+                {
+                    // LOG
+                }
             }
 
             // 6. Table with information
@@ -194,6 +202,8 @@ namespace TourPlanner.BL.Services
                         .SetItalic()
                         .SetMarginTop(10));
                 }
+
+                if (tours.Last() != tour) doc.Add(new AreaBreak(AreaBreakType.NEXT_PAGE));
             }
         }
 

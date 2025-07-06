@@ -103,6 +103,7 @@ namespace TourPlanner.UI.ViewModels
                 try
                 {
                     _tourService.UpdateTour(tour);
+                    _tourCoordinatorService.HandleMap(tour);
                     _logger.Info($"Tour updated successfully: {tour.Name}");
                 }
                 catch (Exception ex)

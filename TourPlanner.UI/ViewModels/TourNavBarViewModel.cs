@@ -17,6 +17,17 @@ namespace TourPlanner.UI.ViewModels
 
         private ITourImportCoordinator _tourImportCoordinator;
 
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged();
+            }
+        }
+
         public TourNavBarViewModel
             (
             IDialogService dialogService,
@@ -71,14 +82,16 @@ namespace TourPlanner.UI.ViewModels
             }
         }
 
-        private void ImportFromJson()
+        private async void ImportFromJson()
         {
             _logger.Info("Starting JSON import");
             var path = _dialogService.ShowOpenFileDialog("JSON Files (*.json)|*.json|All Files (*.*)|*.*");
 
             if (path != null)
             {
-                _tourImportCoordinator.ImportFromJson(path);
+                IsLoading = true;
+                await _tourImportCoordinator.ImportFromJson(path);
+                IsLoading = false;
                 _tourCoordinatorService.RequestTourRefresh();
             }
         }

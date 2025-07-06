@@ -12,5 +12,7 @@ namespace TourPlanner.UI.Interfaces
         event Action? ToursChanged;
         void AddTour();
         void RequestTourRefresh();
+
+        Task HandleMap(TourDTO tour);
     }
 }

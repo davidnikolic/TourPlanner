@@ -47,9 +47,9 @@ namespace TourPlanner.UI.ViewModels
                     selectedTour = value;
                     OnPropertyChanged();
                     ResetTabState(); // Reset map state to null
-                    if (SelectedTabIndex == 1)
+                    if (SelectedTabIndex == 1 || SelectedTabIndex == 2)
                     {
-                        _logger.Debug("Forcing map update because we're in route tab");
+                        _logger.Debug("Executing Lazy Loading");
                         _ = EvaluateLazyLoading();
                     }
                 }
@@ -81,13 +81,20 @@ namespace TourPlanner.UI.ViewModels
 
         private bool _mapLoaded = false;
 
-        public TourDetailViewModel(ISelectedTourService selectedTourService, IMapService mapService, ITourStatisticsService tourStatisticsService, ILoggerFactory loggerFactory)
+        public TourDetailViewModel(
+            ISelectedTourService selectedTourService, 
+            IMapService mapService, 
+            ITourStatisticsService tourStatisticsService, 
+            ITourLogService tourLogService,
+            ILoggerFactory loggerFactory
+            )
         {
             _logger = loggerFactory.CreateLogger<TourDetailViewModel>();
             _logger.Info("TourDetailViewModel initialized");
 
             _selectedTourService = selectedTourService;
             _tourStatisticsService = tourStatisticsService;
+            _tourLogService = tourLogService;
             _mapService = mapService;
             _selectedTourService.SelectedTourChanged += OnSelectedTourChanged;
         }
@@ -149,6 +156,14 @@ namespace TourPlanner.UI.ViewModels
                     _logger.Error("Failed to clear map on tab change", ex);
                 }
             }
+
+            if(SelectedTabIndex == 2)
+            {
+                if (SelectedTour == null) return;
+
+                var logs = _tourLogService.GetTourLogsForTour(SelectedTour.Id);
+                Statistics = _tourStatisticsService.CalculateTourStatistic(SelectedTour, logs);
+            }
         }
 
         private void ResetTabState()
@@ -156,6 +171,7 @@ namespace TourPlanner.UI.ViewModels
             _logger.Debug("Resetting tab state");
             MapImage = null;
             _mapLoaded = false;
+            Statistics = null;
         }
 
         private async void OnSelectedTourChanged(TourDTO tour)

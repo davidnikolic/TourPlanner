@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Interfaces;
 using TourPlanner.UI.Interfaces;
 using TourPlanner.UI.Interfaces.Coordinators;
@@ -24,6 +26,8 @@ namespace TourPlanner.UI.Services.Coordinators
 
         private IDialogService _dialogService;
 
+        private IMapService _mapService;
+
 
         public TourImportCoordinator(
             ITourService tourService, 
@@ -31,7 +35,8 @@ namespace TourPlanner.UI.Services.Coordinators
             IImportService importService, 
             IReportService reportService, 
             ISelectedTourService selectedTourService, 
-            IDialogService dialogService
+            IDialogService dialogService,
+            IMapService mapService
             )
         {
             _tourService = tourService;
@@ -40,6 +45,7 @@ namespace TourPlanner.UI.Services.Coordinators
             _reportService = reportService;
             _selectedTourService = selectedTourService;
             _dialogService = dialogService;
+            _mapService = mapService;
         }
 
         public void ImportFromCsv(string path)
@@ -81,7 +87,7 @@ namespace TourPlanner.UI.Services.Coordinators
             }
         }
 
-        public void ImportFromJson(string path)
+        public async Task ImportFromJson(string path)
         {
             var type = _importService.DetectJsonType(path);
 
@@ -101,13 +107,25 @@ namespace TourPlanner.UI.Services.Coordinators
                                 _tourLogService.AddTourLog(log);
                             }
                         }
+                        await _mapService.UpdateMapAsync(t.StartLocation, t.EndLocation);
+                        await _mapService.SaveMapImageAsync(t.RouteImagePath);
                     }
                     break;
 
                 case ContentType.TourLog:
+                    var currentTour = _selectedTourService.SelectedTour;
+
+                    if (currentTour == null)
+                    {
+                        _dialogService.ShowMessage("No Tour selected");
+                        return;
+                    }
                     var logs = _importService.ImportTourLogsFromJson(path);
                     foreach (var l in logs)
+                    {
+                        l.TourId = currentTour.Id;
                         _tourLogService.AddTourLog(l);
+                    }
                     break;
 
                 default:

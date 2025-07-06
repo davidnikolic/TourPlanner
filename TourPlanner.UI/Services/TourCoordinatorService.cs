@@ -41,7 +41,7 @@ namespace TourPlanner.UI.Services
             await HandleMap(tour);
         }
 
-        private async Task HandleMap(TourDTO tour)
+        public async Task HandleMap(TourDTO tour)
         {
             await _mapService.UpdateMapAsync(tour.StartLocation, tour.EndLocation);
             await _mapService.SaveMapImageAsync(tour.RouteImagePath);
