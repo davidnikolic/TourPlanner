@@ -48,7 +48,7 @@ namespace TourPlanner.UI.Services.Coordinators
             _mapService = mapService;
         }
 
-        public void ImportFromCsv(string path)
+        public async Task ImportFromCsv(string path)
         {
             var type = _importService.DetectCsvType(path);
 
@@ -59,6 +59,8 @@ namespace TourPlanner.UI.Services.Coordinators
                     foreach (var t in tours)
                     {
                         _tourService.AddTour(t);
+                        await _mapService.UpdateMapAsync(t.StartLocation, t.EndLocation);
+                        await _mapService.SaveMapImageAsync(t.RouteImagePath);
                     }
                     break;
 

@@ -8,7 +8,7 @@ namespace TourPlanner.UI.Interfaces.Coordinators
 {
     public interface ITourImportCoordinator
     {
-        void ImportFromCsv(string path);
+        Task ImportFromCsv(string path);
         Task ImportFromJson(string path);
     }
 }

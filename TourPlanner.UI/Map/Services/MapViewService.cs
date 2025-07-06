@@ -100,6 +100,7 @@ namespace TourPlanner.UI.Map.Services
                 _logger.Debug("SaveMapImageAsync failed - invalid WebView2 object");
                 return;
             }
+            webView.IsEnabled = false;
             _logger.Info($"Saving map image to: {fullImagePath}");
             try
             {
@@ -132,6 +133,7 @@ namespace TourPlanner.UI.Map.Services
                 _logger.Error($"Failed to save map image: {fullImagePath}", ex);
                 MessageBox.Show($"Error during save image process: {ex.Message}");
             }
+            webView.IsEnabled = true;
         }
     }
 }

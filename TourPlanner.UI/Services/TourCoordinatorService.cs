@@ -14,6 +14,7 @@ namespace TourPlanner.UI.Services
         private readonly ITourService _tourService;
         private readonly IDialogService _dialogService;
         private readonly ISelectedTourService _selectedTourService;
+        private readonly ISearchService _searchService;
 
         public event Action? ToursChanged; 
         private readonly IMapService _mapService;
@@ -23,17 +24,20 @@ namespace TourPlanner.UI.Services
             ITourService tourService,
             IDialogService dialogService,
             ISelectedTourService selectedTourService,
-            IMapService mapService
+            IMapService mapService,
+            ISearchService searchService
             )
         {
             _mapService = mapService;
             _tourService = tourService;
             _dialogService = dialogService;
             _selectedTourService = selectedTourService;
+            _searchService = searchService;
         }
 
         public async void AddTour()
         {
+            _searchService.CurrentSearchTerm = string.Empty;
             var tour = _dialogService.DisplayTourPopUp("Add new tour");
             if (tour == null) return;
             _tourService.AddTour(tour);

@@ -17,7 +17,7 @@ namespace TourPlanner.UI.ViewModels
 
         private ITourImportCoordinator _tourImportCoordinator;
 
-        private bool _isLoading;
+        private bool _isLoading = false;
         public bool IsLoading
         {
             get => _isLoading;
@@ -35,7 +35,7 @@ namespace TourPlanner.UI.ViewModels
             ITourExportCoordinator tourExportCoordinator,
             ITourImportCoordinator tourImportCoordinator,
             ILoggerFactory loggerFactory
-            ) 
+            )
         {
             _logger = loggerFactory.CreateLogger<TourNavBarViewModel>();
             _logger.Info("TourNavBarViewModel initialized");
@@ -69,15 +69,16 @@ namespace TourPlanner.UI.ViewModels
 
         public RelayCommand ExitCommand => new RelayCommand(execute => Environment.Exit(0));
 
-        private void ImportFromCsv()
+        private async void ImportFromCsv()
         {
             _logger.Info("Starting CSV import");
             var path = _dialogService.ShowOpenFileDialog("CSV Files (*.csv)|*.csv|All Files (*.*)|*.*");
 
             if (path != null)
             {
-                _logger.Debug("CSV import cancelled by user");
-                _tourImportCoordinator.ImportFromCsv(path);
+                IsLoading = true;
+                await _tourImportCoordinator.ImportFromCsv(path);
+                IsLoading = false;
                 _tourCoordinatorService.RequestTourRefresh();
             }
         }
@@ -120,7 +121,7 @@ namespace TourPlanner.UI.ViewModels
         private void About()
         {
             _logger.Info("About information loaded");
-            _dialogService.ShowMessage("TourPlanner ist eine plattformübergreifende Desktop-Anwendung zur Planung, Verwaltung und Analyse von Touren aller Art – egal ob Wanderung, Radtour, Laufstrecke oder Urlaubsreise.\r\n\r\nDie Anwendung ermöglicht es Nutzer:innen, Touren anzulegen, mit Beschreibungen und automatischen Routing-Daten zu versehen, und zu jeder Tour detaillierte Logs zu erfassen.\r\nDank integrierter OpenRouteService-API, Wetterintegration, volltextbasierter Suche, PDF-Reports, CSV-/JSON-Import & Export und eines responsiven Designs bietet TourPlanner sowohl funktionale Tiefe als auch intuitive Bedienung.\r\n\r\nDie App wurde im Rahmen eines Hochschulprojekts mit Fokus auf sauberer Architektur (MVVM), testbarer Logik und modularer Erweiterbarkeit entwickelt.\r\n\r\nBesonderheiten:\r\n\r\n    Übersichtliche Benutzeroberfläche mit auf- und zuklappbarer Tourliste\r\n\r\n    Wiederverwendbare Komponenten wie ActionButtons und PopUps\r\n\r\n    Dynamische Darstellung je nach Fenstergröße\r\n\r\n    Einzigartiges View-Toggling für individuell anpassbare Arbeitsbereiche\r\n\r\nEntwickelt von:\r\nDavid & Alex – FH-Projekt 2025");
+            _dialogService.ShowMessage("TourPlanner ist eine plattformübergreifende Desktop-Anwendung zur Planung, Verwaltung und Analyse von Touren aller Art – egal ob Wanderung, Radtour, Laufstrecke oder Urlaubsreise.\r\n\r\nDie Anwendung ermöglicht es Nutzer:innen, Touren anzulegen, mit Beschreibungen und automatischen Routing-Daten zu versehen, und zu jeder Tour detaillierte Logs zu erfassen.\r\nDank integrierter OpenRouteService-API, Wetterintegration, volltextbasierter Suche, PDF-Reports, CSV-/JSON-Import & Export und eines responsiven Designs bietet TourPlanner sowohl funktionale Tiefe als auch intuitive Bedienung.\r\n\r\nDie App wurde im Rahmen eines Hochschulprojekts mit Fokus auf sauberer Architektur (MVVM), testbarer Logik und modularer Erweiterbarkeit entwickelt.\r\n\r\nBesonderheiten:\r\n\r\n    Übersichtliche Benutzeroberfläche mit auf- und zuklappbarer Tourliste\r\n\r\n    Wiederverwendbare Komponenten wie ActionButtons und PopUps\r\n\r\n    Dynamische Darstellung je nach Fenstergröße\r\n\r\n    Entwickelt von:\r\nDavid Nikolic & Alexander Deng – FH-Projekt 2025");
         }
     }
 }

@@ -172,7 +172,7 @@ namespace TourPlanner.BL.Services
                 var tours = JsonSerializer.Deserialize<List<TourLogDTO>>(json, options);
                 return tours ?? new List<TourLogDTO>();
             }
-            catch (IOException ex)
+            catch (Exception ex)
             {
                 _logger.Error("Cannot read file: " + ex.Message);
             }

@@ -39,7 +39,7 @@ namespace TourPlanner.Tests
             searchService = new SearchService(null, null);
             mapService = new MapService(null);
             loggerFactory = new LoggerFactory();
-            tourCoordinatorService = new TourCoordinatorService(tourService, dialogService, selectedTourService, mapService);
+            tourCoordinatorService = new TourCoordinatorService(tourService, dialogService, selectedTourService, mapService, null);
             tourListViewModel = new(tourService, selectedTourService, dialogService, tourCoordinatorService, searchService, loggerFactory);
         }
         [Test]
