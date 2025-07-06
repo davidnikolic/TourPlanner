@@ -48,7 +48,7 @@ namespace TourPlanner.UI.Services
         public async Task HandleMap(TourDTO tour)
         {
             await _mapService.UpdateMapAsync(tour.StartLocation, tour.EndLocation);
-            await _mapService.SaveMapImageAsync(tour.RouteImagePath);
+            if (tour.RouteImagePath != null) await _mapService.SaveMapImageAsync(tour.RouteImagePath);
         }
 
         public void RequestTourRefresh()

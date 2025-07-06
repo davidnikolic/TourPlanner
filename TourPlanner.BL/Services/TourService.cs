@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TourPlanner.BL.DTOs;
+﻿using TourPlanner.BL.DTOs;
 using TourPlanner.BL.Interfaces;
 using TourPlanner.DAL.Entities;
 using TourPlanner.DAL.Repositories.Interfaces;
-using TourPlanner.DAL.Repositories;
-using System.Runtime.CompilerServices;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using iText.Svg.Renderers.Path.Impl;
 using TourPlanner.Logging;
 using TourPlanner.Logging.Interfaces;
 
