@@ -11,6 +11,7 @@ using TourPlanner.BL.Interfaces;
 using TourPlanner.BL.Services.Map;
 using TourPlanner.Logging;
 using TourPlanner.Logging.Interfaces;
+using TourPlanner.UI.Interfaces;
 
 namespace TourPlanner.UI.ViewModels
 {
@@ -21,6 +22,7 @@ namespace TourPlanner.UI.ViewModels
         private ISelectedTourService _selectedTourService;
         private readonly ITourStatisticsService _tourStatisticsService;
         private ITourLogService _tourLogService;
+        private readonly IUITabNavigationService _tabNavigationService;
 
         private TourDTO selectedTour;
 
@@ -73,11 +75,16 @@ namespace TourPlanner.UI.ViewModels
             get => _selectedTabIndex;
             set
             {
-                _selectedTabIndex = value;
-                OnPropertyChanged();
-                EvaluateLazyLoading();
+                if (_selectedTabIndex != value)
+                {
+                    _selectedTabIndex = value;
+                    _tabNavigationService.SelectedTabIndex = value;
+                    OnPropertyChanged();
+                    _ = EvaluateLazyLoading();
+                }
             }
         }
+
 
         private bool _mapLoaded = false;
 
@@ -86,6 +93,7 @@ namespace TourPlanner.UI.ViewModels
             IMapService mapService, 
             ITourStatisticsService tourStatisticsService, 
             ITourLogService tourLogService,
+            IUITabNavigationService tabNavigationService,
             ILoggerFactory loggerFactory
             )
         {
@@ -96,7 +104,15 @@ namespace TourPlanner.UI.ViewModels
             _tourStatisticsService = tourStatisticsService;
             _tourLogService = tourLogService;
             _mapService = mapService;
+            _tabNavigationService = tabNavigationService;
+
             _selectedTourService.SelectedTourChanged += OnSelectedTourChanged;
+            _selectedTabIndex = _tabNavigationService.SelectedTabIndex;
+
+            _tabNavigationService.SelectedTabIndexChanged += (index) =>
+            {
+                SelectedTabIndex = index; 
+            };
         }
 
         private async Task EvaluateLazyLoading()

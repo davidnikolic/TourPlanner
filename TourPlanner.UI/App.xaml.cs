@@ -97,6 +97,7 @@ namespace TourPlanner.UI
             services.AddSingleton<IImportService, ImportService>();
             services.AddSingleton<IExportService, ExportService>();
             services.AddSingleton<ISearchService, SearchService>();
+            services.AddSingleton<IUITabNavigationService, UITabNavigationService>();
 
             // Coordinators
             services.AddSingleton<ITourCoordinatorService, TourCoordinatorService>();

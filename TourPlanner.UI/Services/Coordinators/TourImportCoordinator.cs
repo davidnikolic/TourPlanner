@@ -24,19 +24,22 @@ namespace TourPlanner.UI.Services.Coordinators
 
         private ISelectedTourService _selectedTourService;
 
+        private IUITabNavigationService _tabBarNavigationService;
+
         private IDialogService _dialogService;
 
         private IMapService _mapService;
 
 
         public TourImportCoordinator(
-            ITourService tourService, 
-            ITourLogService tourLogService, 
-            IImportService importService, 
-            IReportService reportService, 
-            ISelectedTourService selectedTourService, 
+            ITourService tourService,
+            ITourLogService tourLogService,
+            IImportService importService,
+            IReportService reportService,
+            ISelectedTourService selectedTourService,
             IDialogService dialogService,
-            IMapService mapService
+            IMapService mapService,
+            IUITabNavigationService uITabNavigationService
             )
         {
             _tourService = tourService;
@@ -46,10 +49,12 @@ namespace TourPlanner.UI.Services.Coordinators
             _selectedTourService = selectedTourService;
             _dialogService = dialogService;
             _mapService = mapService;
+            _tabBarNavigationService = uITabNavigationService;
         }
 
         public async Task ImportFromCsv(string path)
         {
+            _tabBarNavigationService.SelectedTabIndex = 1;
             var type = _importService.DetectCsvType(path);
 
             switch (type)
@@ -91,6 +96,7 @@ namespace TourPlanner.UI.Services.Coordinators
 
         public async Task ImportFromJson(string path)
         {
+            _tabBarNavigationService.SelectedTabIndex = 1;
             var type = _importService.DetectJsonType(path);
 
             switch (type)
